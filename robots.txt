@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Anciennes versions de sauvegarde — ne pas indexer (évite le contenu dupliqué)
+Disallow: /index-ancien-20260713.html
+Disallow: /index-avant-refonte-20260714.html
+Disallow: /index-bordeaux.html
+Disallow: /index-drapeau.html
+Disallow: /index-reunion.html
+
+Sitemap: https://cupidon.re/sitemap.xml
