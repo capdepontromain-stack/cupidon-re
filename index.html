@@ -649,22 +649,22 @@
       <h2>Le premier pas<br/>vers l'amour</h2>
       <p style="margin:20px 0 34px">Laissez-nous vos coordonnées : on vous rappelle pour votre appel découverte, en toute discrétion.</p>
       <div class="info-item"><span class="ic">📞</span><div><b>Par téléphone</b><span>06 93 81 78 82</span></div></div>
-      <div class="info-item"><span class="ic">✉️</span><div><b>Par e-mail</b><span>contact@cupidon.re</span></div></div>
+      <div class="info-item"><span class="ic">✉️</span><div><b>Par e-mail</b><span>contact@pullup.re</span></div></div>
       <div class="info-item"><span class="ic">📍</span><div><b>Zone d'intervention</b><span>Toute l'île de La Réunion</span></div></div>
       <div class="info-item"><span class="ic">🔒</span><div><b>Confidentialité</b><span>Vos informations restent strictement privées</span></div></div>
     </div>
     <div class="reveal">
       <form id="cupidForm">
         <div class="row2">
-          <div class="field"><label>Prénom</label><input type="text" required placeholder="Votre prénom"/></div>
-          <div class="field"><label>Nom</label><input type="text" placeholder="Votre nom"/></div>
+          <div class="field"><label>Prénom</label><input name="prenom" type="text" required placeholder="Votre prénom"/></div>
+          <div class="field"><label>Nom</label><input name="nom" type="text" placeholder="Votre nom"/></div>
         </div>
         <div class="row2">
-          <div class="field"><label>Téléphone</label><input type="tel" required placeholder="06 92 …"/></div>
-          <div class="field"><label>E-mail</label><input type="email" placeholder="vous@email.com"/></div>
+          <div class="field"><label>Téléphone</label><input name="telephone" type="tel" required placeholder="06 92 …"/></div>
+          <div class="field"><label>E-mail</label><input name="email" type="email" placeholder="vous@email.com"/></div>
         </div>
-        <div class="field"><label>Vous êtes</label><select><option>Une femme qui cherche un homme</option><option>Un homme qui cherche une femme</option><option>Autre / je préfère en parler</option></select></div>
-        <div class="field"><label>Votre message (facultatif)</label><textarea rows="3" placeholder="Dites-nous où vous en êtes…"></textarea></div>
+        <div class="field"><label>Vous êtes</label><select name="recherche"><option>Une femme qui cherche un homme</option><option>Un homme qui cherche une femme</option><option>Autre / je préfère en parler</option></select></div>
+        <div class="field"><label>Votre message (facultatif)</label><textarea name="message" rows="3" placeholder="Dites-nous où vous en êtes…"></textarea></div>
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Envoyer ma demande</button>
         <p style="font-size:.76rem;color:var(--muted);text-align:center;margin-top:14px">En envoyant, vous acceptez d'être recontacté(e) par Cupidon. Aucune donnée n'est partagée.</p>
       </form>
@@ -708,7 +708,7 @@
       <div>
         <h4>Contact</h4>
         <a href="tel:+262693817882">06 93 81 78 82</a>
-        <a href="mailto:contact@cupidon.re">contact@cupidon.re</a>
+        <a href="mailto:contact@pullup.re">contact@pullup.re</a>
         <a href="https://g.page/r/CYZGysYZgL8iEBM/review" target="_blank" rel="noopener">Voir nos avis Google ★</a>
         <a href="https://pullup.re" target="_blank" rel="noopener">Pull Up Événements</a>
         <a href="#contact">Appel découverte offert</a>
@@ -756,12 +756,22 @@
   // form
   document.getElementById('cupidForm').addEventListener('submit', function(e){
     e.preventDefault();
-    this.style.display='none';
+    var f = this;
+    var corps = "Bonjour,%0D%0A%0D%0AJe souhaite être recontacté(e) par Cupidon.%0D%0A%0D%0A"
+      + "Prénom : " + encodeURIComponent(f.prenom.value) + "%0D%0A"
+      + "Nom : " + encodeURIComponent(f.nom.value) + "%0D%0A"
+      + "Téléphone : " + encodeURIComponent(f.telephone.value) + "%0D%0A"
+      + "E-mail : " + encodeURIComponent(f.email.value) + "%0D%0A"
+      + "Recherche : " + encodeURIComponent(f.recherche.value) + "%0D%0A"
+      + "Message : " + encodeURIComponent(f.message.value) + "%0D%0A%0D%0A"
+      + "(Demande envoyée depuis le site cupidon.re)";
+    window.location.href = "mailto:contact@pullup.re?subject=" + encodeURIComponent("Demande Cupidon — " + f.prenom.value) + "&body=" + corps;
+    f.style.display='none';
     document.getElementById('formOk').style.display='block';
   });
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","@id":"https://cupidon.re/#organization","name":"Cupidon — Agence matrimoniale à La Réunion","alternateName":"Cupidon.re","url":"https://cupidon.re/","logo":"https://cupidon.re/img/hero-volcan.jpg","image":"https://cupidon.re/img/hero-volcan.jpg","description":"Agence matrimoniale moderne de La Réunion, par Pull Up Événements depuis 2017. Accompagnement humain, sur-mesure et confidentiel pour des rencontres sérieuses. Plus de 500 couples formés.","telephone":"+262693817882","email":"contact@cupidon.re","foundingDate":"2017","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"RE"},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re/"},"sameAs":["https://pullup.re/","https://www.facebook.com/pullupevenements/","https://www.instagram.com/pull_up_evenements","https://www.tiktok.com/@pull.up.evenements","https://www.youtube.com/@pullupévénements","https://www.linkedin.com/company/pullup-événements/","https://g.page/r/CYZGysYZgL8iEBM"]}
+{"@context":"https://schema.org","@type":"Organization","@id":"https://cupidon.re/#organization","name":"Cupidon — Agence matrimoniale à La Réunion","alternateName":"Cupidon.re","url":"https://cupidon.re/","logo":"https://cupidon.re/img/hero-volcan.jpg","image":"https://cupidon.re/img/hero-volcan.jpg","description":"Agence matrimoniale moderne de La Réunion, par Pull Up Événements depuis 2017. Accompagnement humain, sur-mesure et confidentiel pour des rencontres sérieuses. Plus de 500 couples formés.","telephone":"+262693817882","email":"contact@pullup.re","foundingDate":"2017","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"RE"},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re/"},"sameAs":["https://pullup.re/","https://www.facebook.com/pullupevenements/","https://www.instagram.com/pull_up_evenements","https://www.tiktok.com/@pull.up.evenements","https://www.youtube.com/@pullupévénements","https://www.linkedin.com/company/pullup-événements/","https://g.page/r/CYZGysYZgL8iEBM"]}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Service","name":"Accompagnement matrimonial à La Réunion","serviceType":"Agence matrimoniale — mise en relation et accompagnement de célibataires","url":"https://cupidon.re/","areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"provider":{"@id":"https://cupidon.re/#organization"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Forfaits d'accompagnement Cupidon","itemListElement":[{"@type":"Offer","name":"Première Flèche","price":"480","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Première Flèche — accompagnement matrimonial"}},{"@type":"Offer","name":"Cœur à Cœur","price":"680","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Cœur à Cœur — accompagnement matrimonial"}},{"@type":"Offer","name":"Grand Amour","price":"1000","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Grand Amour — accompagnement matrimonial"}}]}}
