@@ -198,6 +198,52 @@
   .p-feats li::before{content:"✓";color:var(--gold);font-weight:600;flex:0 0 auto}
   .plan.feat .p-feats li::before{color:var(--gold-lt)}
   .plans-note{text-align:center;margin-top:30px;color:var(--muted);font-size:.9rem}
+  /* --- formules premium --- */
+  .plans{align-items:stretch}
+  .plan{position:relative}
+  .plan.feat{box-shadow:var(--shadow-lg);transform:translateY(-10px)}
+  @media(max-width:820px){.plan.feat{transform:none}}
+  .p-transform{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:500;line-height:1.4;color:var(--ink);margin:2px 0 8px}
+  .plan.feat .p-transform{color:#fff}
+  .p-price{margin-top:14px}
+  .p-price .cur{font-size:1.05rem;vertical-align:.4em;color:var(--muted)}
+  .plan.feat .p-price .cur{color:rgba(255,255,255,.65)}
+  .p-meta{display:flex;gap:10px;margin:16px 0 20px}
+  .p-meta div{flex:1;background:var(--cream-2);border-radius:14px;padding:12px 10px;text-align:center}
+  .plan.feat .p-meta div{background:rgba(255,255,255,.10)}
+  .p-meta .n{font-family:'Fraunces',serif;font-size:1.35rem;color:var(--wine);line-height:1;display:block}
+  .plan.feat .p-meta .n{color:var(--gold-lt)}
+  .p-meta .l{font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:5px;display:block}
+  .plan.feat .p-meta .l{color:rgba(251,247,242,.7)}
+  .p-tag{display:inline-flex;align-items:center;gap:5px;background:var(--gold);color:#3d2f0a;box-shadow:0 8px 22px rgba(242,194,0,.4)}
+  .p-reassure{font-size:.8rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5}
+  .plan.feat .p-reassure{color:rgba(251,247,242,.72)}
+  .p-cta{width:100%}
+  /* --- tableau comparatif --- */
+  .compare-wrap{margin-top:70px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .compare{width:100%;border-collapse:separate;border-spacing:0;min-width:660px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+  .compare th,.compare td{padding:15px 18px;text-align:center;font-size:.9rem;border-bottom:1px solid var(--line)}
+  .compare thead th{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:500;color:var(--ink);background:var(--cream);padding-top:20px;padding-bottom:20px}
+  .compare thead th.feat-col{background:var(--ink);color:#fff}
+  .compare tbody td.feat-col{background:rgba(14,42,107,.04)}
+  .compare th:first-child,.compare td:first-child{text-align:left;font-weight:500;color:var(--ink-soft);background:var(--cream);width:220px}
+  .compare .yes{color:#2F9E5B;font-weight:600}
+  .compare .no{color:var(--line);font-size:1.1rem}
+  .compare tr:last-child td{border-bottom:none}
+  /* --- pourquoi choisir --- */
+  .why{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+  @media(max-width:820px){.why{grid-template-columns:1fr}}
+  .why-item{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px;text-align:center;transition:.3s}
+  .why-item:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+  .why-item .i{width:52px;height:52px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--cream-2);font-size:1.5rem}
+  .why-item h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:500;color:var(--ink);margin-bottom:6px}
+  .why-item p{font-size:.86rem;color:var(--muted);margin:0}
+  /* --- garantie --- */
+  .guarantee{margin-top:56px;background:linear-gradient(135deg,var(--ink),var(--ink-soft));border-radius:var(--r-lg);padding:44px 40px;color:var(--cream);display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .guarantee .seal{flex:0 0 76px;width:76px;height:76px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:2rem}
+  .guarantee .g-txt{flex:1;min-width:260px}
+  .guarantee h3{color:#fff;font-family:'Fraunces',serif;font-weight:500;margin-bottom:8px}
+  .guarantee p{color:rgba(251,247,242,.85);margin:0;font-size:.96rem}
 
   /* Testimonials */
   .testi{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
@@ -518,52 +564,125 @@
     <div class="plans" style="text-align:left">
       <div class="plan reveal">
         <div class="p-name">Première Flèche</div>
-        <div class="p-price"><span class="cur">à partir de </span>480<span class="cur"> €</span></div>
-        <p class="p-desc">Pour faire vos premières rencontres sérieuses et découvrir notre méthode.</p>
+        <p class="p-transform">Trouvez votre première vraie rencontre sérieuse.</p>
+        <div class="p-price"><span class="cur">à partir de </span>490<span class="cur"> €</span></div>
+        <div class="p-meta">
+          <div><span class="n">3 mois</span><span class="l">Accompagnement</span></div>
+          <div><span class="n">3</span><span class="l">Rencontres garanties</span></div>
+        </div>
+        <p class="p-desc">Idéal pour découvrir notre méthode en étant accompagné dès le début.</p>
         <ul class="p-feats">
           <li>Entretien individuel approfondi</li>
-          <li>Questionnaire de personnalité</li>
-          <li>Profil confidentiel &amp; identité vérifiée</li>
-          <li>3 présentations de profils compatibles</li>
-          <li>Échange après chaque rencontre</li>
-          <li>Accompagnement sur 3 mois</li>
+          <li>Analyse de personnalité</li>
+          <li>Vérification d'identité</li>
+          <li>3 présentations garanties de profils compatibles</li>
+          <li>Débrief après chaque rencontre</li>
+          <li>Conseils personnalisés</li>
+          <li>Accompagnement pendant 3 mois</li>
         </ul>
-        <a href="#contact" class="btn btn-ghost" style="justify-content:center">Commencer</a>
+        <a href="#contact" class="btn btn-ghost p-cta" style="justify-content:center">Commencer mon parcours</a>
+        <p class="p-reassure">Premier appel découverte offert, sans engagement.</p>
       </div>
+
       <div class="plan feat reveal">
-        <span class="p-tag">Le plus choisi</span>
+        <span class="p-tag">⭐ La plus choisie</span>
         <div class="p-name">Cœur à Cœur</div>
-        <div class="p-price">680<span class="cur"> €</span></div>
-        <p class="p-desc">Un accompagnement complet jusqu'à la rencontre qui compte vraiment.</p>
+        <p class="p-transform">Multipliez les rencontres de qualité jusqu'à trouver la bonne personne.</p>
+        <div class="p-price">790<span class="cur"> €</span></div>
+        <div class="p-meta">
+          <div><span class="n">6 mois</span><span class="l">Accompagnement</span></div>
+          <div><span class="n">8</span><span class="l">Rencontres garanties</span></div>
+        </div>
+        <p class="p-desc">L'équilibre parfait entre accompagnement humain et efficacité.</p>
         <ul class="p-feats">
-          <li>Tout le forfait Première Flèche</li>
-          <li>Présentations prioritaires &amp; illimitées</li>
-          <li>Un conseiller dédié</li>
-          <li>Coaching avant le premier rendez-vous</li>
-          <li>Conseils personnalisés après chaque RDV</li>
-          <li>Accès aux événements de l'agence</li>
-          <li>Accompagnement sur 6 mois</li>
+          <li>Tout le contenu de Première Flèche</li>
+          <li>8 présentations garanties</li>
+          <li>Conseiller personnel dédié</li>
+          <li>Priorité dans les recherches</li>
+          <li>Coaching avant les premiers rendez-vous</li>
+          <li>Débrief personnalisé après chaque rencontre</li>
+          <li>Invitations aux événements Cupidon</li>
+          <li>Accompagnement pendant 6 mois</li>
         </ul>
-        <a href="tel:+262693817882" class="btn btn-primary" style="justify-content:center;background:#fff;color:var(--ink)">📞 Appeler maintenant</a>
+        <a href="#contact" class="btn btn-primary p-cta" style="justify-content:center;background:#fff;color:var(--ink)">Je veux être accompagné</a>
+        <p class="p-reassure">La formule préférée de nos membres, pour de vrais résultats.</p>
       </div>
+
       <div class="plan reveal">
         <div class="p-name">Grand Amour</div>
-        <div class="p-price">1000<span class="cur"> €</span></div>
-        <p class="p-desc">Pour celles et ceux qui veulent le meilleur, sans compromis.</p>
+        <p class="p-transform">Confiez-nous entièrement votre recherche.</p>
+        <div class="p-price">1290<span class="cur"> €</span></div>
+        <div class="p-meta">
+          <div><span class="n">12 mois</span><span class="l">Accompagnement</span></div>
+          <div><span class="n">∞</span><span class="l">Présentations</span></div>
+        </div>
+        <p class="p-desc">L'accompagnement d'exception, jusqu'à la relation qui change une vie.</p>
         <ul class="p-feats">
-          <li>Tout le forfait Cœur à Cœur</li>
-          <li>Recherche entièrement sur-mesure</li>
-          <li>Disponibilité prioritaire</li>
-          <li>Coaching image &amp; communication</li>
-          <li>Organisation de vos premiers rendez-vous</li>
+          <li>Tout le contenu de Cœur à Cœur</li>
+          <li>Présentations illimitées pendant 12 mois</li>
+          <li>Recherche entièrement sur mesure</li>
+          <li>Priorité absolue sur les nouveaux profils</li>
+          <li>Coaching image</li>
+          <li>Coaching communication</li>
+          <li>Organisation des premiers rendez-vous</li>
+          <li>Accompagnement jusqu'à une relation durable</li>
           <li>Invitations VIP aux événements</li>
-          <li>Accompagnement sur 12 mois</li>
         </ul>
-        <a href="#contact" class="btn btn-ghost" style="justify-content:center">Nous contacter</a>
+        <a href="#contact" class="btn btn-ghost p-cta" style="justify-content:center">Prendre un rendez-vous privé</a>
+        <p class="p-reassure">Un accompagnement rare et confidentiel. Places limitées.</p>
       </div>
     </div>
+
+    <!-- Tableau comparatif -->
+    <div class="compare-wrap reveal">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>En un coup d'œil</th>
+            <th>Première Flèche</th>
+            <th class="feat-col">Cœur à Cœur</th>
+            <th>Grand Amour</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Durée</td><td>3 mois</td><td class="feat-col">6 mois</td><td>12 mois</td></tr>
+          <tr><td>Présentations garanties</td><td>3</td><td class="feat-col">8</td><td>Illimitées</td></tr>
+          <tr><td>Conseiller dédié</td><td class="no">—</td><td class="feat-col yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Coaching</td><td class="no">—</td><td class="feat-col">Avant les rendez-vous</td><td>Image + communication</td></tr>
+          <tr><td>Recherche personnalisée</td><td>Standard</td><td class="feat-col">Prioritaire</td><td>Entièrement sur mesure</td></tr>
+          <tr><td>Événements Cupidon</td><td class="no">—</td><td class="feat-col yes">✓</td><td>Accès VIP</td></tr>
+          <tr><td>Organisation des rendez-vous</td><td class="no">—</td><td class="feat-col no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Suivi personnalisé</td><td>Débrief</td><td class="feat-col">Débrief approfondi</td><td>Suivi complet</td></tr>
+          <tr><td>Accompagnement</td><td>3 mois</td><td class="feat-col">6 mois</td><td>Jusqu'à une relation durable</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <p class="plans-note">Premier appel offert, sans engagement. La qualité de nos membres est notre priorité : chaque profil est vérifié et chaque rencontre est préparée avec soin.</p>
     <p class="plans-note" style="font-size:.82rem;margin-top:10px">Chaque forfait fait l'objet d'un contrat écrit détaillant les services, leur durée, leur prix et les conditions de résiliation. Vous disposez d'un délai légal de rétractation de 7 jours après la signature.</p>
+
+    <!-- Pourquoi choisir Cupidon.re -->
+    <div style="margin-top:80px">
+      <span class="eyebrow">La différence Cupidon</span>
+      <h2>Pourquoi nous confier<br/>votre recherche</h2>
+      <div class="why" style="text-align:left">
+        <div class="why-item reveal"><div class="i">🛡️</div><h4>Profils vérifiés</h4><p>Chaque membre est rencontré et son identité contrôlée avant toute présentation.</p></div>
+        <div class="why-item reveal"><div class="i">💬</div><h4>Entretiens individuels</h4><p>On prend le temps de vous connaître vraiment, en tête-à-tête, sans algorithme.</p></div>
+        <div class="why-item reveal"><div class="i">🔒</div><h4>Confidentialité totale</h4><p>Votre démarche reste privée, discrète et protégée du début à la fin.</p></div>
+        <div class="why-item reveal"><div class="i">🤝</div><h4>Accompagnement humain</h4><p>Une équipe à vos côtés, pas une application. Des conseils, une écoute, un cadre.</p></div>
+        <div class="why-item reveal"><div class="i">📞</div><h4>Suivi après chaque rencontre</h4><p>On débriefe ensemble pour affiner la recherche et avancer plus vite vers la bonne personne.</p></div>
+        <div class="why-item reveal"><div class="i">🌺</div><h4>Conseillers basés à La Réunion</h4><p>Une équipe péi qui connaît le terrain, la culture et les gens de l'île.</p></div>
+      </div>
+    </div>
+
+    <!-- Notre engagement -->
+    <div class="guarantee reveal">
+      <div class="seal">💛</div>
+      <div class="g-txt">
+        <h3>Notre engagement</h3>
+        <p>Chez Cupidon.re, chaque profil est rencontré et vérifié avant toute présentation. Si une rencontre est annulée avant le rendez-vous, elle n'est pas comptabilisée. Nous privilégions la qualité des mises en relation plutôt que la quantité.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -574,9 +693,12 @@
     <h2>Les questions que l'on nous pose</h2>
     <div class="faq" style="text-align:left">
       <div class="qa"><button>Comment se passe le premier contact ?<span class="ic">+</span></button><div class="ans"><p>Tout commence par un appel découverte, gratuit et sans engagement. On apprend à vous connaître, vous nous dites ce que vous cherchez, et on vous explique comment on travaille. Aucune obligation à la suite de cet échange.</p></div></div>
+      <div class="qa"><button>Combien de personnes vais-je rencontrer ?<span class="ic">+</span></button><div class="ans"><p>Cela dépend de votre formule : 3 présentations garanties avec Première Flèche, 8 avec Cœur à Cœur, et des présentations illimitées pendant 12 mois avec Grand Amour. Ce sont des rencontres préparées avec des profils réellement compatibles — pas une liste de contacts au hasard.</p></div></div>
+      <div class="qa"><button>Comment sélectionnez-vous les profils ?<span class="ic">+</span></button><div class="ans"><p>Chaque membre passe un entretien individuel et voit son identité vérifiée avant d'entrer dans notre sélection. Nous rapprochons ensuite les personnes selon leurs valeurs, leur histoire et leurs attentes réelles — jamais sur un simple algorithme. C'est un travail humain, fait à la main.</p></div></div>
+      <div class="qa"><button>Que se passe-t-il si aucune rencontre ne me convient ?<span class="ic">+</span></button><div class="ans"><p>On ajuste. Après chaque rencontre, on débriefe ensemble pour affiner la recherche et mieux cibler la suite. Et si une rencontre est annulée avant le rendez-vous, elle n'est pas comptabilisée : nous privilégions toujours la qualité des mises en relation plutôt que la quantité.</p></div></div>
       <div class="qa"><button>Est-ce vraiment confidentiel ?<span class="ic">+</span></button><div class="ans"><p>Absolument. Votre profil n'est jamais public. Vos informations restent strictement entre vous et l'équipe Cupidon. La discrétion est au cœur de notre métier.</p></div></div>
       <div class="qa"><button>Où intervenez-vous à La Réunion ?<span class="ic">+</span></button><div class="ans"><p>Partout sur l'île — Nord, Sud, Est, Ouest et les Hauts. Nos adhérents viennent de toutes les communes de La Réunion.</p></div></div>
-      <div class="qa"><button>Combien ça coûte ?<span class="ic">+</span></button><div class="ans"><p>Nous proposons trois forfaits d'accompagnement : Première Flèche à partir de 480 €, Cœur à Cœur à 680 € et Grand Amour à 1000 €. On vous présente celui qui correspond le mieux à votre situation lors de l'appel découverte, clairement et sans surprise.</p></div></div>
+      <div class="qa"><button>Combien ça coûte ?<span class="ic">+</span></button><div class="ans"><p>Nous proposons trois forfaits d'accompagnement : Première Flèche à partir de 490 €, Cœur à Cœur à 790 € et Grand Amour à 1290 €. On vous présente celui qui correspond le mieux à votre situation lors de l'appel découverte, clairement et sans surprise.</p></div></div>
       <div class="qa"><button>Faut-il un âge particulier pour s'inscrire ?<span class="ic">+</span></button><div class="ans"><p>Non. Nous accompagnons des célibataires de tous âges et de tous horizons, tant que la démarche est sincère et sérieuse.</p></div></div>
       <div class="qa"><button>Puis-je changer d'avis après avoir signé ?<span class="ic">+</span></button><div class="ans"><p>Oui. Conformément à la réglementation des agences matrimoniales en France, vous bénéficiez d'un délai de rétractation de 7 jours après la signature de votre contrat. Et avant tout engagement, les services proposés, leur durée, leur prix et les conditions de résiliation vous sont remis clairement par écrit.</p></div></div>
     </div>
@@ -774,10 +896,10 @@
 {"@context":"https://schema.org","@type":"Organization","@id":"https://cupidon.re/#organization","name":"Cupidon — Agence matrimoniale à La Réunion","alternateName":"Cupidon.re","url":"https://cupidon.re/","logo":"https://cupidon.re/img/hero-volcan.jpg","image":"https://cupidon.re/img/hero-volcan.jpg","description":"Agence matrimoniale moderne de La Réunion, par Pull Up Événements depuis 2017. Accompagnement humain, sur-mesure et confidentiel pour des rencontres sérieuses. Plus de 500 couples formés.","telephone":"+262693817882","email":"contact@pullup.re","foundingDate":"2017","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"RE"},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re/"},"sameAs":["https://pullup.re/","https://www.facebook.com/pullupevenements/","https://www.instagram.com/pull_up_evenements","https://www.tiktok.com/@pull.up.evenements","https://www.youtube.com/@pullupévénements","https://www.linkedin.com/company/pullup-événements/","https://g.page/r/CYZGysYZgL8iEBM"]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Service","name":"Accompagnement matrimonial à La Réunion","serviceType":"Agence matrimoniale — mise en relation et accompagnement de célibataires","url":"https://cupidon.re/","areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"provider":{"@id":"https://cupidon.re/#organization"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Forfaits d'accompagnement Cupidon","itemListElement":[{"@type":"Offer","name":"Première Flèche","price":"480","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Première Flèche — accompagnement matrimonial"}},{"@type":"Offer","name":"Cœur à Cœur","price":"680","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Cœur à Cœur — accompagnement matrimonial"}},{"@type":"Offer","name":"Grand Amour","price":"1000","priceCurrency":"EUR","itemOffered":{"@type":"Service","name":"Grand Amour — accompagnement matrimonial"}}]}}
+{"@context":"https://schema.org","@type":"Service","name":"Accompagnement matrimonial à La Réunion","serviceType":"Agence matrimoniale — mise en relation et accompagnement de célibataires","url":"https://cupidon.re/","areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"provider":{"@id":"https://cupidon.re/#organization"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Forfaits d'accompagnement Cupidon","itemListElement":[{"@type":"Offer","name":"Première Flèche","price":"490","priceCurrency":"EUR","description":"3 présentations garanties, accompagnement 3 mois.","itemOffered":{"@type":"Service","name":"Première Flèche — accompagnement matrimonial"}},{"@type":"Offer","name":"Cœur à Cœur","price":"790","priceCurrency":"EUR","description":"8 présentations garanties, conseiller dédié, accompagnement 6 mois.","itemOffered":{"@type":"Service","name":"Cœur à Cœur — accompagnement matrimonial"}},{"@type":"Offer","name":"Grand Amour","price":"1290","priceCurrency":"EUR","description":"Présentations illimitées, recherche sur mesure, accompagnement 12 mois.","itemOffered":{"@type":"Service","name":"Grand Amour — accompagnement matrimonial"}}]}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment se passe le premier contact ?","acceptedAnswer":{"@type":"Answer","text":"Tout commence par un appel découverte, gratuit et sans engagement. On apprend à vous connaître, vous nous dites ce que vous cherchez, et on vous explique comment on travaille. Aucune obligation à la suite de cet échange."}},{"@type":"Question","name":"Est-ce vraiment confidentiel ?","acceptedAnswer":{"@type":"Answer","text":"Absolument. Votre profil n'est jamais public. Vos informations restent strictement entre vous et l'équipe Cupidon. La discrétion est au cœur de notre métier."}},{"@type":"Question","name":"Où intervenez-vous à La Réunion ?","acceptedAnswer":{"@type":"Answer","text":"Partout sur l'île — Nord, Sud, Est, Ouest et les Hauts. Nos adhérents viennent de toutes les communes de La Réunion."}},{"@type":"Question","name":"Combien ça coûte ?","acceptedAnswer":{"@type":"Answer","text":"Nous proposons trois forfaits d'accompagnement : Première Flèche à partir de 480 €, Cœur à Cœur à 680 € et Grand Amour à 1000 €. On vous présente celui qui correspond le mieux à votre situation lors de l'appel découverte, clairement et sans surprise."}},{"@type":"Question","name":"Faut-il un âge particulier pour s'inscrire ?","acceptedAnswer":{"@type":"Answer","text":"Non. Nous accompagnons des célibataires de tous âges et de tous horizons, tant que la démarche est sincère et sérieuse."}},{"@type":"Question","name":"Puis-je changer d'avis après avoir signé ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Conformément à la réglementation des agences matrimoniales en France, vous bénéficiez d'un délai de rétractation de 7 jours après la signature de votre contrat. Et avant tout engagement, les services proposés, leur durée, leur prix et les conditions de résiliation vous sont remis clairement par écrit."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment se passe le premier contact ?","acceptedAnswer":{"@type":"Answer","text":"Tout commence par un appel découverte, gratuit et sans engagement. On apprend à vous connaître, vous nous dites ce que vous cherchez, et on vous explique comment on travaille. Aucune obligation à la suite de cet échange."}},{"@type":"Question","name":"Combien de personnes vais-je rencontrer ?","acceptedAnswer":{"@type":"Answer","text":"Cela dépend de votre formule : 3 présentations garanties avec Première Flèche, 8 avec Cœur à Cœur, et des présentations illimitées pendant 12 mois avec Grand Amour. Ce sont des rencontres préparées avec des profils réellement compatibles."}},{"@type":"Question","name":"Comment sélectionnez-vous les profils ?","acceptedAnswer":{"@type":"Answer","text":"Chaque membre passe un entretien individuel et voit son identité vérifiée avant d'entrer dans notre sélection. Nous rapprochons ensuite les personnes selon leurs valeurs, leur histoire et leurs attentes réelles, jamais sur un simple algorithme."}},{"@type":"Question","name":"Que se passe-t-il si aucune rencontre ne me convient ?","acceptedAnswer":{"@type":"Answer","text":"On ajuste. Après chaque rencontre, on débriefe ensemble pour affiner la recherche. Et si une rencontre est annulée avant le rendez-vous, elle n'est pas comptabilisée : nous privilégions la qualité des mises en relation plutôt que la quantité."}},{"@type":"Question","name":"Est-ce vraiment confidentiel ?","acceptedAnswer":{"@type":"Answer","text":"Absolument. Votre profil n'est jamais public. Vos informations restent strictement entre vous et l'équipe Cupidon. La discrétion est au cœur de notre métier."}},{"@type":"Question","name":"Où intervenez-vous à La Réunion ?","acceptedAnswer":{"@type":"Answer","text":"Partout sur l'île — Nord, Sud, Est, Ouest et les Hauts. Nos adhérents viennent de toutes les communes de La Réunion."}},{"@type":"Question","name":"Combien ça coûte ?","acceptedAnswer":{"@type":"Answer","text":"Nous proposons trois forfaits d'accompagnement : Première Flèche à partir de 490 €, Cœur à Cœur à 790 € et Grand Amour à 1290 €. On vous présente celui qui correspond le mieux à votre situation lors de l'appel découverte, clairement et sans surprise."}},{"@type":"Question","name":"Faut-il un âge particulier pour s'inscrire ?","acceptedAnswer":{"@type":"Answer","text":"Non. Nous accompagnons des célibataires de tous âges et de tous horizons, tant que la démarche est sincère et sérieuse."}},{"@type":"Question","name":"Puis-je changer d'avis après avoir signé ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Conformément à la réglementation des agences matrimoniales en France, vous bénéficiez d'un délai de rétractation de 7 jours après la signature de votre contrat. Et avant tout engagement, les services proposés, leur durée, leur prix et les conditions de résiliation vous sont remis clairement par écrit."}}]}
 </script>
 </body>
 </html>
