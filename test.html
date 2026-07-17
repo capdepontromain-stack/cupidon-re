@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Le test Cupidon — Quel profil vous correspond ? | Cupidon.re La Réunion</title>
-<meta name="description" content="10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion. Un test gratuit signé Cupidon, l'agence matrimoniale de La Réunion — puis l'équipe prend le relais pour trouver la personne idéale." />
+<meta name="description" content="15 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion. Un test gratuit signé Cupidon, l'agence matrimoniale de La Réunion — puis l'équipe prend le relais pour trouver la personne idéale." />
 <meta name="theme-color" content="#0E2A6B" />
 <meta property="og:title" content="Le test Cupidon — Quel profil vous correspond ?" />
-<meta property="og:description" content="10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion." />
+<meta property="og:description" content="15 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cupidon.re/test.html" />
 <meta property="og:image" content="https://cupidon.re/assets/banniere-facebook-1640x624.png" />
@@ -149,15 +149,24 @@
   <div class="container">
     <span class="eyebrow">Le test Cupidon · gratuit</span>
     <h1>Quel profil est fait<br/><em style="color:var(--wine)">pour vous ?</em></h1>
-    <p class="lead">10 petites questions, 2 minutes — et découvrez le portrait de la personne qui pourrait faire battre votre cœur à La Réunion. 💘</p>
+    <p class="lead">15 questions, 3 minutes — et découvrez le portrait de la personne qui pourrait faire battre votre cœur à La Réunion. 💘</p>
   </div>
 </header>
 
 <main class="quiz-wrap">
+  <!-- ÉCRAN DE DÉPART -->
+  <div class="quiz-card" id="startCard" style="text-align:center">
+    <div style="font-size:2.6rem;margin-bottom:10px">💘</div>
+    <h2 style="margin-bottom:12px">Prêt(e) à découvrir<br/>qui est fait pour vous ?</h2>
+    <p style="font-size:.98rem;margin-bottom:26px">15 questions, environ 3 minutes. Aucune bonne ou mauvaise réponse : répondez avec le cœur. À la fin, vous découvrez le portrait de la personne qu'il vous faut.</p>
+    <button class="btn btn-primary" id="startBtn" style="justify-content:center">💘 Faites le test en 15 questions</button>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:14px">Gratuit · confidentiel · sans engagement</p>
+  </div>
+
   <!-- QUIZ -->
-  <div class="quiz-card" id="quizCard">
+  <div class="quiz-card hidden" id="quizCard">
     <div class="progress"><i id="progBar"></i></div>
-    <div class="prog-label" id="progLabel">Question 1 sur 10</div>
+    <div class="prog-label" id="progLabel">Question 1 sur 15</div>
     <div id="qZone"></div>
     <button class="q-back hidden" id="qBack">← Question précédente</button>
   </div>
@@ -276,7 +285,32 @@
       {ico:"🪺", txt:"Dans un petit nid douillet à deux", score:"A"},
       {ico:"✈️", txt:"En voyage quelque part dans le monde", score:"B"},
       {ico:"🎊", txt:"Entouré(e) d'amis, de rires et de fêtes", score:"C"},
-      {ico:"👨‍👩‍👧", txt:"Bien installé(e), peut-être en famille", score:"D"} ]}
+      {ico:"👨‍👩‍👧", txt:"Bien installé(e), peut-être en famille", score:"D"} ]},
+    { t:"Votre façon de dire « je t'aime » ?", opts:[
+      {ico:"🥰", txt:"Les petits gestes tendres du quotidien", score:"A"},
+      {ico:"🎁", txt:"Les surprises et les escapades improvisées", score:"B"},
+      {ico:"💬", txt:"Les mots doux et les fous rires partagés", score:"C"},
+      {ico:"🤝", txt:"Être présent(e), fidèle, toujours", score:"D"} ]},
+    { t:"Un dimanche de pluie à La Réunion ?", opts:[
+      {ico:"☕", txt:"Plaid, tisane et film sous la couverture", score:"A"},
+      {ico:"🌧️", txt:"On sort quand même — tant pis pour la pluie !", score:"B"},
+      {ico:"🎲", txt:"Jeux de société et rires avec les proches", score:"C"},
+      {ico:"🍲", txt:"Cuisine, rangement et petits projets maison", score:"D"} ]},
+    { t:"Vos proches disent de vous que vous êtes…", opts:[
+      {ico:"💗", txt:"Doux(ce) et attentionné(e)", score:"A"},
+      {ico:"🌪️", txt:"Un vrai courant d'air, toujours partant(e)", score:"B"},
+      {ico:"🎭", txt:"Le/la comique de la bande", score:"C"},
+      {ico:"🧭", txt:"Celui ou celle sur qui on peut compter", score:"D"} ]},
+    { t:"En vacances, vous êtes plutôt…", opts:[
+      {ico:"🌴", txt:"Farniente en amoureux, loin de tout", score:"A"},
+      {ico:"🎒", txt:"Sac à dos, découvertes et imprévus", score:"B"},
+      {ico:"🏝️", txt:"Ambiance club : rencontres et animations", score:"C"},
+      {ico:"🗺️", txt:"Un beau circuit bien organisé à l'avance", score:"D"} ]},
+    { t:"Votre devise en amour ?", opts:[
+      {ico:"🌹", txt:"« L'amour est dans les petites attentions »", score:"A"},
+      {ico:"🚀", txt:"« La vie est une aventure à vivre à deux »", score:"B"},
+      {ico:"😁", txt:"« Un jour sans rire est un jour perdu »", score:"C"},
+      {ico:"🧱", txt:"« L'amour se construit jour après jour »", score:"D"} ]}
   ];
 
   var PROFILS = {
@@ -354,6 +388,13 @@
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
+  document.getElementById('startBtn').addEventListener('click', function(){
+    document.getElementById('startCard').classList.add('hidden');
+    var qc = document.getElementById('quizCard');
+    qc.classList.remove('hidden'); qc.classList.add('fade-in');
+    renderQ();
+  });
+
   document.getElementById('restartBtn').addEventListener('click', function(){
     step=0; answers=[]; info={moi:"",cherche:"",age:""};
     document.getElementById('resCard').classList.add('hidden');
@@ -386,10 +427,10 @@
     document.getElementById('sentMsg').style.display='block';
   });
 
-  renderQ();
+  // Le quiz démarre au clic sur « Faites le test en 15 questions »
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","name":"Le test Cupidon — Quel profil vous correspond ?","url":"https://cupidon.re/test.html","description":"10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion.","isPartOf":{"@type":"WebSite","name":"Cupidon.re","url":"https://cupidon.re/"},"provider":{"@id":"https://cupidon.re/#organization"}}
+{"@context":"https://schema.org","@type":"WebPage","name":"Le test Cupidon — Quel profil vous correspond ?","url":"https://cupidon.re/test.html","description":"15 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion.","isPartOf":{"@type":"WebSite","name":"Cupidon.re","url":"https://cupidon.re/"},"provider":{"@id":"https://cupidon.re/#organization"}}
 </script>
 </body>
 </html>
