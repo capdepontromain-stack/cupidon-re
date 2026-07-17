@@ -81,7 +81,8 @@
   .nav.scrolled .brand .logo-color{display:block}
   footer .brand img{height:52px}
   .nav-links{display:flex;align-items:center;gap:34px}
-  .nav-links a{font-size:.9rem;font-weight:400;color:var(--ink-soft);transition:.2s}
+  .nav-links a{font-size:.9rem;font-weight:400;color:var(--ink-soft);transition:.2s;white-space:nowrap}
+  @media(max-width:1120px){.nav-links{gap:20px}.nav-links a{font-size:.85rem}}
   .nav-links a:hover{color:var(--wine)}
   .nav-links > a.btn{display:none} /* CTA du menu : caché sur desktop, visible en drawer mobile */
   .nav-cta{display:flex;align-items:center;gap:14px}
@@ -332,15 +333,15 @@
     .foot-grid{grid-template-columns:1fr}
     .bf-1,.bf-2{display:none}
     .flag-chip{display:none}
-  }
-  @media(max-width:640px){
-    .section{padding:76px 0}
     .nav-links{position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;background:var(--cream);flex-direction:column;justify-content:center;gap:26px;transform:translateX(100%);transition:.35s;box-shadow:var(--shadow-lg);padding:40px}
     .nav-links.open{transform:none}
-    .nav .nav-links a{color:var(--ink-soft)}
+    .nav .nav-links a{color:var(--ink-soft);font-size:.9rem}
     .nav .nav-links a:hover{color:var(--wine)}
     .nav-links > a.btn{display:inline-flex}
     .burger{display:flex}
+  }
+  @media(max-width:640px){
+    .section{padding:76px 0}
     #navBtn{display:none}
     .team{grid-template-columns:1fr}
     .row2{grid-template-columns:1fr}
@@ -360,6 +361,7 @@
       <a href="#equipe">L'équipe</a>
       <a href="#agence">L'agence</a>
       <a href="#methode">La méthode</a>
+      <a href="test.html">Le test 💘</a>
       <a href="blog/">Blog</a>
       <a href="#tarifs">Forfaits</a>
       <a href="#faq">FAQ</a>
@@ -504,6 +506,18 @@
       <div class="step reveal"><div class="n">02</div><h3>Votre profil</h3><p>Un entretien approfondi, un questionnaire de personnalité et la création de votre profil confidentiel.</p></div>
       <div class="step reveal"><div class="n">03</div><h3>Les présentations</h3><p>Nous sélectionnons pour vous des profils réellement compatibles — et nous préparons chaque rencontre.</p></div>
       <div class="step reveal"><div class="n">04</div><h3>L'accompagnement</h3><p>Conseils, retours après chaque rendez-vous, ajustements. On reste à vos côtés jusqu'à la bonne rencontre.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LE TEST CUPIDON -->
+<section class="section" id="test" style="padding:80px 0">
+  <div class="container center">
+    <div class="reveal" style="background:linear-gradient(135deg,#FFF6E5,#FDEDE9);border:1px solid rgba(242,194,0,.35);border-radius:var(--r-lg);padding:56px 30px;box-shadow:var(--shadow-md)">
+      <span class="eyebrow">Nouveau · gratuit</span>
+      <h2>Quel profil est fait <em style="color:var(--wine)">pour vous ?</em></h2>
+      <p class="lead" style="margin:16px auto 28px">10 petites questions, 2 minutes — et découvrez le portrait de la personne qui pourrait faire battre votre cœur. 💘</p>
+      <a href="test.html" class="btn btn-primary">💘 Faire le test Cupidon</a>
     </div>
   </div>
 </section>
@@ -823,6 +837,7 @@
         <a href="#equipe">L'équipe</a>
         <a href="#agence">L'agence</a>
         <a href="#methode">La méthode</a>
+        <a href="test.html">Le test Cupidon</a>
         <a href="blog/">Blog</a>
         <a href="#tarifs">Forfaits</a>
         <a href="#faq">FAQ</a>

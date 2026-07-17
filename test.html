@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le test Cupidon — Quel profil vous correspond ? | Cupidon.re La Réunion</title>
+<meta name="description" content="10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion. Un test gratuit signé Cupidon, l'agence matrimoniale de La Réunion — puis l'équipe prend le relais pour trouver la personne idéale." />
+<meta name="theme-color" content="#0E2A6B" />
+<meta property="og:title" content="Le test Cupidon — Quel profil vous correspond ?" />
+<meta property="og:description" content="10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cupidon.re/test.html" />
+<meta property="og:image" content="https://cupidon.re/assets/banniere-facebook-1640x624.png" />
+<link rel="canonical" href="https://cupidon.re/test.html" />
+<link rel="icon" href="assets/favicon-64.png" sizes="64x64" type="image/png" />
+<link rel="icon" href="assets/favicon-512.png" sizes="512x512" type="image/png" />
+<link rel="apple-touch-icon" href="assets/favicon-512.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#0E2A6B; --ink-soft:#3A4E86;
+    --cream:#FBF9F3; --cream-2:#E9F0FB;
+    --wine:#F60100; --wine-dk:#C90D00;
+    --gold:#F2C200; --gold-lt:#FFE96B;
+    --rose:#CFE0FA; --blush:#E4EDFB;
+    --muted:#6B7A9E; --line:rgba(14,42,107,.12); --white:#fff;
+    --shadow-sm:0 2px 18px rgba(43,35,32,.06);
+    --shadow-md:0 18px 50px rgba(43,35,32,.10);
+    --shadow-lg:0 30px 80px rgba(43,35,32,.16);
+    --r:18px; --r-lg:28px; --maxw:1180px;
+  }
+  html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
+  body{font-family:'Jost',system-ui,sans-serif;color:var(--ink);background:var(--cream);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  a{text-decoration:none;color:inherit}
+  h1,h2,h3,h4{font-family:'Fraunces',serif;line-height:1.12;font-weight:500;letter-spacing:-.005em}
+  h1{font-size:clamp(2.1rem,5vw,3.4rem)}
+  h2{font-size:clamp(1.7rem,3.5vw,2.5rem)}
+  p{color:var(--ink-soft)}
+  .container{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  .eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--wine);margin-bottom:18px;display:inline-block}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:100px;font-weight:500;font-size:.92rem;cursor:pointer;border:1.5px solid transparent;transition:.28s ease;font-family:'Jost'}
+  .btn-primary{background:var(--wine);color:#fff;box-shadow:0 10px 26px rgba(246,1,0,.30)}
+  .btn-primary:hover{background:var(--wine-dk);transform:translateY(-2px);box-shadow:0 14px 34px rgba(246,1,0,.40)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+
+  /* Nav */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 0;background:rgba(251,247,242,.92);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between}
+  .brand img{height:44px;width:auto;display:block}
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{font-size:.9rem;color:var(--ink-soft);transition:.2s}
+  .nav-links a:hover{color:var(--wine)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;padding:6px}
+  .burger span{width:24px;height:2px;background:var(--ink);border-radius:2px}
+  @media(max-width:940px){
+    .nav-links{position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;background:var(--cream);flex-direction:column;justify-content:center;gap:26px;transform:translateX(100%);transition:.35s;box-shadow:var(--shadow-lg);padding:40px;z-index:1001}
+    .nav-links.open{transform:none}
+    .burger{display:flex}
+    #navBtn{display:none}
+  }
+
+  /* Page */
+  .page-hero{padding:150px 0 30px;text-align:center;position:relative}
+  .page-hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(900px 420px at 78% -8%, rgba(255,226,50,.16), transparent 60%),
+    radial-gradient(700px 460px at 8% 100%, rgba(47,102,255,.08), transparent 60%);pointer-events:none}
+  .page-hero .lead{max-width:620px;margin:18px auto 0;color:var(--muted);font-size:1.06rem}
+
+  /* Quiz */
+  .quiz-wrap{max-width:680px;margin:34px auto 90px;padding:0 26px}
+  .quiz-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:38px;position:relative}
+  @media(max-width:600px){.quiz-card{padding:26px 20px}}
+  .progress{height:8px;border-radius:100px;background:var(--blush);overflow:hidden;margin-bottom:10px}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--wine),var(--gold));border-radius:100px;transition:width .35s ease}
+  .prog-label{font-size:.8rem;color:var(--muted);margin-bottom:22px}
+  .q-title{font-family:'Fraunces',serif;font-size:1.45rem;line-height:1.3;margin-bottom:22px}
+  .opts{display:grid;gap:12px}
+  .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--cream);border:1.5px solid var(--line);border-radius:16px;padding:15px 18px;font-family:'Jost';font-size:.98rem;color:var(--ink);cursor:pointer;transition:.22s ease}
+  .opt:hover{border-color:var(--wine);background:#fff;transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+  .opt .ico{font-size:1.25rem;flex:0 0 auto}
+  .q-back{margin-top:20px;background:none;border:0;color:var(--muted);font-family:'Jost';font-size:.85rem;cursor:pointer}
+  .q-back:hover{color:var(--wine)}
+
+  /* Résultat */
+  .res-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blush);color:var(--ink);border-radius:100px;padding:8px 18px;font-size:.8rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+  .res-name{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.5rem);color:var(--wine);margin-bottom:6px}
+  .res-age{font-size:.95rem;color:var(--muted);margin-bottom:18px}
+  .res-desc{font-size:1.04rem;color:var(--ink-soft);margin-bottom:24px}
+  .res-good{background:linear-gradient(135deg,#FFF6E5,#FDEDE9);border:1px solid rgba(242,194,0,.35);border-radius:16px;padding:18px 20px;margin-bottom:16px;font-size:.98rem;color:var(--ink)}
+  .res-note{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:28px;font-size:.92rem;color:var(--ink-soft)}
+  .res-note a{color:var(--wine);font-weight:500}
+  .send-block h3{font-family:'Fraunces',serif;font-size:1.25rem;margin-bottom:6px}
+  .send-block > p{font-size:.92rem;margin-bottom:18px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:.82rem;font-weight:500;margin-bottom:6px;color:var(--ink)}
+  .field input,.field select{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;font-family:'Jost';font-size:.95rem;color:var(--ink);background:#fff;outline:none;transition:.2s}
+  .field input:focus,.field select:focus{border-color:var(--wine)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:600px){.row2{grid-template-columns:1fr}}
+  .send-hint{font-size:.78rem;color:var(--muted);text-align:center;margin-top:12px}
+  .or-call{margin-top:26px;padding-top:22px;border-top:1px dashed var(--line);text-align:center}
+  .or-call p{font-size:.92rem;margin-bottom:14px}
+  .call-msg{display:none;margin-top:18px;background:var(--blush);border-radius:16px;padding:18px 20px;font-size:.95rem;color:var(--ink)}
+  .restart{margin-top:26px;text-align:center}
+  .restart button{background:none;border:0;color:var(--muted);font-family:'Jost';font-size:.85rem;cursor:pointer;text-decoration:underline}
+  .hidden{display:none}
+  .fade-in{animation:fadeIn .4s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* Footer */
+  footer{background:var(--ink);color:var(--cream);padding:50px 0 40px;margin-top:40px;text-align:center}
+  footer .brand{display:inline-block;margin-bottom:14px}
+  footer .brand img{height:46px;margin:0 auto}
+  footer p{color:rgba(251,247,242,.65);font-size:.9rem}
+  footer a{color:rgba(251,247,242,.85)}
+  footer a:hover{color:var(--gold)}
+  .foot-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin:16px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand" aria-label="Cupidon.re — accueil">
+      <img src="assets/logo-horizontal.png" alt="Cupidon.re, agence matrimoniale à La Réunion" width="1308" height="405">
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a href="index.html#equipe">L'équipe</a>
+      <a href="index.html#agence">L'agence</a>
+      <a href="index.html#methode">La méthode</a>
+      <a href="blog/">Blog</a>
+      <a href="index.html#tarifs">Forfaits</a>
+      <a href="index.html#contact" class="btn btn-primary" style="padding:11px 22px">Appel découverte</a>
+    </div>
+    <div class="nav-cta">
+      <a href="index.html#contact" class="btn btn-primary" style="padding:11px 22px" id="navBtn">Appel découverte</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Le test Cupidon · gratuit</span>
+    <h1>Quel profil est fait<br/><em style="color:var(--wine)">pour vous ?</em></h1>
+    <p class="lead">10 petites questions, 2 minutes — et découvrez le portrait de la personne qui pourrait faire battre votre cœur à La Réunion. 💘</p>
+  </div>
+</header>
+
+<main class="quiz-wrap">
+  <!-- QUIZ -->
+  <div class="quiz-card" id="quizCard">
+    <div class="progress"><i id="progBar"></i></div>
+    <div class="prog-label" id="progLabel">Question 1 sur 10</div>
+    <div id="qZone"></div>
+    <button class="q-back hidden" id="qBack">← Question précédente</button>
+  </div>
+
+  <!-- RÉSULTAT -->
+  <div class="quiz-card hidden" id="resCard">
+    <span class="res-badge">💘 Votre résultat</span>
+    <div class="res-name" id="resName"></div>
+    <div class="res-age" id="resAge"></div>
+    <p class="res-desc" id="resDesc"></p>
+
+    <div class="res-good" id="resGood"></div>
+
+    <div class="res-note">
+      ✨ Ce test n'est qu'un échantillon : l'équipe Cupidon va bien plus en profondeur — entretien individuel, questionnaire complet de personnalité et sélection humaine — pour trouver la personne idéale. N'hésitez pas à nous appeler au <a href="tel:+262693817882">06&nbsp;93&nbsp;81&nbsp;78&nbsp;82</a>.
+    </div>
+
+    <div class="send-block">
+      <h3>Voulez-vous envoyer votre résultat à l'équipe Cupidon ?</h3>
+      <p>On vous rappelle gratuitement, en toute discrétion, pour en parler. Indiquez-nous simplement quand vous joindre :</p>
+      <form id="sendForm">
+        <div class="row2">
+          <div class="field"><label>Votre prénom</label><input name="prenom" type="text" required placeholder="Votre prénom"/></div>
+          <div class="field"><label>Votre téléphone</label><input name="telephone" type="tel" required placeholder="06 92 …"/></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Jour préféré pour vous rappeler</label>
+            <select name="jour">
+              <option>Peu importe</option><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option>
+            </select>
+          </div>
+          <div class="field"><label>Moment de la journée</label>
+            <select name="creneau">
+              <option>Peu importe</option><option>Matin (9h–12h)</option><option>Midi (12h–14h)</option><option>Après-midi (14h–17h)</option><option>Fin de journée (17h–19h)</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">💌 Envoyer mon résultat à Cupidon</button>
+        <p class="send-hint">Votre application e-mail va s'ouvrir avec le message déjà rempli — il ne reste qu'à appuyer sur « Envoyer ». Vos informations restent strictement confidentielles.</p>
+      </form>
+      <div class="or-call">
+        <p>Vous préférez ne pas envoyer votre résultat ? Aucun souci !</p>
+        <a href="tel:+262693817882" class="btn btn-ghost">📞 Appelez-nous directement au 06 93 81 78 82</a>
+      </div>
+      <div class="call-msg" id="sentMsg">💌 Merci ! Dès que nous recevons votre résultat, l'équipe Cupidon vous envoie sa proposition d'accompagnement par e-mail et quelqu'un vous rappelle au créneau choisi.</div>
+    </div>
+
+    <div class="restart"><button id="restartBtn">↺ Refaire le test</button></div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <a href="index.html" class="brand"><img src="assets/logo-horizontal-blanc.png" alt="Cupidon.re"></a>
+    <div class="foot-links">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#tarifs">Forfaits</a>
+      <a href="blog/">Blog</a>
+      <a href="tel:+262693817882">06 93 81 78 82</a>
+      <a href="mailto:contact@pullup.re">contact@pullup.re</a>
+    </div>
+    <p>© <span id="yr"></span> Cupidon — Agence matrimoniale à La Réunion, par Pull Up Événements.</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var burger = document.getElementById('burger'), links = document.getElementById('navlinks');
+  burger.addEventListener('click', function(){ links.classList.toggle('open'); });
+  links.addEventListener('click', function(e){ if(e.target.tagName==='A') links.classList.remove('open'); });
+
+  /* ============ LE TEST ============ */
+  var QUESTIONS = [
+    { t:"Vous êtes…", opts:[
+      {ico:"👩", txt:"Une femme", tag:{moi:"f"}},
+      {ico:"👨", txt:"Un homme", tag:{moi:"m"}} ]},
+    { t:"Vous recherchez…", opts:[
+      {ico:"👩", txt:"Une femme", tag:{cherche:"f"}},
+      {ico:"👨", txt:"Un homme", tag:{cherche:"m"}} ]},
+    { t:"La tranche d'âge qui vous correspond le mieux ?", opts:[
+      {ico:"🌱", txt:"25 – 35 ans", tag:{age:"25 à 35 ans"}},
+      {ico:"🌿", txt:"35 – 45 ans", tag:{age:"35 à 45 ans"}},
+      {ico:"🌳", txt:"45 – 55 ans", tag:{age:"45 à 55 ans"}},
+      {ico:"🌟", txt:"55 ans et plus", tag:{age:"55 ans et plus"}} ]},
+    { t:"Votre soirée idéale à deux ?", opts:[
+      {ico:"🕯️", txt:"Un dîner en tête-à-tête, au calme", score:"A"},
+      {ico:"🌅", txt:"Un pique-nique surprise au coucher du soleil", score:"B"},
+      {ico:"🎉", txt:"Un restaurant animé, puis danser", score:"C"},
+      {ico:"🍷", txt:"Une soirée tranquille à parler de nos projets", score:"D"} ]},
+    { t:"Votre week-end réunionnais parfait ?", opts:[
+      {ico:"🛋️", txt:"Cocooning : films, câlins et bons petits plats", score:"A"},
+      {ico:"🌋", txt:"Randonnée au volcan ou dans Mafate", score:"B"},
+      {ico:"🏖️", txt:"Plage et pique-nique avec la bande d'amis", score:"C"},
+      {ico:"🍛", txt:"Marché forain, balade tranquille et bon cari", score:"D"} ]},
+    { t:"Ce qui vous fait craquer en premier chez quelqu'un ?", opts:[
+      {ico:"🤍", txt:"Sa douceur et son écoute", score:"A"},
+      {ico:"⚡", txt:"Sa spontanéité et son grain de folie", score:"B"},
+      {ico:"😄", txt:"Son humour et son énergie", score:"C"},
+      {ico:"🗿", txt:"Sa fiabilité et son calme", score:"D"} ]},
+    { t:"En amour, le plus important pour vous c'est…", opts:[
+      {ico:"💞", txt:"La tendresse au quotidien", score:"A"},
+      {ico:"🧗", txt:"Vivre des aventures à deux", score:"B"},
+      {ico:"🤣", txt:"Rire ensemble, tous les jours", score:"C"},
+      {ico:"🏡", txt:"Construire des projets solides", score:"D"} ]},
+    { t:"Face à un imprévu, vous…", opts:[
+      {ico:"🫂", txt:"Avez besoin d'être rassuré(e)", score:"A"},
+      {ico:"🎢", txt:"Adorez ça : ça pimente la vie !", score:"B"},
+      {ico:"😅", txt:"En faites une anecdote drôle à raconter", score:"C"},
+      {ico:"📋", txt:"Gardez la tête froide et vous organisez", score:"D"} ]},
+    { t:"Votre rythme de vie ?", opts:[
+      {ico:"🌙", txt:"Plutôt calme et cosy", score:"A"},
+      {ico:"🏃", txt:"Toujours en mouvement", score:"B"},
+      {ico:"🥳", txt:"Rythmé par les sorties et les amis", score:"C"},
+      {ico:"⚖️", txt:"Bien organisé, équilibré", score:"D"} ]},
+    { t:"Dans 5 ans, vous vous imaginez…", opts:[
+      {ico:"🪺", txt:"Dans un petit nid douillet à deux", score:"A"},
+      {ico:"✈️", txt:"En voyage quelque part dans le monde", score:"B"},
+      {ico:"🎊", txt:"Entouré(e) d'amis, de rires et de fêtes", score:"C"},
+      {ico:"👨‍👩‍👧", txt:"Bien installé(e), peut-être en famille", score:"D"} ]}
+  ];
+
+  var PROFILS = {
+    A: { f:"La Tendre Complice", m:"Le Tendre Complice",
+         df:"Une femme douce, attentionnée et à l'écoute, qui aime les moments simples à deux : un dîner au calme, une attention au quotidien, une épaule sur laquelle se poser. Avec elle, vous vous sentirez enfin compris(e) et apaisé(e).",
+         dm:"Un homme doux, attentionné et à l'écoute, qui aime les moments simples à deux : un dîner au calme, une attention au quotidien, une épaule sur laquelle se poser. Avec lui, vous vous sentirez enfin compris(e) et apaisé(e)." },
+    B: { f:"L'Aventurière Solaire", m:"L'Aventurier Solaire",
+         df:"Une femme spontanée et pleine de vie, amoureuse de la nature et des surprises. Elle vous embarquera du volcan aux lagons, et chaque semaine aura un petit goût d'aventure. Avec elle, impossible de s'ennuyer.",
+         dm:"Un homme spontané et plein de vie, amoureux de la nature et des surprises. Il vous embarquera du volcan aux lagons, et chaque semaine aura un petit goût d'aventure. Avec lui, impossible de s'ennuyer." },
+    C: { f:"La Pétillante Sociable", m:"Le Pétillant Sociable",
+         df:"Une femme drôle, chaleureuse et pleine d'énergie, qui adore les sorties, les amis et les fous rires. À ses côtés, la vie ressemble à une fête — et votre sourire ne vous quittera plus.",
+         dm:"Un homme drôle, chaleureux et plein d'énergie, qui adore les sorties, les amis et les fous rires. À ses côtés, la vie ressemble à une fête — et votre sourire ne vous quittera plus." },
+    D: { f:"La Sereine Rassurante", m:"Le Serein Rassurant",
+         df:"Une femme posée, fiable, avec les pieds sur terre et des projets plein la tête. Elle aime construire du solide et avancer à deux, sans drame et sans détour. Avec elle, l'avenir devient une évidence.",
+         dm:"Un homme posé, fiable, avec les pieds sur terre et des projets plein la tête. Il aime construire du solide et avancer à deux, sans drame et sans détour. Avec lui, l'avenir devient une évidence." }
+  };
+
+  var step = 0, answers = [], info = {moi:"", cherche:"", age:""}, scores = {A:0,B:0,C:0,D:0};
+  var qZone = document.getElementById('qZone'), progBar = document.getElementById('progBar'),
+      progLabel = document.getElementById('progLabel'), backBtn = document.getElementById('qBack');
+
+  function renderQ(){
+    var q = QUESTIONS[step];
+    progBar.style.width = ((step)/QUESTIONS.length*100) + '%';
+    progLabel.textContent = 'Question ' + (step+1) + ' sur ' + QUESTIONS.length;
+    var html = '<div class="fade-in"><div class="q-title">' + q.t + '</div><div class="opts">';
+    q.opts.forEach(function(o,i){
+      html += '<button type="button" class="opt" data-i="'+i+'"><span class="ico">'+o.ico+'</span><span>'+o.txt+'</span></button>';
+    });
+    html += '</div></div>';
+    qZone.innerHTML = html;
+    backBtn.classList.toggle('hidden', step===0);
+    qZone.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click', function(){ choose(parseInt(b.dataset.i,10)); });
+    });
+  }
+
+  function choose(i){
+    var q = QUESTIONS[step], o = q.opts[i];
+    answers[step] = o.txt;
+    if(o.tag){ for(var k in o.tag) info[k] = o.tag[k]; }
+    step++;
+    if(step < QUESTIONS.length){ renderQ(); }
+    else { showResult(); }
+  }
+
+  backBtn.addEventListener('click', function(){
+    if(step>0){ step--; answers.length = step; renderQ(); }
+  });
+
+  function computeScores(){
+    scores = {A:0,B:0,C:0,D:0};
+    QUESTIONS.forEach(function(q,qi){
+      if(answers[qi]===undefined) return;
+      q.opts.forEach(function(o){ if(o.txt===answers[qi] && o.score) scores[o.score]++; });
+    });
+    var best='A', max=-1;
+    ['A','B','C','D'].forEach(function(k){ if(scores[k]>max){max=scores[k];best=k;} });
+    return best;
+  }
+
+  var currentProfil = '';
+  function showResult(){
+    var best = computeScores();
+    var g = info.cherche === 'f' ? 'f' : 'm';
+    var p = PROFILS[best];
+    currentProfil = g==='f' ? p.f : p.m;
+    document.getElementById('resName').textContent = currentProfil;
+    document.getElementById('resAge').textContent = (g==='f' ? 'Une femme de ' : 'Un homme de ') + info.age;
+    document.getElementById('resDesc').textContent = g==='f' ? p.df : p.dm;
+    document.getElementById('resGood').innerHTML = '💘 <b>Bonne nouvelle :</b> parmi les adhérents de Cupidon.re, plusieurs profils correspondent à cette personnalité. La prochaine belle histoire est peut-être déjà dans notre sélection…';
+    document.getElementById('quizCard').classList.add('hidden');
+    var rc = document.getElementById('resCard');
+    rc.classList.remove('hidden'); rc.classList.add('fade-in');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    step=0; answers=[]; info={moi:"",cherche:"",age:""};
+    document.getElementById('resCard').classList.add('hidden');
+    document.getElementById('quizCard').classList.remove('hidden');
+    document.getElementById('sendForm').style.display='';
+    document.getElementById('sentMsg').style.display='none';
+    renderQ();
+  });
+
+  /* Envoi du résultat par e-mail */
+  document.getElementById('sendForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = this, nl = "%0D%0A";
+    var corps = "Bonjour l'équipe Cupidon,"+nl+nl
+      + "Je viens de faire le test de personnalité sur cupidon.re et voici mon résultat :"+nl+nl
+      + "❤ Profil recherché : " + encodeURIComponent(currentProfil + " — " + (info.cherche==='f'?'une femme de ':'un homme de ') + info.age) + nl+nl
+      + "Mes réponses :"+nl;
+    QUESTIONS.forEach(function(q,i){
+      corps += encodeURIComponent((i+1)+". "+q.t+" → "+(answers[i]||"")) + nl;
+    });
+    corps += nl
+      + "Mon prénom : " + encodeURIComponent(f.prenom.value) + nl
+      + "Mon téléphone : " + encodeURIComponent(f.telephone.value) + nl
+      + "Me rappeler de préférence : " + encodeURIComponent(f.jour.value + ", " + f.creneau.value) + nl + nl
+      + "(Résultat envoyé depuis le test cupidon.re)";
+    window.location.href = "mailto:contact@pullup.re?subject="
+      + encodeURIComponent("Résultat test Cupidon — " + f.prenom.value)
+      + "&body=" + corps;
+    f.style.display='none';
+    document.getElementById('sentMsg').style.display='block';
+  });
+
+  renderQ();
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Le test Cupidon — Quel profil vous correspond ?","url":"https://cupidon.re/test.html","description":"10 questions pour découvrir le profil de la personne qu'il vous faut à La Réunion.","isPartOf":{"@type":"WebSite","name":"Cupidon.re","url":"https://cupidon.re/"},"provider":{"@id":"https://cupidon.re/#organization"}}
+</script>
+</body>
+</html>
