@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" role="img" aria-label="Cupidon.re">
+  <rect width="1600" height="500" fill="#FBF9F3"/>
+  <g transform="translate(300,110) scale(6)">
+    <path d="M24 42 C4.5 28, 6.5 12, 17.5 12 C21.6 12, 24 15.2, 24 17.8 C24 15.2, 26.4 12, 30.5 12 C41.5 12, 43.5 28, 24 42 Z" fill="#F60100"/>
+    <line x1="4.5" y1="7.5" x2="31" y2="25.5" stroke="#F2C200" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M28.6 19.6 L33 27.2 L25.4 27.4 Z" fill="#F2C200"/>
+    <path d="M4.5 7.5 l-1.2 5 M4.5 7.5 l5 1.2" stroke="#F2C200" stroke-width="2.6" stroke-linecap="round"/>
+  </g>
+  <text x="580" y="270" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="170" fill="#0E2A6B" letter-spacing="1">cupidon<tspan fill="#F2C200">.</tspan>re</text>
+  <text x="584" y="345" font-family="Jost, Helvetica, Arial, sans-serif" font-weight="500" font-size="38" fill="#6B7A9E" letter-spacing="10">AGENCE MATRIMONIALE · LA RÉUNION</text>
+</svg>

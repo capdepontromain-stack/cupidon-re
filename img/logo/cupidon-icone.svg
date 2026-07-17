@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="Cupidon">
+  <!-- Coeur plein corail -->
+  <path d="M24 42 C4.5 28, 6.5 12, 17.5 12 C21.6 12, 24 15.2, 24 17.8 C24 15.2, 26.4 12, 30.5 12 C41.5 12, 43.5 28, 24 42 Z" fill="#F60100"/>
+  <!-- Fleche doree : hampe -->
+  <line x1="4.5" y1="7.5" x2="31" y2="25.5" stroke="#F2C200" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- Pointe -->
+  <path d="M28.6 19.6 L33 27.2 L25.4 27.4 Z" fill="#F2C200"/>
+  <!-- Empennage -->
+  <path d="M4.5 7.5 l-1.2 5 M4.5 7.5 l5 1.2" stroke="#F2C200" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
