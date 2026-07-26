@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Appli de rencontre à La Réunion — Cupidon Rencontres | 6 mois gratuits</title>
-<meta name="description" content="Cupidon Rencontres, l'application de rencontre 100 % La Réunion : profils vérifiés, salons de discussion par tranche d'âge, alertes par e-mail. Ouverture le 1er août — 6 premiers mois gratuits, puis 10 €/mois toutes options.">
+<title>Appli de rencontre à La Réunion — Cupidon Rencontres | 3 mois gratuits</title>
+<meta name="description" content="Cupidon Rencontres, l'application de rencontre 100 % La Réunion : profils vérifiés, salons de discussion par tranche d'âge, alertes par e-mail. Ouverture le 1er août — 3 premiers mois gratuits, puis 10 €/mois toutes options.">
 <meta name="theme-color" content="#0E2A6B">
 <link rel="canonical" href="https://cupidon.re/app/">
 <meta property="og:title" content="Cupidon Rencontres — L'appli de rencontre 100 % La Réunion">
-<meta property="og:description" content="Ouverture le 1er août : 6 premiers mois gratuits. Profils vérifiés, salons de discussion péi, pas de message privé sans accord. Par cupidon.re et Pull Up Événements.">
+<meta property="og:description" content="Ouverture le 1er août : 3 premiers mois gratuits. Profils vérifiés, salons de discussion péi, pas de message privé sans accord. Par cupidon.re et Pull Up Événements.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cupidon.re/app/">
 <meta property="og:image" content="https://cupidon.re/img/hero-volcan.jpg">
 <meta property="og:locale" content="fr_FR">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Application de rencontre 100 % La Réunion : profils vérifiés, salons de discussion par tranche d'âge, sujet de conversation chaque semaine, alertes par e-mail ou WhatsApp.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"6 premiers mois gratuits (du 1er août 2026 au 31 janvier 2027), puis 10 €/mois toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon — Agence matrimoniale à La Réunion","url":"https://cupidon.re","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"FR"}}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Application de rencontre 100 % La Réunion : profils vérifiés, salons de discussion par tranche d'âge, sujet de conversation chaque semaine, alertes par e-mail ou WhatsApp.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"3 premiers mois gratuits (du 1er août 2026 au 31 octobre 2027), puis 10 €/mois toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon — Agence matrimoniale à La Réunion","url":"https://cupidon.re","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"FR"}}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,7 +65,8 @@ body{
 .count-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px 18px;backdrop-filter:blur(10px)}
 .count-card .freebig{font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:var(--gold)}
 .count-card .freebig span{font-family:'Jost';font-weight:600;font-size:14.5px;color:#fff}
-.cd{display:flex;gap:8px;margin:12px 0 10px}
+.cd-label{font-size:13px;font-weight:600;color:var(--gold-lt);margin-top:11px}
+.cd{display:flex;gap:8px;margin:8px 0 10px}
 .cd>div{flex:1;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:10px 4px;text-align:center}
 .cd b{display:block;font-family:'Fraunces',serif;font-size:26px;line-height:1.1;color:#fff}
 .cd small{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold-lt)}
@@ -291,14 +292,15 @@ body{
         <p class="lead">L'appli de rencontres 100 % péi — profils vérifiés, en toute simplicité.</p>
         <div class="datebanner">🌋 Ouverture le 1ᵉʳ août</div>
         <div class="count-card">
-          <div class="freebig">6 MOIS <span>gratuits pour tous les inscrits</span></div>
+          <div class="freebig">3 MOIS <span>gratuits pour tous les inscrits</span></div>
+          <div class="cd-label" id="cd-label">⏳ Il reste, pour profiter de l'offre gratuite :</div>
           <div class="cd" id="countdown">
             <div><b id="cd-j">–</b><small>jours</small></div>
             <div><b id="cd-h">–</b><small>heures</small></div>
             <div><b id="cd-m">–</b><small>min</small></div>
             <div><b id="cd-s">–</b><small>sec</small></div>
           </div>
-          <div class="count-line" id="cd-line">D'août à janvier, tout est offert. Inscris-toi dès maintenant, c'est gratuit.</div>
+          <div class="count-line" id="cd-line">D'août à octobre, tout est offert. Inscris-toi dès maintenant, c'est gratuit.</div>
         </div>
         <label class="age-check">
           <input type="checkbox" id="agecheck">
@@ -310,8 +312,8 @@ body{
       </div>
       <div class="landing">
         <div class="lcard">
-          <h3>🎁 6 premiers mois gratuits, ensuite 10 €/mois</h3>
-          <p>Inscription <b>gratuite</b> : d'août à janvier, <b>tout est offert</b>. Ensuite, un seul tarif de <b>10 €/mois toutes options</b> — <b>pas de mauvaise surprise</b> : messages illimités, profils illimités, et les <b>invitations aux événements Pull Up</b> (soirées célibataires, animations sur toute l'île). Résiliable à tout moment.</p>
+          <h3>🎁 3 premiers mois gratuits, ensuite 10 €/mois</h3>
+          <p>Inscription <b>gratuite</b> : d'août à octobre, <b>tout est offert</b>. Ensuite, un seul tarif de <b>10 €/mois toutes options</b> — <b>pas de mauvaise surprise</b> : messages illimités, profils illimités, et les <b>invitations aux événements Pull Up</b> (soirées célibataires, animations sur toute l'île). Résiliable à tout moment.</p>
         </div>
         <div class="lcard">
           <h3>💬 Ne loupe aucun message</h3>
@@ -333,7 +335,7 @@ body{
       <img src="logo-mascotte.png" alt="" style="width:95px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4))">
       <div>
         <h2 class="serif" style="font-size:26px">Crée ton compte gratuit</h2>
-        <p style="color:#C9D6F5;font-size:14px;margin-top:4px">🎁 Inscription gratuite — tes 6 premiers mois sont offerts. Ton profil sera vérifié par notre équipe avant publication.</p>
+        <p style="color:#C9D6F5;font-size:14px;margin-top:4px">🎁 Inscription gratuite — tes 3 premiers mois sont offerts. Ton profil sera vérifié par notre équipe avant publication.</p>
       </div>
       <div class="field"><label>Ton prénom</label><input id="su-prenom" placeholder="Ex. Maëva" autocomplete="off"></div>
       <div class="field"><label>Ton e-mail</label><input id="su-email" type="email" placeholder="toi@email.re" autocomplete="off"></div>
@@ -447,7 +449,7 @@ body{
         <div class="founder">🌱 Membre fondateur — parmi les premiers inscrits</div>
       </div>
       <div class="setlist">
-        <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎁</span><span><b>Mon offre — 6 mois gratuits</b><small>Puis 10 €/mois toutes options, sans surprise</small></span></button>
+        <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎁</span><span><b>Mon offre — 3 mois gratuits</b><small>Puis 10 €/mois toutes options, sans surprise</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : modification du profil')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, bio, centres d'intérêt</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
         <button class="setrow" onclick="toast('Prototype : page CGU à venir')"><span class="ico">📄</span><span>Conditions & confidentialité<small>CGU, RGPD, mentions légales</small></span></button>
@@ -473,7 +475,7 @@ body{
         <br><span class="badge">🎁 Offre de lancement</span>
         <h2 class="serif">Un seul tarif,<br>pas de mauvaise surprise</h2>
         <div class="price">10 €<small> / mois · toutes options · sans engagement</small></div>
-        <p style="font-size:14px;color:var(--gold-lt);font-weight:600;margin-top:8px">🌋 GRATUIT les 6 premiers mois, d'août à janvier !</p>
+        <p style="font-size:14px;color:var(--gold-lt);font-weight:600;margin-top:8px">🌋 GRATUIT les 3 premiers mois, d'août à octobre !</p>
       </div>
       <ul>
         <li><span class="ico">💬</span><span><b>Messages illimités</b><span>Écris à tous tes matchs, autant que tu veux</span></span></li>
@@ -483,7 +485,7 @@ body{
         <li><span class="ico">✅</span><span><b>Profils vérifiés</b><span>Chaque inscription est contrôlée par notre équipe</span></span></li>
       </ul>
       <button class="btn btn-gold" style="width:100%" onclick="showScreen('signup')">Je m'inscris gratuitement 🎁</button>
-      <p class="legal">Offre de lancement : 6 premiers mois gratuits (du 1ᵉʳ août au 31 janvier) pour toute inscription, puis abonnement 10 €/mois TTC toutes options, résiliable à tout moment. Droit de rétractation de 14 jours conformément au Code de la consommation. Paiement sécurisé.</p>
+      <p class="legal">Offre de lancement : 3 premiers mois gratuits (du 1ᵉʳ août au 31 octobre) pour toute inscription, puis abonnement 10 €/mois TTC toutes options, résiliable à tout moment. Droit de rétractation de 14 jours conformément au Code de la consommation. Paiement sécurisé.</p>
     </div>
   </section>
 
@@ -506,7 +508,7 @@ body{
     <div class="modal">
       <div style="font-size:44px">🎁</div>
       <h3>Offre de lancement</h3>
-      <p id="premiumtext">Bonne nouvelle : tes 6 premiers mois sont offerts — tout est illimité !</p>
+      <p id="premiumtext">Bonne nouvelle : tes 3 premiers mois sont offerts — tout est illimité !</p>
       <button class="btn btn-wine" onclick="unlockDemo()">Continuer 🎉</button>
       <button class="btn btn-ghost" onclick="hideOverlay('premiumoverlay');showScreen('premium')">Voir l'offre 10 €/mois</button>
     </div>
@@ -576,21 +578,22 @@ function hideOverlay(id){document.getElementById(id).classList.remove('show')}
 
 /* ───────── Onboarding & offre de lancement ───────── */
 const OUVERTURE=new Date('2026-08-01T00:00:00+04:00');      // ouverture officielle (heure Réunion)
-const FIN_GRATUIT=new Date('2027-02-01T00:00:00+04:00');    // fin des 6 mois offerts (31 janvier inclus)
+const FIN_GRATUIT=new Date('2026-11-01T00:00:00+04:00');    // fin des 3 mois offerts (31 octobre inclus, prolongeable)
 document.getElementById('agecheck').addEventListener('change',e=>{
   document.getElementById('startbtn').disabled=!e.target.checked;
 });
 document.getElementById('startbtn').addEventListener('click',()=>showScreen('signup'));
 function enterApp(){showScreen('discover');renderDeck();}
 
-/* Compte à rebours jusqu'à l'ouverture */
-document.getElementById('offerchip').textContent='🎁 6 mois offerts';
+/* Compte à rebours : jours restants de l'offre gratuite (jusqu'au 31 octobre inclus) */
+document.getElementById('offerchip').textContent='🎁 3 mois offerts';
 function majCompteARebours(){
   const now=new Date();
-  const diff=OUVERTURE-now;
+  const diff=FIN_GRATUIT-now;
   if(diff<=0){
     document.getElementById('countdown').style.display='none';
-    document.getElementById('cd-line').innerHTML="<b>C'est ouvert !</b> Inscription gratuite — 6 premiers mois offerts, jusqu'au 31 janvier.";
+    document.getElementById('cd-label').style.display='none';
+    document.getElementById('cd-line').innerHTML="L'offre de lancement est terminée — un seul tarif : 10 €/mois toutes options.";
     return;
   }
   document.getElementById('cd-j').textContent=Math.floor(diff/864e5);
@@ -627,7 +630,7 @@ async function submitSignup(){
     if(!res.ok&&res.status!==409)throw new Error('HTTP '+res.status); // 409 = e-mail déjà inscrit → on continue
     enterApp();
     const alerte=notifMode==='wa'?'sur WhatsApp':'par e-mail';
-    document.getElementById('welcometext').textContent='Bravo '+p+', tu fais partie des tout premiers inscrits de cupidon.re ! La plateforme ouvre le 1ᵉʳ août et se remplit rapidement : de nouveaux célibataires péi arrivent chaque jour. Dès que quelqu\'un t\'écrit, tu reçois une alerte '+alerte+'. Tes 6 premiers mois sont offerts. En attendant l\'ouverture, découvre la visite guidée (profils de démonstration).';
+    document.getElementById('welcometext').textContent='Bravo '+p+', tu fais partie des tout premiers inscrits de cupidon.re ! La plateforme ouvre le 1ᵉʳ août et se remplit rapidement : de nouveaux célibataires péi arrivent chaque jour. Dès que quelqu\'un t\'écrit, tu reçois une alerte '+alerte+'. Tes 3 premiers mois sont offerts. En attendant l\'ouverture, découvre la visite guidée (profils de démonstration).';
     document.getElementById('welcomeoverlay').classList.add('show');
   }catch(err){
     toast('Petit souci de connexion — réessaie dans un instant 🙏');
@@ -695,7 +698,7 @@ function swipeTop(liked){
   flyOut(top,liked);
 }
 function superLike(){
-  document.getElementById('premiumtext').textContent='Le Super j\'aime est inclus dans toutes les options — et tes 6 premiers mois sont offerts !';
+  document.getElementById('premiumtext').textContent='Le Super j\'aime est inclus dans toutes les options — et tes 3 premiers mois sont offerts !';
   document.getElementById('premiumoverlay').classList.add('show');
 }
 function maybeMatch(p){
@@ -750,7 +753,7 @@ function sendMsg(){
   const txt=input.value.trim();
   if(!txt)return;
   if(!demoUnlocked){
-    document.getElementById('premiumtext').textContent='Bonne nouvelle : tes 6 premiers mois sont offerts — la messagerie est illimitée ! Et dès qu\'on te répond, tu recevras une alerte par e-mail ou WhatsApp.';
+    document.getElementById('premiumtext').textContent='Bonne nouvelle : tes 3 premiers mois sont offerts — la messagerie est illimitée ! Et dès qu\'on te répond, tu recevras une alerte par e-mail ou WhatsApp.';
     document.getElementById('premiumoverlay').classList.add('show');
     return;
   }
