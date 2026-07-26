@@ -304,7 +304,7 @@ body{
         </div>
         <label class="age-check">
           <input type="checkbox" id="agecheck">
-          <span>Je certifie avoir <b>18 ans ou plus</b> et j'accepte les Conditions d'utilisation et la Politique de confidentialité.</span>
+          <span>Je certifie avoir <b>18 ans ou plus</b> et j'accepte les <a href="cgu.html" target="_blank" style="color:var(--gold-lt)">Conditions d'utilisation</a> et la <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Politique de confidentialité</a>.</span>
         </label>
         <button class="btn btn-gold" id="startbtn" disabled>Je prends ma place gratuite</button>
         <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="enterApp()">J'ai déjà un compte</button>
@@ -346,7 +346,7 @@ body{
         </div>
       </div>
       <div class="field" id="wa-field" style="display:none"><label>Ton numéro WhatsApp</label><input id="su-tel" type="tel" placeholder="0692 12 34 56"></div>
-      <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">Dès que quelqu'un t'envoie un message, tu reçois une alerte : tu ne loupes rien. Ton e-mail ne sert qu'à ça — jamais de pub.</p>
+      <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">Dès que quelqu'un t'envoie un message, tu reçois une alerte : tu ne loupes rien. Ton e-mail ne sert qu'à ça — jamais de pub. <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Comment tes données sont protégées</a></p>
       <button class="btn btn-gold" id="su-btn" onclick="submitSignup()">Créer mon compte gratuit</button>
     </div>
   </section>
@@ -452,7 +452,8 @@ body{
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎁</span><span><b>Mon offre — 3 mois gratuits</b><small>Puis 10 €/mois toutes options, sans surprise</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : modification du profil')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, bio, centres d'intérêt</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
-        <button class="setrow" onclick="toast('Prototype : page CGU à venir')"><span class="ico">📄</span><span>Conditions & confidentialité<small>CGU, RGPD, mentions légales</small></span></button>
+        <button class="setrow" onclick="window.open('cgu.html','_blank')"><span class="ico">📄</span><span>Conditions d'utilisation<small>Règles du service, tarifs, rétractation</small></span></button>
+        <button class="setrow" onclick="window.open('confidentialite.html','_blank')"><span class="ico">🔒</span><span>Politique de confidentialité<small>Tes données, tes droits (RGPD)</small></span></button>
         <button class="setrow" onclick="toast('Prototype : formulaire de signalement à venir')"><span class="ico">🚩</span><span>Signaler un problème<small>Profil suspect, contenu inapproprié</small></span></button>
         <button class="setrow danger" onclick="toast('Prototype : suppression du compte et des données')"><span class="ico">🗑️</span><span>Supprimer mon compte<small>Toutes tes données seront effacées</small></span></button>
       </div>
