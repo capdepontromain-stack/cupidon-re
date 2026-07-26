@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nouveau mot de passe — Cupidon Rencontres</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+
+    <div class="etape active" id="etape-attente">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">⏳</div>
+        <h1 class="titre">Vérification du lien…</h1>
+        <p class="sous">Un instant s'il te plaît.</p>
+      </div>
+    </div>
+
+    <div class="etape" id="etape-form">
+      <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>cupidon<span class="dot">.</span>re</span></div>
+      <div>
+        <h1 class="titre">Choisis ton nouveau mot de passe 🔐</h1>
+        <p class="sous">Ce lien est personnel et à usage unique. Une fois le mot de passe changé, tu seras déconnecté·e de tes autres appareils, par sécurité.</p>
+      </div>
+      <form id="form-reset" novalidate>
+        <div class="field" style="margin-bottom:10px">
+          <label for="mdp">Nouveau mot de passe</label>
+          <div class="pwd-wrap">
+            <input id="mdp" type="password" autocomplete="new-password" placeholder="••••••••" required>
+            <button type="button" class="pwd-eye" data-cible="mdp">👁️</button>
+          </div>
+        </div>
+        <div class="criteres" id="criteres" style="margin-bottom:14px"></div>
+        <div class="field" style="margin-bottom:16px">
+          <label for="mdp2">Confirme le nouveau mot de passe</label>
+          <div class="pwd-wrap">
+            <input id="mdp2" type="password" autocomplete="new-password" placeholder="••••••••" required>
+            <button type="button" class="pwd-eye" data-cible="mdp2">👁️</button>
+          </div>
+          <p class="msg-err" id="err-mdp2">Les deux mots de passe ne correspondent pas.</p>
+        </div>
+        <button class="btn btn-wine" id="btn-valider" type="submit">Enregistrer mon nouveau mot de passe</button>
+      </form>
+    </div>
+
+    <div class="etape" id="etape-ok">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">✅</div>
+        <h1 class="titre">Mot de passe changé !</h1>
+        <p class="sous">Tu peux maintenant te connecter avec ton nouveau mot de passe. Tes autres appareils ont été déconnectés par sécurité.</p>
+        <button class="btn btn-gold" onclick="location.href='index.html'">Ouvrir l'appli 💛</button>
+      </div>
+    </div>
+
+    <div class="etape" id="etape-err">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">😕</div>
+        <h1 class="titre">Ce lien n'est plus valable</h1>
+        <p class="sous">Le lien de réinitialisation a expiré ou a déjà servi. Refais simplement une demande :</p>
+        <button class="btn btn-gold" onclick="location.href='mot-de-passe-oublie.html'">Redemander un lien</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script>
+function afficher(id) {
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* Critères en direct + œil */
+document.getElementById('criteres').innerHTML = REGLES_MDP.map(r => `<div class="c" id="cr-${r.id}">${r.label}</div>`).join('');
+const champMdp = document.getElementById('mdp'), champMdp2 = document.getElementById('mdp2');
+champMdp.addEventListener('input', () => {
+  REGLES_MDP.forEach(r => document.getElementById('cr-' + r.id).classList.toggle('ok', r.test(champMdp.value)));
+  verifier();
+});
+champMdp2.addEventListener('input', verifier);
+function verifier() {
+  const diff = champMdp2.value.length > 0 && champMdp.value !== champMdp2.value;
+  document.getElementById('err-mdp2').classList.toggle('show', diff);
+  champMdp2.classList.toggle('err', diff);
+}
+document.querySelectorAll('.pwd-eye').forEach(b => b.addEventListener('click', () => {
+  const c = document.getElementById(b.dataset.cible);
+  c.type = c.type === 'password' ? 'text' : 'password';
+  b.textContent = c.type === 'password' ? '👁️' : '🙈';
+}));
+
+/* Le lien de l'e-mail ouvre une session temporaire de récupération */
+(async () => {
+  const params = new URLSearchParams(location.search + '&' + location.hash.slice(1));
+  if (params.get('error') || params.get('error_description')) { afficher('etape-err'); return; }
+  let session = null;
+  for (let i = 0; i < 20 && !session; i++) {
+    const r = await sb.auth.getSession();
+    session = r.data.session;
+    if (!session) await new Promise(res => setTimeout(res, 250));
+  }
+  afficher(session ? 'etape-form' : 'etape-err');
+})();
+
+document.getElementById('form-reset').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  if (!motDePasseValide(champMdp.value)) { toast('Ton mot de passe ne respecte pas encore tous les critères 🔐'); return; }
+  if (champMdp.value !== champMdp2.value) { verifier(); return; }
+  const btn = document.getElementById('btn-valider');
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+  try {
+    const { data, error } = await sb.auth.updateUser({ password: champMdp.value });
+    if (error) {
+      if (/same|different/i.test(error.message)) toast('Choisis un mot de passe différent de l\'ancien 😊');
+      else toast('Impossible de changer le mot de passe — le lien a peut-être expiré.');
+      return;
+    }
+    /* Sécurité : déconnexion de tous les AUTRES appareils */
+    try { await sb.auth.signOut({ scope: 'others' }); } catch (e) {}
+    /* E-mail de confirmation du changement (best effort, côté serveur) */
+    if (data && data.user) envoyerMailCupidon('mdp-change', { email: data.user.email, prenom: (data.user.user_metadata || {}).prenom || '' });
+    afficher('etape-ok');
+  } catch (e) {
+    toast('Petit souci technique — réessaie dans un instant 🙏');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enregistrer mon nouveau mot de passe';
+  }
+});
+</script>
+</body>
+</html>

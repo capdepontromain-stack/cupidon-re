@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Confirmation de ton adresse — Cupidon Rencontres</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+
+    <!-- En cours -->
+    <div class="etape active" id="etape-attente">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">⏳</div>
+        <h1 class="titre">Validation en cours…</h1>
+        <p class="sous">Un instant, on vérifie ton lien de confirmation.</p>
+      </div>
+    </div>
+
+    <!-- Succès -->
+    <div class="etape" id="etape-ok">
+      <div class="steps"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">🎉</div>
+        <h1 class="titre">Adresse confirmée !</h1>
+        <p class="sous" id="msg-ok">Ton compte est maintenant actif. Encore quelques questions pour créer ton profil — c'est rapide et ça nous aide à te proposer les bonnes personnes. 💛</p>
+        <button class="btn btn-gold" id="btn-suite">Créer mon profil ✨</button>
+      </div>
+    </div>
+
+    <!-- Lien invalide / expiré -->
+    <div class="etape" id="etape-err">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">😕</div>
+        <h1 class="titre">Ce lien n'est plus valable</h1>
+        <p class="sous">Le lien de confirmation a expiré ou a déjà été utilisé.<br>Pas de panique :</p>
+        <button class="btn btn-gold" onclick="location.href='connexion.html'">J'essaie de me connecter</button>
+        <button class="btn btn-ghost" onclick="location.href='inscription.html'">Je refais une inscription</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script>
+function afficher(id) {
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+(async () => {
+  /* Erreur explicite dans l'URL (lien expiré, déjà utilisé…) */
+  const params = new URLSearchParams(location.search + '&' + location.hash.slice(1));
+  if (params.get('error') || params.get('error_description')) { afficher('etape-err'); return; }
+
+  /* Laisse au client Supabase le temps d'échanger le code du lien contre une session */
+  let session = null;
+  for (let i = 0; i < 20 && !session; i++) {
+    const r = await sb.auth.getSession();
+    session = r.data.session;
+    if (!session) await new Promise(res => setTimeout(res, 250));
+  }
+  if (!session) { afficher('etape-err'); return; }
+
+  const user = session.user;
+  const prenom = (user.user_metadata && user.user_metadata.prenom) || '';
+
+  /* Profil déjà rempli ? → direction l'appli. Sinon → questionnaire. */
+  const profil = await chargerProfil(user.id);
+  if (profil) {
+    document.getElementById('msg-ok').textContent = 'Ton adresse est confirmée et ton profil est déjà en place. Bonne visite ' + (prenom || '') + ' !';
+    document.getElementById('btn-suite').textContent = "Ouvrir l'appli 💛";
+    document.getElementById('btn-suite').onclick = () => location.href = 'index.html';
+  } else {
+    /* Première confirmation : mail de bienvenue (envoyé côté serveur, best effort) */
+    envoyerMailCupidon('bienvenue', { prenom, email: user.email });
+    document.getElementById('btn-suite').onclick = () => location.href = 'profil.html';
+  }
+  afficher('etape-ok');
+})();
+</script>
+</body>
+</html>

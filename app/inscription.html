@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inscription — Cupidon Rencontres · La Réunion</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+
+    <!-- ÉTAPE 1 : identité + mot de passe -->
+    <div class="etape active" id="etape-form">
+      <button class="backlink" onclick="location.href='index.html'">‹ Retour à l'appli</button>
+      <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>cupidon<span class="dot">.</span>re</span></div>
+      <div class="steps"><span class="on"></span><span></span><span></span><span></span></div>
+      <div>
+        <h1 class="titre">Crée ton compte</h1>
+        <p class="sous">Étape 1 sur 4 — Après validation, tu recevras un e-mail pour confirmer ton adresse. Ton compte s'active à ce moment-là. 💌</p>
+      </div>
+
+      <form id="form-inscription" novalidate autocomplete="on">
+        <div class="field" style="margin-bottom:14px">
+          <label for="prenom">Ton prénom <span style="color:var(--wine)">*</span></label>
+          <input id="prenom" name="prenom" placeholder="Ex. Maëva" autocomplete="given-name" required maxlength="40">
+          <p class="msg-err" id="err-prenom">Indique ton prénom 😊</p>
+        </div>
+
+        <div class="field" style="margin-bottom:14px">
+          <label for="email">Ton adresse e-mail <span style="color:var(--wine)">*</span></label>
+          <input id="email" name="email" type="email" placeholder="toi@email.re" autocomplete="email" required inputmode="email">
+          <p class="msg-err" id="err-email">Cette adresse e-mail ne semble pas valide.</p>
+        </div>
+
+        <div class="field" style="margin-bottom:10px">
+          <label for="mdp">Ton mot de passe <span style="color:var(--wine)">*</span></label>
+          <div class="pwd-wrap">
+            <input id="mdp" name="new-password" type="password" autocomplete="new-password" placeholder="••••••••" required>
+            <button type="button" class="pwd-eye" data-cible="mdp" aria-label="Afficher ou masquer le mot de passe">👁️</button>
+          </div>
+        </div>
+
+        <div class="criteres" id="criteres" style="margin-bottom:14px"></div>
+
+        <div class="field" style="margin-bottom:14px">
+          <label for="mdp2">Confirme ton mot de passe <span style="color:var(--wine)">*</span></label>
+          <div class="pwd-wrap">
+            <input id="mdp2" name="confirm-password" type="password" autocomplete="new-password" placeholder="••••••••" required>
+            <button type="button" class="pwd-eye" data-cible="mdp2" aria-label="Afficher ou masquer le mot de passe">👁️</button>
+          </div>
+          <p class="msg-err" id="err-mdp2">Les deux mots de passe ne correspondent pas.</p>
+        </div>
+
+        <label class="switchline" style="margin-bottom:16px">
+          <input type="checkbox" id="majeur">
+          <span>J'ai 18 ans ou plus et j'accepte les <a class="lien" href="cgu.html" target="_blank">conditions d'utilisation</a> et la <a class="lien" href="confidentialite.html" target="_blank">politique de confidentialité</a>.</span>
+        </label>
+
+        <button class="btn btn-gold" id="btn-creer" type="submit">Créer mon compte 💛</button>
+      </form>
+
+      <p class="centre">Déjà membre ? <a class="lien" href="connexion.html">Se connecter</a></p>
+    </div>
+
+    <!-- ÉTAPE 2 : vérifie ta boîte mail -->
+    <div class="etape" id="etape-mail">
+      <div class="steps"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">📬</div>
+        <h1 class="titre">Vérifie ta boîte mail !</h1>
+        <p class="sous">On vient d'envoyer un e-mail à<br><b id="mail-envoye" style="color:var(--ink)"></b><br><br>
+        Clique sur le bouton <b>« Confirmer mon adresse e-mail »</b> dans ce message pour activer ton compte.
+        Tant que ce n'est pas fait, ton compte reste inactif.</p>
+        <div class="carte" style="text-align:left">
+          <p>💡 <b>Tu ne vois rien ?</b> Regarde dans tes <b>courriers indésirables (spam)</b>, ou attends 1 à 2 minutes.
+          Si tu as déjà un compte avec cette adresse, utilise plutôt la <a class="lien" href="connexion.html">page de connexion</a>.</p>
+        </div>
+        <button class="btn btn-ghost" id="btn-renvoyer">Renvoyer l'e-mail</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script>
+/* ───── Critères du mot de passe en direct ───── */
+const zone = document.getElementById('criteres');
+zone.innerHTML = REGLES_MDP.map(r => `<div class="c" id="cr-${r.id}">${r.label}</div>`).join('');
+const champMdp = document.getElementById('mdp');
+const champMdp2 = document.getElementById('mdp2');
+
+champMdp.addEventListener('input', () => {
+  REGLES_MDP.forEach(r => document.getElementById('cr-' + r.id).classList.toggle('ok', r.test(champMdp.value)));
+  verifierCorrespondance();
+});
+champMdp2.addEventListener('input', verifierCorrespondance);
+function verifierCorrespondance() {
+  const differents = champMdp2.value.length > 0 && champMdp.value !== champMdp2.value;
+  document.getElementById('err-mdp2').classList.toggle('show', differents);
+  champMdp2.classList.toggle('err', differents);
+}
+
+/* ───── Œil afficher / masquer ───── */
+document.querySelectorAll('.pwd-eye').forEach(b => b.addEventListener('click', () => {
+  const c = document.getElementById(b.dataset.cible);
+  c.type = c.type === 'password' ? 'text' : 'password';
+  b.textContent = c.type === 'password' ? '👁️' : '🙈';
+}));
+
+/* ───── Envoi du formulaire ───── */
+document.getElementById('form-inscription').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const prenom = document.getElementById('prenom').value.trim();
+  const email = document.getElementById('email').value.trim().toLowerCase();
+
+  let ok = true;
+  const marquer = (id, errId, mauvais) => {
+    document.getElementById(id).classList.toggle('err', mauvais);
+    document.getElementById(errId).classList.toggle('show', mauvais);
+    if (mauvais) ok = false;
+  };
+  marquer('prenom', 'err-prenom', !prenom);
+  marquer('email', 'err-email', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
+  if (!motDePasseValide(champMdp.value)) { toast('Ton mot de passe ne respecte pas encore tous les critères 🔐'); ok = false; }
+  if (champMdp.value !== champMdp2.value) { verifierCorrespondance(); ok = false; }
+  if (!document.getElementById('majeur').checked) { toast('Coche la case « 18 ans ou plus » pour continuer 😊'); ok = false; }
+  if (!ok) return;
+
+  const btn = document.getElementById('btn-creer');
+  btn.disabled = true; btn.textContent = 'Création du compte…';
+  try {
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password: champMdp.value,
+      options: {
+        data: { prenom },
+        emailRedirectTo: APP_BASE + 'confirmation.html'
+      }
+    });
+    if (error) {
+      if (/rate|seconds/i.test(error.message)) toast('Trop de tentatives — patiente une minute puis réessaie 🙏');
+      else if (/already|registered/i.test(error.message)) toast('Un compte existe peut-être déjà avec cette adresse. Essaie de te connecter.');
+      else if (/password/i.test(error.message)) toast('Mot de passe refusé par le serveur — choisis-en un plus solide.');
+      else toast('Petit souci technique — réessaie dans un instant 🙏');
+      return;
+    }
+    /* Compte créé (ou adresse déjà connue : message identique, volontairement
+       neutre, pour ne pas révéler quelles adresses ont un compte). */
+    sessionStorage.setItem('cupidon_email_attente', email);
+    document.getElementById('mail-envoye').textContent = email;
+    document.getElementById('etape-form').classList.remove('active');
+    document.getElementById('etape-mail').classList.add('active');
+    document.querySelector('.scrolly').scrollTop = 0;
+  } catch (e) {
+    toast('Connexion impossible — vérifie ton réseau et réessaie 🙏');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Créer mon compte 💛';
+  }
+});
+
+/* ───── Renvoyer l'e-mail de confirmation ───── */
+document.getElementById('btn-renvoyer').addEventListener('click', async () => {
+  const email = sessionStorage.getItem('cupidon_email_attente');
+  if (!email) { location.href = 'inscription.html'; return; }
+  const b = document.getElementById('btn-renvoyer');
+  b.disabled = true; b.textContent = 'Envoi en cours…';
+  const { error } = await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: APP_BASE + 'confirmation.html' } });
+  toast(error ? 'Attends une minute avant de redemander un e-mail 🙏' : 'E-mail renvoyé ! Pense à vérifier tes spams 📬');
+  setTimeout(() => { b.disabled = false; b.textContent = "Renvoyer l'e-mail"; }, 30000);
+});
+</script>
+</body>
+</html>

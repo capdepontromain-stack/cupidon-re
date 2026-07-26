@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mot de passe oublié — Cupidon Rencontres</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+    <button class="backlink" onclick="location.href='connexion.html'">‹ Retour à la connexion</button>
+    <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>cupidon<span class="dot">.</span>re</span></div>
+
+    <div class="etape active" id="etape-form">
+      <div>
+        <h1 class="titre">Mot de passe oublié ? 🔑</h1>
+        <p class="sous">Pas de souci, ça arrive à tout le monde. Indique ton adresse e-mail : on t'enverra un lien pour en choisir un nouveau.</p>
+      </div>
+      <form id="form-oubli" novalidate>
+        <div class="field" style="margin-bottom:16px">
+          <label for="email">Ton adresse e-mail</label>
+          <input id="email" type="email" placeholder="toi@email.re" autocomplete="email" required inputmode="email">
+        </div>
+        <button class="btn btn-wine" id="btn-envoyer" type="submit">Recevoir le lien de réinitialisation</button>
+      </form>
+    </div>
+
+    <div class="etape" id="etape-ok">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">📬</div>
+        <h1 class="titre">C'est parti !</h1>
+        <p class="sous">Si un compte existe avec cette adresse, un e-mail de réinitialisation vient d'être envoyé.<br><br>
+        Clique sur le bouton <b>« Réinitialiser mon mot de passe »</b> dans le message. Le lien est personnel et valable une trentaine de minutes.</p>
+        <div class="carte" style="text-align:left"><p>💡 Rien reçu au bout de 2 minutes ? Vérifie tes <b>courriers indésirables</b>, ou assure-toi d'avoir utilisé la bonne adresse.</p></div>
+        <button class="btn btn-ghost" onclick="location.href='connexion.html'">Retour à la connexion</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script>
+document.getElementById('form-oubli').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('Cette adresse e-mail ne semble pas valide.'); return; }
+  const btn = document.getElementById('btn-envoyer');
+  btn.disabled = true; btn.textContent = 'Envoi en cours…';
+  try {
+    /* Réponse identique que le compte existe ou non : on ne révèle rien. */
+    await sb.auth.resetPasswordForEmail(email, { redirectTo: APP_BASE + 'nouveau-mot-de-passe.html' });
+  } catch (e) { /* même en cas d'erreur réseau on affiche le message neutre */ }
+  document.getElementById('etape-form').classList.remove('active');
+  document.getElementById('etape-ok').classList.add('active');
+});
+</script>
+</body>
+</html>

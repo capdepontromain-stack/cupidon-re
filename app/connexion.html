@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Connexion — Cupidon Rencontres · La Réunion</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+    <button class="backlink" onclick="location.href='index.html'">‹ Retour à l'appli</button>
+    <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>cupidon<span class="dot">.</span>re</span></div>
+    <div>
+      <h1 class="titre">Content de te revoir 💛</h1>
+      <p class="sous">Connecte-toi pour retrouver tes matchs et tes messages.</p>
+    </div>
+
+    <form id="form-connexion" novalidate autocomplete="on">
+      <div class="field" style="margin-bottom:14px">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" name="email" type="email" placeholder="toi@email.re" autocomplete="username" required inputmode="email">
+      </div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="mdp">Mot de passe</label>
+        <div class="pwd-wrap">
+          <input id="mdp" name="current-password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+          <button type="button" class="pwd-eye" id="oeil" aria-label="Afficher ou masquer le mot de passe">👁️</button>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px">
+        <label class="switchline"><input type="checkbox" id="souvenir" checked><span>Se souvenir de moi</span></label>
+        <a class="lien" href="mot-de-passe-oublie.html" style="font-size:14px">Mot de passe oublié ?</a>
+      </div>
+
+      <button class="btn btn-wine" id="btn-connexion" type="submit">Se connecter</button>
+    </form>
+
+    <div class="carte" id="bloc-nonconfirme" style="display:none">
+      <p>📬 <b>Ton adresse n'est pas encore confirmée.</b> Clique sur le lien reçu par e-mail lors de ton inscription, ou :</p>
+      <button class="btn btn-ghost" id="btn-reconfirmer" style="margin-top:10px">Renvoyer l'e-mail de confirmation</button>
+    </div>
+
+    <p class="centre" style="margin-top:auto">Pas encore de compte ? <a class="lien" href="inscription.html">Créer un compte</a></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script>
+document.getElementById('oeil').addEventListener('click', () => {
+  const c = document.getElementById('mdp');
+  c.type = c.type === 'password' ? 'text' : 'password';
+  document.getElementById('oeil').textContent = c.type === 'password' ? '👁️' : '🙈';
+});
+
+/* Frein anti-essais en rafale, côté appareil (Supabase limite aussi côté serveur) */
+function echecs() { try { return JSON.parse(localStorage.getItem('cupidon_echecs') || '[]').filter(t => Date.now() - t < 15 * 60000); } catch (e) { return []; } }
+function noterEchec() { localStorage.setItem('cupidon_echecs', JSON.stringify([...echecs(), Date.now()])); }
+
+document.getElementById('form-connexion').addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const mdp = document.getElementById('mdp').value;
+  if (!email || !mdp) { toast('Renseigne ton e-mail et ton mot de passe 😊'); return; }
+
+  if (echecs().length >= 5) {
+    toast('Trop de tentatives. Patiente quelques minutes puis réessaie — ou utilise « Mot de passe oublié ? »');
+    return;
+  }
+
+  /* Le choix « Se souvenir de moi » doit être posé AVANT la connexion :
+     il détermine où la session sera conservée (voir js/config.js). */
+  localStorage.setItem('cupidon_remember', document.getElementById('souvenir').checked ? 'oui' : 'non');
+
+  const btn = document.getElementById('btn-connexion');
+  btn.disabled = true; btn.textContent = 'Connexion…';
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: mdp });
+    if (error) {
+      if (/confirm/i.test(error.message)) {
+        document.getElementById('bloc-nonconfirme').style.display = '';
+      } else if (/rate|seconds/i.test(error.message)) {
+        toast('Trop de tentatives — patiente un peu avant de réessayer 🙏');
+      } else {
+        noterEchec();
+        /* Message volontairement neutre : on ne révèle pas si l'adresse existe. */
+        toast('E-mail ou mot de passe incorrect.');
+      }
+      return;
+    }
+    localStorage.removeItem('cupidon_echecs');
+    journaliserConnexion(data.user.id);
+    const profil = await chargerProfil(data.user.id);
+    location.href = profil ? 'index.html' : 'profil.html';
+  } catch (e) {
+    toast('Connexion impossible — vérifie ton réseau 🙏');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Se connecter';
+  }
+});
+
+/* Renvoi de l'e-mail de confirmation */
+document.getElementById('btn-reconfirmer').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  if (!email) { toast('Renseigne d\'abord ton adresse e-mail.'); return; }
+  const b = document.getElementById('btn-reconfirmer');
+  b.disabled = true;
+  const { error } = await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: APP_BASE + 'confirmation.html' } });
+  toast(error ? 'Attends une minute avant de redemander un e-mail 🙏' : 'E-mail renvoyé ! Vérifie aussi tes spams 📬');
+  setTimeout(() => b.disabled = false, 30000);
+});
+
+/* Déjà connecté ? → directement dans l'appli */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) location.href = 'index.html';
+})();
+</script>
+</body>
+</html>

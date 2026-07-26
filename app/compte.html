@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon compte — Cupidon Rencontres</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+
+    <!-- Accueil compte -->
+    <div class="etape active" id="p-accueil">
+      <button class="backlink" onclick="location.href='index.html'">‹ Retour à l'appli</button>
+      <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>Mon compte</span></div>
+      <div class="carte" style="display:flex;align-items:center;gap:14px">
+        <div id="mini-avatar" style="width:64px;height:64px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:var(--blush);display:grid;place-items:center;font-size:30px">🙂</div>
+        <div>
+          <b class="serif" id="mon-prenom" style="font-size:19px">…</b>
+          <p style="font-size:13.5px;color:var(--muted)" id="mon-email">…</p>
+          <p style="font-size:13px;color:var(--ok);font-weight:600" id="mon-statut"></p>
+        </div>
+      </div>
+
+      <div class="reglages">
+        <button class="rg" onclick="afficher('p-email')"><span class="em">📧</span><span>Changer mon adresse e-mail<small>Avec confirmation par e-mail, comme à l'inscription</small></span><span class="fleche">›</span></button>
+        <button class="rg" onclick="afficher('p-mdp')"><span class="em">🔐</span><span>Changer mon mot de passe<small>Déconnecte automatiquement tes autres appareils</small></span><span class="fleche">›</span></button>
+        <button class="rg" onclick="location.href='profil.html'"><span class="em">📝</span><span>Refaire mon questionnaire<small>Réponses, photos, avatar et profil type</small></span><span class="fleche">›</span></button>
+        <button class="rg" id="btn-suspendre"><span class="em">⏸️</span><span id="txt-suspendre">Suspendre mon profil<small>Ton profil devient invisible, rien n'est supprimé</small></span><span class="fleche">›</span></button>
+        <button class="rg" id="btn-donnees"><span class="em">📦</span><span>Télécharger mes données<small>Un fichier avec tout ce que l'appli sait de toi</small></span><span class="fleche">›</span></button>
+        <button class="rg" id="btn-deco-partout"><span class="em">📱</span><span>Me déconnecter de tous les appareils<small>Utile si tu t'es connecté·e ailleurs</small></span><span class="fleche">›</span></button>
+        <button class="rg" id="btn-deco"><span class="em">👋</span><span>Me déconnecter de cet appareil</span><span class="fleche">›</span></button>
+        <button class="rg" style="border-color:rgba(217,48,37,.3)" onclick="afficher('p-suppression')"><span class="em">🗑️</span><span style="color:var(--err)">Supprimer définitivement mon compte<small>Demande traitée par notre équipe sous 30 jours</small></span><span class="fleche">›</span></button>
+      </div>
+    </div>
+
+    <!-- Changer e-mail -->
+    <div class="etape" id="p-email">
+      <button class="backlink" onclick="afficher('p-accueil')">‹ Mon compte</button>
+      <div><h1 class="titre">Changer mon adresse e-mail</h1>
+      <p class="sous">Par sécurité, un lien de confirmation sera envoyé à ton ancienne ET à ta nouvelle adresse. Le changement devient actif après ces confirmations.</p></div>
+      <div class="field" style="margin-bottom:14px">
+        <label for="nouvel-email">Nouvelle adresse e-mail</label>
+        <input id="nouvel-email" type="email" placeholder="nouvelle@adresse.re" inputmode="email">
+      </div>
+      <button class="btn btn-wine" id="btn-email">Envoyer les liens de confirmation</button>
+    </div>
+
+    <!-- Changer mot de passe -->
+    <div class="etape" id="p-mdp">
+      <button class="backlink" onclick="afficher('p-accueil')">‹ Mon compte</button>
+      <div><h1 class="titre">Changer mon mot de passe</h1></div>
+      <div class="field" style="margin-bottom:10px">
+        <label for="mdp">Nouveau mot de passe</label>
+        <div class="pwd-wrap">
+          <input id="mdp" type="password" autocomplete="new-password" placeholder="••••••••">
+          <button type="button" class="pwd-eye" data-cible="mdp">👁️</button>
+        </div>
+      </div>
+      <div class="criteres" id="criteres" style="margin-bottom:14px"></div>
+      <div class="field" style="margin-bottom:16px">
+        <label for="mdp2">Confirme le nouveau mot de passe</label>
+        <div class="pwd-wrap">
+          <input id="mdp2" type="password" autocomplete="new-password" placeholder="••••••••">
+          <button type="button" class="pwd-eye" data-cible="mdp2">👁️</button>
+        </div>
+        <p class="msg-err" id="err-mdp2">Les deux mots de passe ne correspondent pas.</p>
+      </div>
+      <button class="btn btn-wine" id="btn-mdp">Changer mon mot de passe</button>
+    </div>
+
+    <!-- Suppression -->
+    <div class="etape" id="p-suppression">
+      <button class="backlink" onclick="afficher('p-accueil')">‹ Mon compte</button>
+      <div><h1 class="titre">Supprimer mon compte 😢</h1>
+      <p class="sous">Ta demande sera transmise à notre équipe : ton profil est <b>immédiatement masqué</b>, puis ton compte et toutes tes données sont <b>définitivement supprimés sous 30 jours</b>, conformément au RGPD.<br><br>Si tu changes d'avis pendant ce délai, écris-nous à <a class="lien" href="mailto:contact@pullup.re">contact@pullup.re</a>.</p></div>
+      <button class="btn btn-danger" id="btn-supprimer">Je confirme ma demande de suppression</button>
+      <button class="btn btn-ghost" onclick="afficher('p-accueil')">Finalement, je reste 💛</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/avatar.js"></script>
+<script>
+let utilisateur = null, profil = null;
+
+function afficher(id) {
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.scrolly').scrollTop = 0;
+}
+
+/* Critères + œil (page mot de passe) */
+document.getElementById('criteres').innerHTML = REGLES_MDP.map(r => `<div class="c" id="cr-${r.id}">${r.label}</div>`).join('');
+const champMdp = document.getElementById('mdp'), champMdp2 = document.getElementById('mdp2');
+champMdp.addEventListener('input', () => {
+  REGLES_MDP.forEach(r => document.getElementById('cr-' + r.id).classList.toggle('ok', r.test(champMdp.value)));
+});
+champMdp2.addEventListener('input', () => {
+  const diff = champMdp2.value.length > 0 && champMdp.value !== champMdp2.value;
+  document.getElementById('err-mdp2').classList.toggle('show', diff);
+});
+document.querySelectorAll('.pwd-eye').forEach(b => b.addEventListener('click', () => {
+  const c = document.getElementById(b.dataset.cible);
+  c.type = c.type === 'password' ? 'text' : 'password';
+  b.textContent = c.type === 'password' ? '👁️' : '🙈';
+}));
+
+/* ───── Changer l'e-mail ───── */
+document.getElementById('btn-email').addEventListener('click', async () => {
+  const email = document.getElementById('nouvel-email').value.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('Cette adresse ne semble pas valide.'); return; }
+  const { error } = await sb.auth.updateUser({ email }, { emailRedirectTo: APP_BASE + 'confirmation.html' });
+  if (error) { toast(/rate|seconds/i.test(error.message) ? 'Patiente une minute puis réessaie 🙏' : 'Changement impossible : ' + (/already/i.test(error.message) ? 'cette adresse est déjà utilisée.' : 'réessaie plus tard.')); return; }
+  toast('Liens de confirmation envoyés — vérifie tes deux boîtes mail 📬');
+  afficher('p-accueil');
+});
+
+/* ───── Changer le mot de passe ───── */
+document.getElementById('btn-mdp').addEventListener('click', async () => {
+  if (!motDePasseValide(champMdp.value)) { toast('Le nouveau mot de passe ne respecte pas tous les critères 🔐'); return; }
+  if (champMdp.value !== champMdp2.value) { toast('Les deux mots de passe ne correspondent pas.'); return; }
+  const { data, error } = await sb.auth.updateUser({ password: champMdp.value });
+  if (error) { toast(/same|different/i.test(error.message) ? 'Choisis un mot de passe différent de l\'ancien 😊' : 'Changement impossible pour le moment 🙏'); return; }
+  try { await sb.auth.signOut({ scope: 'others' }); } catch (e) {}
+  envoyerMailCupidon('mdp-change', { email: utilisateur.email, prenom: (utilisateur.user_metadata || {}).prenom || '' });
+  champMdp.value = champMdp2.value = '';
+  toast('Mot de passe changé ✅ Tes autres appareils ont été déconnectés.');
+  afficher('p-accueil');
+});
+
+/* ───── Suspendre / réactiver ───── */
+document.getElementById('btn-suspendre').addEventListener('click', async () => {
+  if (!profil) { toast('Complète d\'abord ton profil 😊'); return; }
+  const suspendu = profil.statut === 'suspendu';
+  const { error } = await sb.from('profils_cupidon').update({ statut: suspendu ? 'actif' : 'suspendu' }).eq('user_id', utilisateur.id);
+  if (error) { toast('Impossible pour le moment 🙏'); return; }
+  profil.statut = suspendu ? 'actif' : 'suspendu';
+  majAffichage();
+  toast(suspendu ? 'Ton profil est de nouveau visible 💛' : 'Profil suspendu — tu es invisible jusqu\'à réactivation.');
+});
+
+/* ───── Télécharger ses données ───── */
+document.getElementById('btn-donnees').addEventListener('click', async () => {
+  const { data: journal } = await sb.from('journal_connexions_cupidon').select('appareil, cree_le').eq('user_id', utilisateur.id).order('cree_le', { ascending: false }).limit(100);
+  const paquet = {
+    exporte_le: new Date().toISOString(),
+    compte: { email: utilisateur.email, prenom: (utilisateur.user_metadata || {}).prenom, cree_le: utilisateur.created_at },
+    profil: profil,
+    dernieres_connexions: journal || []
+  };
+  const blob = new Blob([JSON.stringify(paquet, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'mes-donnees-cupidon.json';
+  a.click();
+  toast('Fichier téléchargé 📦');
+});
+
+/* ───── Déconnexions ───── */
+document.getElementById('btn-deco-partout').addEventListener('click', async () => {
+  await sb.auth.signOut({ scope: 'global' });
+  location.href = 'connexion.html';
+});
+document.getElementById('btn-deco').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  location.href = 'index.html';
+});
+
+/* ───── Demande de suppression ───── */
+document.getElementById('btn-supprimer').addEventListener('click', async () => {
+  const b = document.getElementById('btn-supprimer');
+  b.disabled = true;
+  try {
+    if (profil) await sb.from('profils_cupidon').update({ statut: 'suppression_demandee' }).eq('user_id', utilisateur.id);
+    envoyerMailCupidon('suppression-compte', { email: utilisateur.email, prenom: (utilisateur.user_metadata || {}).prenom || '' }).then(ok => {
+      if (!ok) fetch('https://formsubmit.co/ajax/contact@pullup.re', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: 'Demande de suppression de compte PullUpCupidon.re', email: utilisateur.email, date: new Date().toLocaleString('fr-FR') })
+      }).catch(() => {});
+    });
+    await sb.auth.signOut({ scope: 'global' });
+    alert('Ta demande est enregistrée. Ton profil est masqué et ton compte sera définitivement supprimé sous 30 jours. À bientôt peut-être 💛');
+    location.href = 'index.html';
+  } catch (e) {
+    toast('Impossible pour le moment — écris-nous à contact@pullup.re 🙏');
+    b.disabled = false;
+  }
+});
+
+/* ───── Affichage ───── */
+function majAffichage() {
+  document.getElementById('mon-prenom').textContent = (utilisateur.user_metadata || {}).prenom || 'Membre Cupidon';
+  document.getElementById('mon-email').textContent = utilisateur.email;
+  const st = document.getElementById('mon-statut');
+  if (!profil) { st.textContent = 'Profil à compléter'; st.style.color = 'var(--muted)'; }
+  else if (profil.statut === 'suspendu') { st.textContent = '⏸️ Profil suspendu'; st.style.color = 'var(--muted)'; document.getElementById('txt-suspendre').innerHTML = 'Réactiver mon profil<small>Ton profil redevient visible</small>'; }
+  else { st.textContent = '✅ Profil actif'; st.style.color = 'var(--ok)'; document.getElementById('txt-suspendre').innerHTML = 'Suspendre mon profil<small>Ton profil devient invisible, rien n\'est supprimé</small>'; }
+  const mini = document.getElementById('mini-avatar');
+  if (profil && profil.avatar) mini.innerHTML = renderAvatar(profil.avatar);
+  else if (profil && profil.photos && profil.photos.length) {
+    sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0], 3600).then(({ data }) => {
+      if (data) mini.innerHTML = '<img src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover">';
+    });
+  }
+}
+
+(async () => {
+  utilisateur = await exigerSession();
+  if (!utilisateur) return;
+  profil = await chargerProfil(utilisateur.id);
+  majAffichage();
+})();
+</script>
+</body>
+</html>

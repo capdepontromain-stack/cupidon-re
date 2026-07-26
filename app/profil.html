@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crée ton profil — Cupidon Rencontres</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/favicon-64.png">
+<link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+<div id="phone">
+  <div class="scrolly">
+    <div class="steps" id="progress"></div>
+
+    <!-- 1. Genre -->
+    <div class="etape" id="q-genre">
+      <div><h1 class="titre">Tu es… 💫</h1><p class="sous">Ces réponses servent uniquement à te proposer les bons profils.</p></div>
+      <div class="choix" data-question="genre">
+        <button data-val="homme"><span class="em">👨</span>Homme</button>
+        <button data-val="femme"><span class="em">👩</span>Femme</button>
+        <button data-val="nonbinaire"><span class="em">🌈</span>Non binaire / Autre</button>
+        <button data-val="nonprecise"><span class="em">🤫</span>Je préfère ne pas préciser</button>
+      </div>
+    </div>
+
+    <!-- 2. Date de naissance -->
+    <div class="etape" id="q-naissance">
+      <div><h1 class="titre">Ta date de naissance 🎂</h1><p class="sous">L'appli est réservée aux 18 ans et plus. Seul ton âge sera affiché, jamais ta date complète.</p></div>
+      <div class="field">
+        <label for="naissance">Date de naissance</label>
+        <input type="date" id="naissance">
+        <p class="msg-err" id="err-naissance">Il faut avoir au moins 18 ans pour t'inscrire.</p>
+      </div>
+      <button class="btn btn-gold" id="btn-naissance">Continuer</button>
+    </div>
+
+    <!-- 3. Situation géographique -->
+    <div class="etape" id="q-situation">
+      <div><h1 class="titre">Et côté localisation ? 🌍</h1></div>
+      <div class="choix" data-question="situation">
+        <button data-val="resident"><span class="em">🏝️</span>J'habite à La Réunion</button>
+        <button data-val="vacances"><span class="em">🧳</span>Je suis en vacances à La Réunion</button>
+        <button data-val="bientot"><span class="em">✈️</span>Je vais bientôt venir à La Réunion</button>
+      </div>
+      <div class="field" id="bloc-ville" style="display:none">
+        <label for="ville">Ta ville</label>
+        <select id="ville"></select>
+      </div>
+      <button class="btn btn-gold" id="btn-situation" style="display:none">Continuer</button>
+    </div>
+
+    <!-- 4. Recherche -->
+    <div class="etape" id="q-recherche">
+      <div><h1 class="titre">Tu recherches… 💘</h1></div>
+      <div class="choix" data-question="recherche">
+        <button data-val="serieuse"><span class="em">💍</span>Une relation sérieuse</button>
+        <button data-val="amicale"><span class="em">🤝</span>Une rencontre amicale</button>
+        <button data-val="deux"><span class="em">💛</span>Les deux</button>
+        <button data-val="hasard"><span class="em">🎲</span>Je laisse faire le hasard</button>
+      </div>
+    </div>
+
+    <!-- 5. Personnalité -->
+    <div class="etape" id="q-personnalite">
+      <div><h1 class="titre">Le week-end, tu préfères… 🌴</h1></div>
+      <div class="choix" data-question="personnalite">
+        <button data-val="maison"><span class="em">🛋️</span>Rester tranquillement à la maison</button>
+        <button data-val="mixte"><span class="em">⚖️</span>Un mélange des deux</button>
+        <button data-val="sortir"><span class="em">🌋</span>Sortir, découvrir, bouger</button>
+      </div>
+    </div>
+
+    <!-- 6. Premier rendez-vous -->
+    <div class="etape" id="q-rdv">
+      <div><h1 class="titre">Pour un premier rendez-vous… ☕</h1></div>
+      <div class="choix" data-question="premier_rdv">
+        <button data-val="rapide"><span class="em">⚡</span>Rencontrer rapidement</button>
+        <button data-val="jours"><span class="em">💬</span>Discuter quelques jours d'abord</button>
+        <button data-val="semaines"><span class="em">🐢</span>Discuter plusieurs semaines avant</button>
+      </div>
+    </div>
+
+    <!-- 7. Centres d'intérêt -->
+    <div class="etape" id="q-interets">
+      <div><h1 class="titre">Tes passions ✨</h1><p class="sous">Choisis-en au moins 3 — c'est ce qui nous aide le plus à te suggérer de belles rencontres.</p></div>
+      <p class="compteur-chips" id="compteur">0 / 3 minimum</p>
+      <div class="chips" id="chips-interets"></div>
+      <button class="btn btn-gold" id="btn-interets" disabled>Continuer</button>
+    </div>
+
+    <!-- 8. Résultat : profil automatique -->
+    <div class="etape" id="q-resultat">
+      <div class="hero-ok" style="margin:0;padding-top:6px">
+        <div class="profil-badge">
+          <div class="rond" id="res-emoji">🌋</div>
+          <b id="res-nom">Aventurier</b>
+        </div>
+        <p class="sous">D'après tes réponses, voilà ton profil Cupidon ! Il apparaîtra sur ta fiche avec cette petite description :</p>
+      </div>
+      <div class="carte"><p id="res-description" style="font-style:italic"></p></div>
+      <button class="btn btn-gold" id="btn-resultat">Parfait, on continue 👌</button>
+    </div>
+
+    <!-- 9. Photo ou avatar -->
+    <div class="etape" id="q-photo">
+      <div><h1 class="titre">Montre-toi ! 📸</h1><p class="sous">Ajoute jusqu'à 3 photos, ou crée ton avatar personnalisé si tu préfères rester discret·e pour l'instant.</p></div>
+      <div class="chips" style="justify-content:center">
+        <button id="onglet-photos" class="on">📷 Mes photos</button>
+        <button id="onglet-avatar">🧑‍🎨 Mon avatar</button>
+      </div>
+
+      <div id="panneau-photos">
+        <div class="photos-grid" id="photos-grid"></div>
+        <p class="sous" style="margin-top:10px">Formats acceptés : JPG, PNG. Les photos sont redimensionnées automatiquement.</p>
+      </div>
+
+      <div id="panneau-avatar" style="display:none">
+        <div class="avatar-scene" id="avatar-scene"></div>
+        <div id="avatar-controles" style="display:flex;flex-direction:column;gap:14px;margin-top:14px"></div>
+      </div>
+
+      <button class="btn btn-gold" id="btn-terminer">Terminer mon inscription 🎉</button>
+      <p class="centre" id="etat-envoi" style="display:none">Enregistrement en cours…</p>
+    </div>
+
+    <!-- 10. Fin -->
+    <div class="etape" id="q-fin">
+      <div class="hero-ok">
+        <img src="logo-mascotte.png" alt="">
+        <div class="big">💘</div>
+        <h1 class="titre">Bienvenue dans l'aventure !</h1>
+        <p class="sous" id="msg-fin">Ton profil est prêt. Belles rencontres !</p>
+        <button class="btn btn-gold" onclick="location.href='index.html'">Découvrir les profils 🌋</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" id="fichier-photo" accept="image/*" style="display:none">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/avatar.js"></script>
+<script>
+const COMMUNES = ['Saint-Denis','Saint-Paul','Saint-Pierre','Le Tampon','Saint-André','Saint-Louis','Le Port','Saint-Benoît','Saint-Joseph','Sainte-Marie','Sainte-Suzanne','La Possession','Saint-Leu','Sainte-Rose','Salazie','Cilaos','Entre-Deux','Petite-Île','Les Avirons','L\'Étang-Salé','Trois-Bassins','Bras-Panon','La Plaine-des-Palmistes','Saint-Philippe'];
+
+/* Réponses de l'utilisateur (brouillon sauvegardé en local) */
+let utilisateur = null;
+let rep = { genre:null, date_naissance:null, situation:null, ville:null, recherche:[], personnalite:null, premier_rdv:null, interets:[], profil_type:null, description:null };
+let avatarCfg = Object.assign({}, AVATAR_DEFAUT);
+let photos = [null, null, null];          // fichiers (Blob) en attente d'envoi
+let modePhoto = 'photos';
+
+const ORDRE = ['q-genre','q-naissance','q-situation','q-recherche','q-personnalite','q-rdv','q-interets','q-resultat','q-photo','q-fin'];
+let etapeCourante = 0;
+
+function montrer(i) {
+  etapeCourante = i;
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
+  document.getElementById(ORDRE[i]).classList.add('active');
+  document.getElementById('progress').innerHTML = ORDRE.slice(0, -1).map((_, k) => `<span class="${k <= i ? 'on' : ''}"></span>`).join('');
+  document.querySelector('.scrolly').scrollTop = 0;
+  sauverBrouillon();
+}
+function suivant() { montrer(Math.min(etapeCourante + 1, ORDRE.length - 1)); }
+
+function sauverBrouillon() {
+  if (!utilisateur) return;
+  localStorage.setItem('cupidon_brouillon_' + utilisateur.id, JSON.stringify({ rep, avatarCfg, etapeCourante }));
+}
+
+/* ───── Questions à choix unique : sélection + passage auto ───── */
+document.querySelectorAll('.choix').forEach(bloc => {
+  bloc.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    bloc.querySelectorAll('button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    const q = bloc.dataset.question, v = b.dataset.val;
+    if (q === 'recherche') rep.recherche = v === 'deux' ? ['serieuse', 'amicale'] : [v];
+    else rep[q] = v;
+    if (q === 'situation') {
+      const resident = v === 'resident';
+      document.getElementById('bloc-ville').style.display = '';
+      document.querySelector('#bloc-ville label').textContent = resident ? 'Ta ville' : 'La ville où tu séjournes (ou séjourneras)';
+      document.getElementById('btn-situation').style.display = '';
+      return;                      // on attend la ville + bouton Continuer
+    }
+    setTimeout(suivant, 350);      // petite pause pour voir la sélection
+  }));
+});
+
+/* ───── Naissance ───── */
+document.getElementById('btn-naissance').addEventListener('click', () => {
+  const v = document.getElementById('naissance').value;
+  const champ = document.getElementById('naissance');
+  const age = v ? calculerAge(v) : -1;
+  const mauvais = !v || age < 18 || age > 99;
+  champ.classList.toggle('err', mauvais);
+  document.getElementById('err-naissance').classList.toggle('show', mauvais);
+  if (mauvais) return;
+  rep.date_naissance = v;
+  suivant();
+});
+
+/* ───── Ville ───── */
+const selVille = document.getElementById('ville');
+selVille.innerHTML = '<option value="">— Choisis ta ville —</option>' + COMMUNES.map(c => `<option>${c}</option>`).join('');
+document.getElementById('btn-situation').addEventListener('click', () => {
+  if (rep.situation === 'resident' && !selVille.value) { toast('Choisis ta ville 😊'); return; }
+  rep.ville = selVille.value || null;
+  suivant();
+});
+
+/* ───── Centres d'intérêt ───── */
+const zoneChips = document.getElementById('chips-interets');
+zoneChips.innerHTML = INTERETS.map(i => `<button data-id="${i.id}">${i.emoji} ${i.label}</button>`).join('');
+zoneChips.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+  b.classList.toggle('on');
+  rep.interets = [...zoneChips.querySelectorAll('button.on')].map(x => x.dataset.id);
+  const n = rep.interets.length;
+  const cpt = document.getElementById('compteur');
+  cpt.textContent = n >= 3 ? `${n} choisis ✓` : `${n} / 3 minimum`;
+  cpt.classList.toggle('ok', n >= 3);
+  document.getElementById('btn-interets').disabled = n < 3;
+}));
+document.getElementById('btn-interets').addEventListener('click', () => {
+  rep.profil_type = calculerProfil(rep);
+  rep.description = genererDescription(rep);
+  const t = PROFILS_TYPES[rep.profil_type];
+  document.getElementById('res-emoji').textContent = t.emoji;
+  document.getElementById('res-nom').textContent = t.label;
+  document.getElementById('res-description').textContent = '« ' + rep.description + ' »';
+  suivant();
+});
+document.getElementById('btn-resultat').addEventListener('click', suivant);
+
+/* ───── Onglets photos / avatar ───── */
+const ongP = document.getElementById('onglet-photos'), ongA = document.getElementById('onglet-avatar');
+ongP.addEventListener('click', () => basculer('photos'));
+ongA.addEventListener('click', () => basculer('avatar'));
+function basculer(mode) {
+  modePhoto = mode;
+  ongP.classList.toggle('on', mode === 'photos');
+  ongA.classList.toggle('on', mode === 'avatar');
+  document.getElementById('panneau-photos').style.display = mode === 'photos' ? '' : 'none';
+  document.getElementById('panneau-avatar').style.display = mode === 'avatar' ? '' : 'none';
+  if (mode === 'avatar') dessinerAvatar();
+}
+
+/* ───── Photos : 3 emplacements, redimensionnées côté téléphone ───── */
+const grille = document.getElementById('photos-grid');
+let slotEnCours = 0;
+function dessinerGrille() {
+  grille.innerHTML = photos.map((p, i) => p
+    ? `<div class="photo-slot"><img src="${p.url}" alt="Photo ${i+1}"><button class="sup" data-i="${i}" aria-label="Supprimer">✕</button></div>`
+    : `<div class="photo-slot" data-i="${i}"><span class="plus">＋</span>Photo ${i+1}</div>`
+  ).join('');
+  grille.querySelectorAll('.photo-slot[data-i]').forEach(s => s.addEventListener('click', () => {
+    slotEnCours = +s.dataset.i;
+    document.getElementById('fichier-photo').click();
+  }));
+  grille.querySelectorAll('.sup').forEach(b => b.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    photos[+b.dataset.i] = null; dessinerGrille();
+  }));
+}
+dessinerGrille();
+
+document.getElementById('fichier-photo').addEventListener('change', async (ev) => {
+  const f = ev.target.files[0]; ev.target.value = '';
+  if (!f) return;
+  if (!/^image\//.test(f.type)) { toast('Choisis une image (JPG ou PNG) 😊'); return; }
+  const blob = await redimensionner(f, 1080, 0.85);
+  photos[slotEnCours] = { blob, url: URL.createObjectURL(blob) };
+  dessinerGrille();
+});
+
+function redimensionner(fichier, maxCote, qualite) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const r = Math.min(1, maxCote / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(b => b ? resolve(b) : reject(new Error('conversion')), 'image/jpeg', qualite);
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(fichier);
+  });
+}
+
+/* ───── Éditeur d'avatar ───── */
+function dessinerAvatar() { document.getElementById('avatar-scene').innerHTML = renderAvatar(avatarCfg); }
+function construireControles() {
+  const zone = document.getElementById('avatar-controles');
+  zone.innerHTML = '';
+  for (const [cle, opt] of Object.entries(AVATAR_OPTIONS)) {
+    const g = document.createElement('div'); g.className = 'opt-groupe';
+    const titre = document.createElement('label'); titre.textContent = opt.label; g.appendChild(titre);
+    const ligne = document.createElement('div'); ligne.className = 'opt-ligne';
+    if (opt.type === 'onoff') {
+      [['Non', false], ['Oui', true]].forEach(([lab, val]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = lab;
+        b.classList.toggle('on', avatarCfg[cle] === val);
+        b.onclick = () => { avatarCfg[cle] = val; construireControles(); dessinerAvatar(); sauverBrouillon(); };
+        ligne.appendChild(b);
+      });
+    } else {
+      opt.valeurs.forEach(v => {
+        const b = document.createElement('button'); b.type = 'button';
+        if (opt.type === 'couleur') { b.className = 'pastille'; b.style.background = v.hex; b.title = v.id; }
+        else b.textContent = v.label;
+        b.classList.toggle('on', avatarCfg[cle] === v.id);
+        b.onclick = () => { avatarCfg[cle] = v.id; construireControles(); dessinerAvatar(); sauverBrouillon(); };
+        ligne.appendChild(b);
+      });
+    }
+    g.appendChild(ligne); zone.appendChild(g);
+  }
+}
+construireControles();
+
+/* ───── Enregistrement final ───── */
+document.getElementById('btn-terminer').addEventListener('click', async () => {
+  if (modePhoto === 'photos' && !photos.some(Boolean)) {
+    toast('Ajoute au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
+  }
+  const btn = document.getElementById('btn-terminer');
+  btn.disabled = true; document.getElementById('etat-envoi').style.display = '';
+
+  try {
+    /* 1. Envoi des photos éventuelles */
+    const chemins = [];
+    if (modePhoto === 'photos') {
+      for (let i = 0; i < photos.length; i++) {
+        if (!photos[i]) continue;
+        const chemin = utilisateur.id + '/photo-' + (i + 1) + '.jpg';
+        const { error } = await sb.storage.from('photos-cupidon').upload(chemin, photos[i].blob, { upsert: true, contentType: 'image/jpeg' });
+        if (error) throw new Error('photo : ' + error.message);
+        chemins.push(chemin);
+      }
+    }
+
+    /* 2. Enregistrement du profil */
+    const prenom = (utilisateur.user_metadata && utilisateur.user_metadata.prenom) || '';
+    const enreg = {
+      user_id: utilisateur.id,
+      prenom,
+      genre: rep.genre,
+      date_naissance: rep.date_naissance,
+      situation: rep.situation,
+      ville: rep.ville,
+      recherche: rep.recherche,
+      personnalite: rep.personnalite,
+      premier_rdv: rep.premier_rdv,
+      interets: rep.interets,
+      profil_type: rep.profil_type,
+      description: rep.description,
+      avatar: modePhoto === 'avatar' ? avatarCfg : null,
+      photos: chemins,
+      statut: 'actif'
+    };
+    const { error } = await sb.from('profils_cupidon').upsert(enreg, { onConflict: 'user_id' });
+    if (error) throw new Error('profil : ' + error.message);
+
+    /* 3. Notification à l'équipe (best effort, ne bloque jamais l'utilisateur) */
+    const t = PROFILS_TYPES[rep.profil_type];
+    const notif = {
+      prenom, age: calculerAge(rep.date_naissance) + ' ans',
+      genre: { homme:'Homme', femme:'Femme', nonbinaire:'Non binaire / Autre', nonprecise:'Non précisé' }[rep.genre],
+      ville: rep.ville || '—',
+      statut: { resident:'Habitant de La Réunion', vacances:'En vacances à La Réunion', bientot:'Arrive bientôt à La Réunion' }[rep.situation],
+      recherche: rep.recherche.map(r => ({ serieuse:'Relation sérieuse', amicale:'Rencontre amicale', hasard:'Au hasard' }[r])).join(' + '),
+      profil: t.emoji + ' ' + t.label,
+      date: new Date().toLocaleDateString('fr-FR')
+    };
+    envoyerMailCupidon('nouvelle-inscription', { inscription: notif }).then(ok => {
+      if (!ok) {
+        /* Filet de secours : formulaire relais vers contact@pullup.re */
+        fetch('https://formsubmit.co/ajax/contact@pullup.re', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ _subject: 'Nouvelle inscription PullUpCupidon.re', ...notif })
+        }).catch(() => {});
+      }
+    });
+
+    localStorage.removeItem('cupidon_brouillon_' + utilisateur.id);
+    document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est en ligne. Belles rencontres 💛';
+    montrer(ORDRE.indexOf('q-fin'));
+  } catch (e) {
+    console.warn(e);
+    toast('Impossible d\'enregistrer pour le moment — réessaie dans un instant 🙏');
+  } finally {
+    btn.disabled = false; document.getElementById('etat-envoi').style.display = 'none';
+  }
+});
+
+/* ───── Démarrage : session obligatoire + reprise du brouillon ───── */
+(async () => {
+  utilisateur = await exigerSession();
+  if (!utilisateur) return;
+  const brouillon = localStorage.getItem('cupidon_brouillon_' + utilisateur.id);
+  if (brouillon) {
+    try {
+      const b = JSON.parse(brouillon);
+      rep = Object.assign(rep, b.rep); avatarCfg = Object.assign(avatarCfg, b.avatarCfg);
+      construireControles();
+    } catch (e) {}
+  }
+  montrer(0);
+  dessinerAvatar();
+})();
+</script>
+</body>
+</html>

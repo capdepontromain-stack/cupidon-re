@@ -143,15 +143,52 @@ body{
 .card .tags span{font-size:12.5px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:5px 11px;border-radius:999px;backdrop-filter:blur(4px)}
 .card .bio{font-size:13.5px;color:#E7EDFF;margin-top:10px;line-height:1.45}
 .card .report{position:absolute;top:14px;right:14px;background:rgba(8,18,50,.5);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11.5px;padding:6px 11px;border-radius:999px;cursor:pointer;backdrop-filter:blur(4px)}
-.stamp{position:absolute;top:34px;font-family:'Fraunces',serif;font-size:34px;font-weight:900;letter-spacing:2px;padding:6px 18px;border:4px solid;border-radius:12px;transform:rotate(-14deg);opacity:0;pointer-events:none}
+.stamp{position:absolute;top:34px;font-family:'Fraunces',serif;font-size:24px;font-weight:900;letter-spacing:1.5px;padding:6px 15px;border:4px solid;border-radius:12px;transform:rotate(-14deg);opacity:0;pointer-events:none;white-space:nowrap}
 .stamp.like{left:22px;color:#3ED97C;border-color:#3ED97C;transform:rotate(-14deg)}
 .stamp.nope{right:22px;color:#FF5A5A;border-color:#FF5A5A;transform:rotate(14deg)}
 #deck .empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:var(--muted);padding:30px}
 #deck .empty .big{font-size:52px}
 #deck .empty b{color:var(--ink);font-size:18px}
 
+/* Guide du premier passage : glisser à droite = je matche, à gauche = je passe */
+#swipehint{position:absolute;inset:6px 16px 10px;z-index:45;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  background:linear-gradient(160deg,rgba(8,18,50,.93),rgba(30,20,60,.93));border-radius:26px;color:#fff;padding:26px 20px;text-align:center}
+#swipehint.show{display:flex;animation:fadein .35s ease}
+@keyframes fadein{0%{opacity:0}100%{opacity:1}}
+#swipehint .sh-cols{display:flex;gap:12px;width:100%}
+#swipehint .sh-col{flex:1;border-radius:18px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:6px}
+#swipehint .sh-col .fl{font-size:36px;line-height:1;animation:shslide 1.2s ease-in-out infinite}
+#swipehint .sh-col.nope{background:rgba(255,90,90,.14);border:1.5px solid rgba(255,90,90,.55)}
+#swipehint .sh-col.nope .fl{color:#FF8A8A;animation-name:shslideL}
+#swipehint .sh-col.like{background:rgba(62,217,124,.13);border:1.5px solid rgba(62,217,124,.55)}
+#swipehint .sh-col.like .fl{color:#5BE68F}
+#swipehint .sh-col b{font-family:'Fraunces',serif;font-size:16.5px;letter-spacing:.5px}
+#swipehint .sh-col.nope b{color:#FF8A8A}
+#swipehint .sh-col.like b{color:#5BE68F}
+#swipehint .sh-col p{font-size:12.5px;color:#C9D6F5;line-height:1.45}
+@keyframes shslide{0%,100%{transform:translateX(0)}50%{transform:translateX(9px)}}
+@keyframes shslideL{0%,100%{transform:translateX(0)}50%{transform:translateX(-9px)}}
+#swipehint .sh-note{font-size:12.5px;color:#AAB9E3}
+#swipehint .sh-cupi{width:74px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.4))}
+#swipehint .btn{width:auto;padding:13px 26px}
+
+/* Animation Cupidon (matche / passe) */
+#cupidanim{position:absolute;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+#cupidanim .cupi,#cupidanim .fleche,#cupidanim .zzz{display:none;position:absolute}
+#cupidanim.like .cupi{display:block;left:-30px;top:33%;width:125px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));animation:cupifly 1.05s cubic-bezier(.3,.7,.4,1) forwards}
+#cupidanim.like .fleche{display:block;left:95px;top:35%;font-size:40px;opacity:0;animation:fleche .6s .35s ease-out forwards}
+@keyframes cupifly{0%{transform:translateX(-140px) rotate(-10deg);opacity:0}25%{opacity:1}60%{transform:translateX(36px) rotate(4deg)}100%{transform:translateX(54px);opacity:0}}
+@keyframes fleche{0%{transform:translate(0,0) scale(.7);opacity:1}80%{opacity:1}100%{transform:translate(230px,-46px) scale(1.3);opacity:0}}
+#cupidanim.pass .cupi{display:block;left:50%;margin-left:-55px;bottom:22%;width:110px;filter:grayscale(.85) opacity(.92);animation:cupisad 1.05s ease forwards}
+#cupidanim.pass .zzz{display:block;left:57%;bottom:36%;font-size:30px;opacity:0;animation:zzzup 1.05s .15s ease-out forwards}
+@keyframes cupisad{0%{transform:translateY(34px);opacity:0}30%{opacity:1;transform:translateY(0)}70%{transform:translateY(5px) rotate(14deg)}100%{transform:translateY(28px) rotate(20deg);opacity:0}}
+@keyframes zzzup{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-36px);opacity:0}}
+
 /* Boutons d'action */
-.deck-actions{display:flex;justify-content:center;align-items:center;gap:20px;padding:16px 0 6px}
+.deck-actions{display:flex;justify-content:center;align-items:flex-start;gap:20px;padding:12px 0 4px}
+.actwrap{display:flex;flex-direction:column;align-items:center;gap:5px}
+.actwrap>span{font-size:12.5px;font-weight:600;color:var(--muted)}
+.actwrap.matche>span{color:var(--wine-dk)}
 .act{border:0;cursor:pointer;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:var(--shadow-sm);transition:transform .12s}
 .act:active{transform:scale(.9)}
 .act.nope{width:60px;height:60px;font-size:26px;color:#FF5A5A;border:2px solid #FFD9D9}
@@ -309,7 +346,7 @@ body{
           <span>Je certifie avoir <b>18 ans ou plus</b> et j'accepte les <a href="cgu.html" target="_blank" style="color:var(--gold-lt)">Conditions d'utilisation</a> et la <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Politique de confidentialité</a>.</span>
         </label>
         <button class="btn btn-gold" id="startbtn" disabled>Je prends ma place gratuite</button>
-        <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="enterApp()">J'ai déjà un compte</button>
+        <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="location.href='connexion.html'">J'ai déjà un compte — Se connecter</button>
         <button class="btn" style="background:none;color:#AAB9E3;font-size:14px;padding:6px" onclick="enterApp()">👀 Accès démo — partenaires & presse</button>
         <div class="scrollhint">▼ Fais défiler pour en savoir plus</div>
       </div>
@@ -330,7 +367,13 @@ body{
           <h3>🤝 Une vraie équipe derrière</h3>
           <p>Cupidon Rencontres est porté par <b>cupidon.re</b>, l'agence matrimoniale 100 % péi, et <b>Pull Up Événements</b>, l'agence événementielle du Tampon. Chaque profil est <b>vérifié par notre équipe</b>.</p>
         </div>
-        <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?showScreen('signup'):toast('Coche d\'abord la case 18 ans en haut 😊')">Je prends ma place gratuite 🎁</button>
+        <div class="lcard" style="border-color:rgba(242,194,0,.55)">
+          <h3>💍 Envie d'être accompagné·e ? Parle à l'équipe</h3>
+          <p>Cupidon, c'est aussi une <b>agence matrimoniale</b> : un <b>premier rendez-vous téléphonique offert</b> pour faire connaissance, puis un accompagnement personnalisé pour trouver la bonne personne (forfaits de <b>490 € à 1 290 €</b>, contrat clair, sans surprise).</p>
+          <a href="tel:+262693817882" class="btn btn-gold" style="display:block;text-align:center;margin-top:14px;text-decoration:none;font-size:15.5px;white-space:nowrap;color:#3A2C00">📞 Appeler — 06 93 81 78 82</a>
+          <p style="font-size:12.5px;color:#C9D6F5;margin-top:8px;text-align:center">Du <b>lundi au vendredi, de 9 h à 17 h</b> · En dehors de ces horaires, <a href="https://cupidon.re/#contact" target="_blank" style="color:var(--gold-lt)">écris-nous, on te rappelle</a>.</p>
+        </div>
+        <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je prends ma place gratuite 🎁</button>
       </div>
     </div>
   </section>
@@ -372,10 +415,20 @@ body{
     <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. L'appli se remplit chaque jour — et dès qu'on t'écrit, tu es prévenu·e par e-mail ou WhatsApp.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
     <div id="deckwrap">
       <div id="deck"></div>
+      <div id="cupidanim"><img class="cupi" src="logo-mascotte.png" alt=""><div class="fleche">💘</div><div class="zzz">💤</div></div>
+      <div id="swipehint">
+        <img class="sh-cupi" src="logo-mascotte.png" alt="">
+        <div class="sh-cols">
+          <div class="sh-col nope"><div class="fl">←</div><b>JE PASSE</b><p>Glisse la carte<br>vers la <b>gauche</b> :<br>Cupidon range son arc 💤</p></div>
+          <div class="sh-col like"><div class="fl">→</div><b>JE MATCHE 💘</b><p>Glisse la carte<br>vers la <b>droite</b> :<br>Cupidon décoche sa flèche !</p></div>
+        </div>
+        <p class="sh-note">Tu peux aussi toucher les boutons ✕ « Je passe » et ❤ « Je matche » en bas de l'écran.</p>
+        <button class="btn btn-gold" onclick="fermerGuide(true)">C'est compris, je découvre 🌋</button>
+      </div>
       <div class="deck-actions">
-        <button class="act star" title="Super j'aime (Premium)" onclick="superLike()">⭐</button>
-        <button class="act nope" title="Passer" onclick="swipeTop(false)">✕</button>
-        <button class="act like" title="J'aime" onclick="swipeTop(true)">❤</button>
+        <div class="actwrap"><button class="act star" title="Super matche" onclick="superLike()">⭐</button><span>Super</span></div>
+        <div class="actwrap"><button class="act nope" title="Je passe" onclick="swipeTop(false)">✕</button><span>Je passe</span></div>
+        <div class="actwrap matche"><button class="act like" title="Je matche" onclick="swipeTop(true)">❤</button><span>Je matche</span></div>
       </div>
     </div>
     <nav class="tabbar">
@@ -454,19 +507,24 @@ body{
   <section class="screen" id="me">
     <div class="scrolly">
       <div class="hero">
-        <div class="circ">R</div>
-        <h2>Romain, 34</h2>
-        <p>📍 Le Tampon · profil de démonstration</p>
-        <div class="founder">🌱 Membre fondateur — parmi les premiers inscrits</div>
+        <div class="circ" id="me-circ">R</div>
+        <h2 id="me-nom">Romain, 34</h2>
+        <p id="me-lieu">📍 Le Tampon · profil de démonstration</p>
+        <div class="founder" id="me-badge">🌱 Membre fondateur — parmi les premiers inscrits</div>
+        <p id="me-description" style="display:none;font-size:14px;color:var(--ink-soft);font-style:italic;line-height:1.5;margin-top:10px;text-align:center"></p>
+        <div id="me-interets" style="display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:10px"></div>
       </div>
       <div class="setlist">
+        <button class="setrow" id="row-connexion" onclick="location.href='connexion.html'"><span class="ico">🔑</span><span><b>Se connecter / Créer mon compte</b><small>Retrouve tes matchs et ton profil</small></span></button>
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>Gratuit jusqu'au 31 octobre (ouverture), puis 10 €/mois à vie</small></span></button>
-        <button class="setrow" onclick="toast('Bientôt : modification du profil')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, bio, centres d'intérêt</small></span></button>
+        <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, avatar, centres d'intérêt</small></span></button>
+        <button class="setrow" id="row-compte" style="display:none" onclick="location.href='compte.html'"><span class="ico">🛡️</span><span>Mon compte & sécurité<small>E-mail, mot de passe, appareils, mes données</small></span></button>
+        <button class="setrow" onclick="location.href='tel:+262693817882'"><span class="ico">💍</span><span><b>Parler à l'équipe Cupidon</b><small>Agence matrimoniale · 1ᵉʳ rendez-vous téléphonique offert · 06 93 81 78 82, lun–ven 9 h–17 h</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
         <button class="setrow" onclick="window.open('cgu.html','_blank')"><span class="ico">📄</span><span>Conditions d'utilisation<small>Règles du service, tarifs, rétractation</small></span></button>
         <button class="setrow" onclick="window.open('confidentialite.html','_blank')"><span class="ico">🔒</span><span>Politique de confidentialité<small>Tes données, tes droits (RGPD)</small></span></button>
         <button class="setrow" onclick="toast('Prototype : formulaire de signalement à venir')"><span class="ico">🚩</span><span>Signaler un problème<small>Profil suspect, contenu inapproprié</small></span></button>
-        <button class="setrow danger" onclick="toast('Prototype : suppression du compte et des données')"><span class="ico">🗑️</span><span>Supprimer mon compte<small>Toutes tes données seront effacées</small></span></button>
+        <button class="setrow danger" onclick="location.href='compte.html'"><span class="ico">🗑️</span><span>Supprimer mon compte<small>Demande depuis « Mon compte & sécurité »</small></span></button>
       </div>
       <p class="legalnote">Cupidon Rencontres — un service Cupidon.re · Pull Up Événements, Le Tampon, La Réunion.<br>Réservé aux personnes majeures. Vos données restent en Europe (RGPD).</p>
     </div>
@@ -497,7 +555,7 @@ body{
         <li><span class="ico">👀</span><span><b>Vois qui t'a aimé</b><span>Plus besoin d'attendre le hasard</span></span></li>
         <li><span class="ico">✅</span><span><b>Profils vérifiés</b><span>Chaque inscription est contrôlée par notre équipe</span></span></li>
       </ul>
-      <button class="btn btn-gold" style="width:100%" onclick="showScreen('signup')">Je m'inscris gratuitement 🎁</button>
+      <button class="btn btn-gold" style="width:100%" onclick="location.href='inscription.html'">Je m'inscris gratuitement 🎁</button>
       <p class="legal">Offre d'ouverture : service gratuit pour tous du 1ᵉʳ août au 31 octobre 2026. Ensuite, abonnement TTC toutes options, sans engagement et résiliable à tout moment : 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Droit de rétractation de 14 jours conformément au Code de la consommation. Paiement sécurisé.</p>
     </div>
   </section>
@@ -596,8 +654,16 @@ const FIN_GRATUIT=new Date('2026-11-01T00:00:00+04:00');    // fin des 3 mois of
 document.getElementById('agecheck').addEventListener('change',e=>{
   document.getElementById('startbtn').disabled=!e.target.checked;
 });
-document.getElementById('startbtn').addEventListener('click',()=>showScreen('signup'));
-function enterApp(){showScreen('discover');renderDeck();}
+document.getElementById('startbtn').addEventListener('click',()=>location.href='inscription.html');
+function enterApp(){
+  showScreen('discover');renderDeck();
+  /* Premier passage : petit guide « glisse à droite / à gauche » */
+  if(!localStorage.getItem('cupidon_guide_vu'))document.getElementById('swipehint').classList.add('show');
+}
+function fermerGuide(clic){
+  localStorage.setItem('cupidon_guide_vu','oui');
+  document.getElementById('swipehint').classList.remove('show');
+}
 
 /* Compte à rebours : jours restants de l'offre gratuite (jusqu'au 31 octobre inclus) */
 document.getElementById('offerchip').textContent='🎉 Offre d\'ouverture';
@@ -627,32 +693,11 @@ function pickNotif(mode){
   document.getElementById('chip-wa').classList.toggle('on',mode==='wa');
   document.getElementById('wa-field').style.display=mode==='wa'?'':'none';
 }
-/* Enregistrement réel des inscriptions (même Supabase que Pull Up Hub, table dédiée) */
-const SB_URL='https://vincxrmtfjbenlzhjwby.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpbmN4cm10ZmpiZW5semhqd2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyOTI1MTksImV4cCI6MjA5Nzg2ODUxOX0.M9_ChGDlOIUKKZtbBHs1xn4cdy4FwUAQKN0aYyXefQY';
-async function submitSignup(){
-  const p=document.getElementById('su-prenom').value.trim();
-  const e=document.getElementById('su-email').value.trim();
-  if(!p||!e||!e.includes('@')){toast('Indique ton prénom et ton e-mail 😊');return;}
-  const btn=document.getElementById('su-btn');
-  btn.disabled=true;btn.textContent='Inscription en cours…';
-  try{
-    const res=await fetch(SB_URL+'/rest/v1/inscriptions_cupidon',{
-      method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body:JSON.stringify({prenom:p,email:e,alerte:notifMode,tel:document.getElementById('su-tel').value.trim()||null})
-    });
-    if(!res.ok&&res.status!==409)throw new Error('HTTP '+res.status); // 409 = e-mail déjà inscrit → on continue
-    enterApp();
-    const alerte=notifMode==='wa'?'sur WhatsApp':notifMode==='mail'?'par e-mail':'par une pastille directement dans l\'appli';
-    document.getElementById('welcometext').textContent='Bravo '+p+', tu fais partie des tout premiers inscrits de cupidon.re ! Pour fêter l\'ouverture, tout est gratuit pour tout le monde du 1ᵉʳ août au 31 octobre — et comme membre fondateur, tu gardes ensuite le tarif de 10 €/mois à vie. Dès que quelqu\'un t\'écrit, tu reçois une alerte '+alerte+'. En attendant l\'ouverture, découvre la visite guidée (profils de démonstration).';
-    document.getElementById('welcomeoverlay').classList.add('show');
-  }catch(err){
-    toast('Petit souci de connexion — réessaie dans un instant 🙏');
-  }finally{
-    btn.disabled=false;btn.textContent='Créer mon compte gratuit';
-  }
-}
+/* L'inscription passe désormais par le vrai parcours sécurisé :
+   inscription.html → e-mail de confirmation → questionnaire (profil.html).
+   L'ancien enregistrement direct dans inscriptions_cupidon est retiré ;
+   la connexion au compte se fait via js/config.js (chargé en fin de page). */
+function submitSignup(){ location.href='inscription.html'; }
 
 /* ───────── Pile de cartes ───────── */
 function renderDeck(){
@@ -670,7 +715,7 @@ function renderDeck(){
       '<div class="bg" style="background:'+p.g+'"><div class="initial">'+p.n[0]+'</div><div class="emoji">'+p.e+'</div></div>'+
       '<div class="veil"></div>'+
       '<button class="report" onclick="event.stopPropagation();document.getElementById(\'reportoverlay\').classList.add(\'show\')">🚩 Signaler</button>'+
-      '<div class="stamp like">J\'AIME</div><div class="stamp nope">NON</div>'+
+      '<div class="stamp like">JE MATCHE 💘</div><div class="stamp nope">JE PASSE</div>'+
       '<div class="info"><h2>'+p.n+', <span>'+p.a+'</span></h2>'+
       '<div class="loc">📍 '+p.v+' · La Réunion</div>'+
       '<div class="tags">'+p.t.map(t=>'<span>'+t+'</span>').join('')+'</div>'+
@@ -686,8 +731,8 @@ function attachDrag(card){
     if(!dragging)return;
     dx=e.clientX-sx;const dy=e.clientY-sy;
     card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx/18)+'deg)';
-    card.querySelector('.stamp.like').style.opacity=Math.min(1,Math.max(0,dx/80));
-    card.querySelector('.stamp.nope').style.opacity=Math.min(1,Math.max(0,-dx/80));
+    card.querySelector('.stamp.like').style.opacity=Math.min(1,Math.max(0,dx/45));
+    card.querySelector('.stamp.nope').style.opacity=Math.min(1,Math.max(0,-dx/45));
   });
   card.addEventListener('pointerup',()=>{
     dragging=false;
@@ -697,7 +742,16 @@ function attachDrag(card){
     dx=0;
   });
 }
+let cupiTimer=null;
+function playCupidAnim(liked){
+  const el=document.getElementById('cupidanim');
+  el.className='';void el.offsetWidth; // relance l'animation à chaque swipe
+  el.className=liked?'like':'pass';
+  clearTimeout(cupiTimer);
+  cupiTimer=setTimeout(()=>{el.className='';},1150);
+}
 function flyOut(card,liked){
+  playCupidAnim(liked);
   card.style.transition='transform .4s ease, opacity .4s';
   card.style.transform='translate('+(liked?600:-600)+'px,-40px) rotate('+(liked?28:-28)+'deg)';
   card.style.opacity=0;
@@ -908,6 +962,63 @@ function blockFromChat(){
 
 /* Accès démo direct pour les partenaires : cupidon.re/app/?demo */
 if(location.search.indexOf('demo')!==-1)enterApp();
+</script>
+
+<!-- ═══ Compte membre réel (Supabase) : session + affichage du vrai profil ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/avatar.js"></script>
+<script>
+(async () => {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;                    // visiteur : accueil + démo inchangés
+
+    const profil = await chargerProfil(session.user.id);
+    if (!profil) {                           // e-mail confirmé mais questionnaire pas terminé
+      if (location.search.indexOf('demo') === -1) location.href = 'profil.html';
+      return;
+    }
+
+    /* Membre connecté : on saute l'accueil marketing et on remplit l'onglet Profil */
+    if (location.search.indexOf('demo') === -1) enterApp();
+
+    const prenom = profil.prenom || 'Moi';
+    const age = profil.date_naissance ? calculerAge(profil.date_naissance) : '';
+    document.getElementById('me-nom').textContent = prenom + (age ? ', ' + age : '');
+    const lieux = { resident: 'Habitant·e de La Réunion', vacances: 'En vacances à La Réunion', bientot: 'Bientôt à La Réunion' };
+    document.getElementById('me-lieu').textContent = '📍 ' + (profil.ville ? profil.ville + ' · ' : '') + (lieux[profil.situation] || 'La Réunion');
+
+    const type = PROFILS_TYPES[profil.profil_type];
+    if (type) document.getElementById('me-badge').textContent = type.emoji + ' Profil ' + type.label + ' · 🌱 Membre fondateur';
+
+    if (profil.description) {
+      const d = document.getElementById('me-description');
+      d.textContent = '« ' + profil.description + ' »'; d.style.display = 'block';
+    }
+    if (profil.interets && profil.interets.length) {
+      const zone = document.getElementById('me-interets');
+      zone.innerHTML = profil.interets.map(id => {
+        const i = INTERETS.find(x => x.id === id);
+        return i ? '<span style="font-size:12.5px;background:var(--blush);border:1px solid var(--line);padding:5px 11px;border-radius:999px">' + i.emoji + ' ' + i.label + '</span>' : '';
+      }).join('');
+      zone.style.display = 'flex';
+    }
+
+    /* Avatar ou photo dans le rond du profil */
+    const circ = document.getElementById('me-circ');
+    if (profil.avatar) { circ.innerHTML = renderAvatar(profil.avatar); circ.style.overflow = 'hidden'; }
+    else if (profil.photos && profil.photos.length) {
+      const { data } = await sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0], 3600);
+      if (data) { circ.innerHTML = '<img src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; circ.style.overflow = 'hidden'; }
+    } else circ.textContent = prenom[0] || '🙂';
+
+    /* Lignes de réglages adaptées au membre connecté */
+    document.getElementById('row-connexion').style.display = 'none';
+    document.getElementById('row-compte').style.display = '';
+    document.getElementById('row-modifier').onclick = () => location.href = 'profil.html';
+  } catch (e) { console.warn('session:', e); }
+})();
 </script>
 </body>
 </html>
