@@ -150,6 +150,15 @@ body{
 #deck .empty .big{font-size:52px}
 #deck .empty b{color:var(--ink);font-size:18px}
 
+/* Petit mot d'accueil quand un membre revient (pilule qui descend du haut) */
+#retour{position:absolute;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%) translateY(-90px);z-index:70;
+  background:#fff;border:2px solid var(--gold);border-radius:999px;box-shadow:var(--shadow-md);
+  padding:9px 18px 9px 10px;display:flex;align-items:center;gap:9px;font-weight:600;font-size:14.5px;color:var(--ink);
+  max-width:90%;transition:transform .55s cubic-bezier(.3,1.35,.4,1)}
+#retour img{width:30px;flex:0 0 auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.15))}
+#retour span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#retour.show{transform:translateX(-50%) translateY(0)}
+
 /* Guide du premier passage : glisser à droite = je matche, à gauche = je passe */
 #swipehint{position:absolute;inset:6px 16px 10px;z-index:45;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
   background:linear-gradient(160deg,rgba(8,18,50,.93),rgba(30,20,60,.93));border-radius:26px;color:#fff;padding:26px 20px;text-align:center}
@@ -617,6 +626,7 @@ body{
   </div>
 
   <div class="toast" id="toast"></div>
+  <div id="retour"><img src="logo-mascotte.png" alt=""><span id="retour-txt"></span></div>
 </div>
 
 <script>
@@ -991,6 +1001,27 @@ if(location.search.indexOf('demo')!==-1)enterApp();
     if (location.search.indexOf('demo') === -1) enterApp();
 
     const prenom = profil.prenom || 'Moi';
+
+    /* Petit mot d'accueil personnalisé selon le temps d'absence */
+    try {
+      const cle = 'cupidon_visite_' + session.user.id;
+      const derniere = +localStorage.getItem(cle) || 0;
+      localStorage.setItem(cle, Date.now());
+      if (derniere) {
+        const mins = (Date.now() - derniere) / 60000;
+        let msg;
+        if (mins < 45)            msg = 'Re-bonjour ' + prenom + ' ! Tu n\'es jamais bien loin 😄';
+        else if (mins < 60 * 8)   msg = 'Ça fait plaisir de te revoir, ' + prenom + ' 💛';
+        else if (mins < 60 * 48)  msg = 'De retour, ' + prenom + ' ? On t\'attendait 😊';
+        else                      msg = prenom + ', tu nous as manqué… Bon retour ! 💘';
+        setTimeout(() => {
+          document.getElementById('retour-txt').textContent = msg;
+          const r = document.getElementById('retour');
+          r.classList.add('show');
+          setTimeout(() => r.classList.remove('show'), 5200);
+        }, 700);
+      }
+    } catch (e) { /* jamais bloquant */ }
     const age = profil.date_naissance ? calculerAge(profil.date_naissance) : '';
     document.getElementById('me-nom').textContent = prenom + (age ? ', ' + age : '');
     const lieux = { resident: 'Habitant·e de La Réunion', vacances: 'En vacances à La Réunion', bientot: 'Bientôt à La Réunion' };
