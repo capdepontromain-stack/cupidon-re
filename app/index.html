@@ -370,8 +370,8 @@ body{
         <div class="lcard" style="border-color:rgba(242,194,0,.55)">
           <h3>💍 Envie d'être accompagné·e ? Parle à l'équipe</h3>
           <p>Cupidon, c'est aussi une <b>agence matrimoniale</b> : un <b>premier rendez-vous téléphonique offert</b> pour faire connaissance, puis un accompagnement personnalisé pour trouver la bonne personne (forfaits de <b>490 € à 1 290 €</b>, contrat clair, sans surprise).</p>
-          <a href="tel:+262693817882" class="btn btn-gold" style="display:block;text-align:center;margin-top:14px;text-decoration:none;font-size:15.5px;white-space:nowrap;color:#3A2C00">📞 Appeler — 06 93 81 78 82</a>
-          <p style="font-size:12.5px;color:#C9D6F5;margin-top:8px;text-align:center">Du <b>lundi au vendredi, de 9 h à 17 h</b> · En dehors de ces horaires, <a href="https://cupidon.re/#contact" target="_blank" style="color:var(--gold-lt)">écris-nous, on te rappelle</a>.</p>
+          <a href="mailto:contact@pullup.re" onclick="contacterEquipe();return false" class="btn btn-gold" style="display:block;text-align:center;margin-top:14px;text-decoration:none;font-size:15px;color:#3A2C00">✉️ Écrire à l'équipe — contact@pullup.re</a>
+          <p style="font-size:12.5px;color:#C9D6F5;margin-top:8px;text-align:center">Indique-nous tes <b>jours et créneaux de disponibilité</b> : un membre de l'équipe te rappelle.</p>
         </div>
         <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je prends ma place gratuite 🎁</button>
       </div>
@@ -519,7 +519,7 @@ body{
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>Gratuit jusqu'au 31 octobre (ouverture), puis 10 €/mois à vie</small></span></button>
         <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, avatar, centres d'intérêt</small></span></button>
         <button class="setrow" id="row-compte" style="display:none" onclick="location.href='compte.html'"><span class="ico">🛡️</span><span>Mon compte & sécurité<small>E-mail, mot de passe, appareils, mes données</small></span></button>
-        <button class="setrow" onclick="location.href='tel:+262693817882'"><span class="ico">💍</span><span><b>Parler à l'équipe Cupidon</b><small>Agence matrimoniale · 1ᵉʳ rendez-vous téléphonique offert · 06 93 81 78 82, lun–ven 9 h–17 h</small></span></button>
+        <button class="setrow" onclick="contacterEquipe()"><span class="ico">💍</span><span><b>Parler à l'équipe Cupidon</b><small>Agence matrimoniale · 1ᵉʳ rendez-vous téléphonique offert · Écris-nous : contact@pullup.re</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
         <button class="setrow" onclick="window.open('cgu.html','_blank')"><span class="ico">📄</span><span>Conditions d'utilisation<small>Règles du service, tarifs, rétractation</small></span></button>
         <button class="setrow" onclick="window.open('confidentialite.html','_blank')"><span class="ico">🔒</span><span>Politique de confidentialité<small>Tes données, tes droits (RGPD)</small></span></button>
@@ -663,6 +663,13 @@ function enterApp(){
 function fermerGuide(clic){
   localStorage.setItem('cupidon_guide_vu','oui');
   document.getElementById('swipehint').classList.remove('show');
+}
+/* Écrire à l'agence matrimoniale : e-mail pré-rempli, la personne n'a plus
+   qu'à indiquer ses disponibilités pour être rappelée. */
+function contacterEquipe(){
+  const sujet=encodeURIComponent('Premier rendez-vous téléphonique — Cupidon.re');
+  const corps=encodeURIComponent('Bonjour,\n\nJe souhaite être rappelé(e) pour le premier rendez-vous téléphonique offert.\n\nMes disponibilités :\n- Jour(s) : \n- Créneau (matin / après-midi / soir) : \n- Mon numéro de téléphone : \n\nMerci !');
+  location.href='mailto:contact@pullup.re?subject='+sujet+'&body='+corps;
 }
 
 /* Compte à rebours : jours restants de l'offre gratuite (jusqu'au 31 octobre inclus) */
