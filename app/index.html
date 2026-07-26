@@ -347,12 +347,15 @@ body{
       <div class="field"><label>Ton e-mail</label><input id="su-email" type="email" placeholder="toi@email.re" autocomplete="off"></div>
       <div class="field"><label>Tes alertes messages</label>
         <div class="chips">
-          <button class="chip on" id="chip-mail" onclick="pickNotif('mail')">📧 E-mail</button>
+          <button class="chip on" id="chip-app" onclick="pickNotif('app')">📱 Dans l'appli</button>
+          <button class="chip" id="chip-mail" onclick="pickNotif('mail')">📧 E-mail</button>
           <button class="chip" id="chip-wa" onclick="pickNotif('wa')">💬 WhatsApp</button>
         </div>
+        <p style="font-size:12px;color:#93A3CF;margin-top:7px">« Dans l'appli » = une simple pastille sur l'onglet Matchs, rien d'autre. Tu pourras changer à tout moment.</p>
       </div>
       <div class="field" id="wa-field" style="display:none"><label>Ton numéro WhatsApp</label><input id="su-tel" type="tel" placeholder="0692 12 34 56"></div>
-      <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">Dès que quelqu'un t'envoie un message, tu reçois une alerte : tu ne loupes rien. Ton e-mail ne sert qu'à ça — jamais de pub. <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Comment tes données sont protégées</a></p>
+      <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">📩 <b style="color:#C9D6F5">À l'ouverture, tu recevras un e-mail de validation</b> : un clic sur le lien, et ton accès s'ouvre automatiquement. C'est une protection simple : un seul profil par personne, pas de faux comptes.</p>
+      <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">Ton e-mail ne sert qu'aux alertes et à la validation — jamais de pub. <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Comment tes données sont protégées</a></p>
       <button class="btn btn-gold" id="su-btn" onclick="submitSignup()">Créer mon compte gratuit</button>
     </div>
   </section>
@@ -613,9 +616,10 @@ majCompteARebours();
 setInterval(majCompteARebours,1000);
 
 /* ───────── Inscription ───────── */
-let notifMode='mail';
+let notifMode='app';
 function pickNotif(mode){
   notifMode=mode;
+  document.getElementById('chip-app').classList.toggle('on',mode==='app');
   document.getElementById('chip-mail').classList.toggle('on',mode==='mail');
   document.getElementById('chip-wa').classList.toggle('on',mode==='wa');
   document.getElementById('wa-field').style.display=mode==='wa'?'':'none';
@@ -637,7 +641,7 @@ async function submitSignup(){
     });
     if(!res.ok&&res.status!==409)throw new Error('HTTP '+res.status); // 409 = e-mail déjà inscrit → on continue
     enterApp();
-    const alerte=notifMode==='wa'?'sur WhatsApp':'par e-mail';
+    const alerte=notifMode==='wa'?'sur WhatsApp':notifMode==='mail'?'par e-mail':'par une pastille directement dans l\'appli';
     document.getElementById('welcometext').textContent='Bravo '+p+', tu fais partie des tout premiers inscrits de cupidon.re ! Pour fêter l\'ouverture, tout est gratuit pour tout le monde du 1ᵉʳ août au 31 octobre — et comme membre fondateur, tu gardes ensuite le tarif de 10 €/mois à vie. Dès que quelqu\'un t\'écrit, tu reçois une alerte '+alerte+'. En attendant l\'ouverture, découvre la visite guidée (profils de démonstration).';
     document.getElementById('welcomeoverlay').classList.add('show');
   }catch(err){
