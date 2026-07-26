@@ -62,6 +62,9 @@ body{
 #onboard .scrollwrap{position:relative;flex:1;overflow-y:auto;min-height:0}
 #onboard .inner{min-height:100%;padding:calc(38px + env(safe-area-inset-top)) 28px 18px;display:flex;flex-direction:column;justify-content:flex-end;gap:14px}
 .datebanner{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:rgba(242,194,0,.16);border:1.5px solid var(--gold);color:var(--gold-lt);font-weight:600;font-size:13.5px;padding:8px 15px;border-radius:999px;backdrop-filter:blur(8px)}
+.lancement{align-self:flex-start;background:rgba(242,194,0,.15);border:1.5px solid var(--gold);border-radius:16px;padding:11px 15px;font-size:13.5px;color:var(--gold-lt);line-height:1.5;backdrop-filter:blur(8px)}
+.lancement b{color:#fff}
+.lancement span{display:block;font-size:12.5px;color:#DCE6FF;margin-top:4px;font-weight:400}
 .count-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px 18px;backdrop-filter:blur(10px)}
 .count-card .freebig{font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:var(--gold)}
 .count-card .freebig span{font-family:'Jost';font-weight:600;font-size:14.5px;color:#fff}
@@ -143,6 +146,9 @@ body{
 .card .tags span{font-size:12.5px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:5px 11px;border-radius:999px;backdrop-filter:blur(4px)}
 .card .bio{font-size:13.5px;color:#E7EDFF;margin-top:10px;line-height:1.45}
 .card .report{position:absolute;top:14px;right:14px;background:rgba(8,18,50,.5);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11.5px;padding:6px 11px;border-radius:999px;cursor:pointer;backdrop-filter:blur(4px)}
+.card .enligne{font-style:normal;font-family:'Jost';font-weight:600;font-size:11.5px;color:#5BE68F;background:rgba(62,217,124,.16);border:1px solid rgba(62,217,124,.55);padding:3px 10px;border-radius:999px;vertical-align:4px;margin-left:6px;white-space:nowrap}
+.bulle-ligne{position:absolute;left:14px;right:14px;bottom:42%;background:rgba(255,255,255,.96);color:var(--ink);font-size:12.5px;font-weight:500;line-height:1.45;padding:10px 14px;border-radius:14px;border:1.5px solid rgba(62,217,124,.6);box-shadow:0 10px 26px rgba(0,0,0,.18);opacity:0;transform:translateY(8px);transition:all .4s;pointer-events:none;z-index:5}
+.bulle-ligne.show{opacity:1;transform:translateY(0)}
 .stamp{position:absolute;top:34px;font-family:'Fraunces',serif;font-size:24px;font-weight:900;letter-spacing:1.5px;padding:6px 15px;border:4px solid;border-radius:12px;transform:rotate(-14deg);opacity:0;pointer-events:none;white-space:nowrap}
 .stamp.like{left:22px;color:#3ED97C;border-color:#3ED97C;transform:rotate(-14deg)}
 .stamp.nope{right:22px;color:#FF5A5A;border-color:#FF5A5A;transform:rotate(14deg)}
@@ -181,28 +187,49 @@ body{
 #swipehint .sh-cupi{width:74px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.4))}
 #swipehint .btn{width:auto;padding:13px 26px}
 
-/* Animation Cupidon (matche / passe) */
-#cupidanim{position:absolute;inset:0;pointer-events:none;z-index:30;overflow:hidden}
-#cupidanim .cupi,#cupidanim .fleche,#cupidanim .zzz{display:none;position:absolute}
-#cupidanim.like .cupi{display:block;left:-30px;top:33%;width:125px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.35));animation:cupifly 1.05s cubic-bezier(.3,.7,.4,1) forwards}
-#cupidanim.like .fleche{display:block;left:95px;top:35%;font-size:40px;opacity:0;animation:fleche .6s .35s ease-out forwards}
-@keyframes cupifly{0%{transform:translateX(-140px) rotate(-10deg);opacity:0}25%{opacity:1}60%{transform:translateX(36px) rotate(4deg)}100%{transform:translateX(54px);opacity:0}}
-@keyframes fleche{0%{transform:translate(0,0) scale(.7);opacity:1}80%{opacity:1}100%{transform:translate(230px,-46px) scale(1.3);opacity:0}}
-#cupidanim.pass .cupi{display:block;left:50%;margin-left:-55px;bottom:22%;width:110px;filter:grayscale(.85) opacity(.92);animation:cupisad 1.05s ease forwards}
-#cupidanim.pass .zzz{display:block;left:57%;bottom:36%;font-size:30px;opacity:0;animation:zzzup 1.05s .15s ease-out forwards}
-@keyframes cupisad{0%{transform:translateY(34px);opacity:0}30%{opacity:1;transform:translateY(0)}70%{transform:translateY(5px) rotate(14deg)}100%{transform:translateY(28px) rotate(20deg);opacity:0}}
-@keyframes zzzup{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(-36px);opacity:0}}
+/* ═══ Cupidons de la carte : à gauche = je matche (flèche vers le haut-droite),
+       à droite = je passe (flèche vers le bas-droite). Discrets au repos. ═══ */
+.card .bg{overflow:hidden}
+.card .cupi-g,.card .cupi-d{position:absolute;width:54px;opacity:.26;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3));pointer-events:none;transition:opacity .2s}
+.card .cupi-g{left:7%;top:37%}
+.card .cupi-d{right:7%;top:46%;transform:scaleX(-1)}
+.card .tir{position:absolute;font-size:27px;color:#FFD84D;opacity:0;pointer-events:none;text-shadow:0 0 12px rgba(255,216,77,.95);z-index:3}
+.card .tir i{position:absolute;left:-44px;top:52%;width:42px;height:2.5px;background:linear-gradient(90deg,transparent,rgba(255,216,77,.9));border-radius:2px}
+.card .tir-g{left:17%;top:41%;transform:rotate(-38deg)}
+.card .tir-d{right:20%;top:53%;transform:rotate(32deg)}
+.card .etin{position:absolute;opacity:0;font-size:17px;pointer-events:none;z-index:3}
+.card .etin.e1{left:40%;top:29%}
+.card .etin.e2{left:56%;top:21%}
+/* Je matche : le Cupidon de gauche bande son arc et décoche vers le haut-droite */
+.card.anim-like .cupi-g{opacity:1;animation:bander .3s ease}
+.card.anim-like .tir-g{animation:tirhaut .68s .1s cubic-bezier(.3,.7,.3,1) forwards}
+.card.anim-like .etin.e1{animation:etincelle .45s .38s ease forwards}
+.card.anim-like .etin.e2{animation:etincelle .45s .5s ease forwards}
+@keyframes bander{0%{transform:rotate(0)}45%{transform:rotate(-11deg) scale(1.12)}100%{transform:rotate(0)}}
+@keyframes tirhaut{0%{opacity:0;transform:rotate(-38deg) translateX(0)}12%{opacity:1}100%{opacity:0;transform:rotate(-38deg) translateX(210px)}}
+@keyframes etincelle{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:scale(.6)}}
+/* Je passe : le Cupidon de droite décoche tranquillement vers le bas-droite */
+.card.anim-pass .cupi-d{opacity:.95;animation:banderd .3s ease}
+.card.anim-pass .tir-d{animation:tirbas .62s .1s ease-in forwards}
+@keyframes banderd{45%{transform:scaleX(-1) rotate(12deg) scale(1.1)}100%{transform:scaleX(-1)}}
+@keyframes tirbas{0%{opacity:0;transform:rotate(32deg) translateX(0)}15%{opacity:.85}100%{opacity:0;transform:rotate(32deg) translateX(160px)}}
+/* Mode allégé : téléphones anciens ou animations réduites dans les réglages */
+@media (prefers-reduced-motion:reduce){
+  .card .cupi-g,.card .cupi-d,.card .tir,.card .etin{animation:none!important;opacity:0!important}
+  #swipehint .sh-col .fl{animation:none}
+}
 
 /* Boutons d'action */
 .deck-actions{display:flex;justify-content:center;align-items:flex-start;gap:20px;padding:12px 0 4px}
 .actwrap{display:flex;flex-direction:column;align-items:center;gap:5px}
 .actwrap>span{font-size:12.5px;font-weight:600;color:var(--muted)}
 .actwrap.matche>span{color:var(--wine-dk)}
-.act{border:0;cursor:pointer;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:var(--shadow-sm);transition:transform .12s}
-.act:active{transform:scale(.9)}
-.act.nope{width:60px;height:60px;font-size:26px;color:#FF5A5A;border:2px solid #FFD9D9}
-.act.like{width:70px;height:70px;font-size:30px;background:linear-gradient(135deg,var(--wine),var(--wine-dk));color:#fff;box-shadow:0 12px 30px rgba(246,1,0,.35)}
-.act.star{width:52px;height:52px;font-size:20px;color:#B8860B;border:2px solid var(--gold-lt)}
+.act{border:0;cursor:pointer;border-radius:50%;display:grid;place-items:center;background:#fff;box-shadow:0 4px 14px rgba(14,42,107,.09);transition:transform .12s ease,box-shadow .15s ease}
+.act:active{transform:scale(.86)}
+.act.coup{width:58px;height:58px;font-size:23px;background:linear-gradient(150deg,#FFF6D2,#FFE27A);border:2px solid var(--gold)}
+.act.nope{width:58px;height:58px;font-size:23px;background:#fff;border:2px solid #D9E0F0}
+.act.like{width:68px;height:68px;font-size:27px;background:linear-gradient(150deg,var(--wine),var(--wine-dk));box-shadow:0 8px 20px rgba(201,13,0,.28)}
+.act.like:active{box-shadow:0 4px 12px rgba(201,13,0,.3)}
 
 /* ===== Barre d'onglets ===== */
 .tabbar{display:flex;background:#fff;border-top:1px solid var(--line);padding:8px 6px calc(10px + env(safe-area-inset-bottom))}
@@ -253,8 +280,22 @@ body{
 .founder{display:inline-flex;align-items:center;gap:6px;background:rgba(242,194,0,.22);border:1px solid var(--gold);color:var(--gold-lt);font-size:12px;font-weight:600;padding:5px 13px;border-radius:999px;margin-top:9px}
 
 /* ===== Salons de discussion ===== */
-.topicpin{margin:0 20px 12px;background:linear-gradient(135deg,rgba(242,194,0,.18),rgba(246,1,0,.07));border:1.5px solid var(--gold);border-radius:16px;padding:12px 15px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.topicpin{margin:0 20px 12px;background:linear-gradient(135deg,rgba(242,194,0,.18),rgba(246,1,0,.07));border:1.5px solid var(--gold);border-radius:20px;padding:14px 17px;font-size:13.5px;color:var(--ink);line-height:1.5;box-shadow:0 6px 20px rgba(242,194,0,.14)}
 .topicpin b{color:var(--wine-dk)}
+.topicpin .t-tete{font-size:11.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#B8860B;margin-bottom:5px}
+.topicpin .t-q{font-family:'Fraunces',serif;font-weight:700;font-size:16.5px;line-height:1.3;color:var(--ink)}
+.topicpin .t-intro{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.5}
+
+/* ===== Page Matchs : bulles + boutons ===== */
+.sousmatch{font-family:'Fraunces',serif;font-size:16.5px;color:var(--ink);font-weight:600}
+.mvide{display:flex;flex-direction:column;width:100%}
+.mbulles{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 4px}
+.mbulles span{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 14px;font-size:13px;color:var(--ink-soft);font-weight:500;box-shadow:0 2px 10px rgba(14,42,107,.05)}
+.mboutons{display:flex;flex-direction:column;gap:9px;margin:14px 0 6px;width:100%}
+.mboutons button{font-family:'Jost';font-weight:700;font-size:15.5px;border-radius:16px;padding:15px;cursor:pointer;transition:transform .12s}
+.mboutons button:active{transform:scale(.98)}
+.mboutons .mb-plein{border:0;background:linear-gradient(135deg,var(--wine),var(--wine-dk));color:#fff;box-shadow:0 8px 22px rgba(201,13,0,.22)}
+.mboutons .mb-clair{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
 .room{display:flex;align-items:center;gap:14px;margin:0 20px 10px;padding:15px 16px;background:#fff;border:1.5px solid var(--line);border-radius:18px;cursor:pointer;font-family:'Jost';text-align:left;width:calc(100% - 40px)}
 .room:active{background:var(--blush)}
 .room .re{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:var(--blush);flex-shrink:0}
@@ -336,9 +377,9 @@ body{
             <div class="wordsub">Rencontres · La Réunion · 974</div>
           </div>
         </a>
-        <h1>Trouve l'amour<br>au pied <em>du volcan</em></h1>
+        <div class="lancement">🌋 <b>Ouverture officielle le 1ᵉʳ août 2026</b> · Les 3 premiers mois sont offerts.<span>Vous faites partie des premiers membres de Cupidon.re, et nous vous en remercions. Notre équipe travaille activement pour agrandir rapidement la communauté.</span></div>
+        <h1>Faites de belles rencontres<br>au pied <em>du volcan</em></h1>
         <p class="lead">Rencontres amoureuses, <b>amicales</b> et activités 100 % péi — profils vérifiés, en toute simplicité.</p>
-        <div class="datebanner">🌋 Ouverture le 1ᵉʳ août</div>
         <div class="count-card">
           <div class="freebig">🎉 Pour fêter l'ouverture <span>: 3 mois gratuits pour tout le monde</span></div>
           <div class="cd-label" id="cd-label">⏳ Il reste, pour profiter de l'offre d'ouverture :</div>
@@ -362,7 +403,7 @@ body{
       <div class="landing">
         <div class="lcard">
           <h3>💬 Chat en direct, en groupe — privé si tu veux</h3>
-          <p>Participe aux <b>salons de discussion en direct</b> : le salon général 974 et les salons par tranche d'âge, avec un sujet de conversation chaque semaine. Pour trouver l'amour… <b>ou simplement te faire des amis</b> et partager des activités péi. Et on ne passe en privé <b>que si les deux le veulent</b>.</p>
+          <p>Participe aux <b>salons de discussion en direct</b> : le salon général 974 et les salons par tranche d'âge, avec un sujet de conversation chaque semaine. Pour faire de belles rencontres… <b>amoureuses ou simplement amicales</b>, et partager des activités péi. Et on ne passe en privé <b>que si les deux le veulent</b>.</p>
         </div>
         <div class="lcard">
           <h3>🎉 Pour fêter l'ouverture : 3 mois gratuits pour tous</h3>
@@ -424,20 +465,19 @@ body{
     <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. L'appli se remplit chaque jour — et dès qu'on t'écrit, tu es prévenu·e par e-mail ou WhatsApp.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
     <div id="deckwrap">
       <div id="deck"></div>
-      <div id="cupidanim"><img class="cupi" src="logo-mascotte.png" alt=""><div class="fleche">💘</div><div class="zzz">💤</div></div>
       <div id="swipehint">
         <img class="sh-cupi" src="logo-mascotte.png" alt="">
         <div class="sh-cols">
-          <div class="sh-col nope"><div class="fl">←</div><b>JE PASSE</b><p>Glisse la carte<br>vers la <b>gauche</b> :<br>Cupidon range son arc 💤</p></div>
-          <div class="sh-col like"><div class="fl">→</div><b>JE MATCHE 💘</b><p>Glisse la carte<br>vers la <b>droite</b> :<br>Cupidon décoche sa flèche !</p></div>
+          <div class="sh-col nope"><div class="fl">←</div><b>JE PASSE</b><p>Glisse la carte<br>vers la <b>gauche</b> :<br>Cupidon garde sa flèche 😉</p></div>
+          <div class="sh-col like"><div class="fl">→</div><b>JE MATCHE</b><p>Glisse la carte<br>vers la <b>droite</b> :<br>Cupidon décoche sa flèche ✨</p></div>
         </div>
         <p class="sh-note">Tu peux aussi toucher les boutons ✕ « Je passe » et ❤ « Je matche » en bas de l'écran.</p>
         <button class="btn btn-gold" onclick="fermerGuide(true)">C'est compris, je découvre 🌋</button>
       </div>
       <div class="deck-actions">
-        <div class="actwrap"><button class="act star" title="Super matche" onclick="superLike()">⭐</button><span>Super</span></div>
-        <div class="actwrap"><button class="act nope" title="Je passe" onclick="swipeTop(false)">✕</button><span>Je passe</span></div>
-        <div class="actwrap matche"><button class="act like" title="Je matche" onclick="swipeTop(true)">❤</button><span>Je matche</span></div>
+        <div class="actwrap"><button class="act coup" title="Ce profil te plaît beaucoup" onclick="superLike()">⚡</button><span>Super</span></div>
+        <div class="actwrap"><button class="act nope" title="Voir le profil suivant" onclick="swipeTop(false)">👋</button><span>Je passe</span></div>
+        <div class="actwrap matche"><button class="act like" title="Je suis intéressé·e" onclick="swipeTop(true)">🏹</button><span>Je matche</span></div>
       </div>
     </div>
     <nav class="tabbar">
@@ -450,9 +490,9 @@ body{
 
   <!-- ══════════ MATCHS ══════════ -->
   <section class="screen" id="matches">
-    <div class="appbar"><div class="brand"><a href="../" title="Retour à l'accueil cupidon.re"><img src="logo-mascotte.png" alt="Cupidon"></a><span class="serif">Mes matchs</span></div></div>
+    <div class="appbar"><div class="brand"><a href="../" title="Retour à l'accueil cupidon.re"><img src="logo-mascotte.png" alt="Cupidon"></a><span class="serif">Vos matchs</span></div></div>
     <div class="scrolly">
-      <div class="pagehead"><p>Quand vous vous aimez tous les deux, c'est un match 💛</p></div>
+      <div class="pagehead"><p class="sousmatch">Quand vous vous plaisez tous les deux, c'est un match !</p></div>
       <div class="match-strip" id="matchstrip"></div>
       <div class="pagehead"><h2>Messages</h2></div>
       <div id="convolist"></div>
@@ -632,11 +672,11 @@ body{
 <script>
 /* ───────── Données de démonstration (profils fictifs) ───────── */
 const PROFILES=[
- {n:"Maëva",a:27,v:"Saint-Pierre",e:"🌺",g:"linear-gradient(160deg,#F0699B,#B0336B)",t:["Randonnée","Maloya","Cuisine créole"],b:"Toujours partante pour un lever de soleil au Maïdo ou un pique-nique la ravine."},
+ {n:"Maëva",a:27,v:"Saint-Pierre",e:"🌺",g:"linear-gradient(160deg,#F0699B,#B0336B)",t:["Randonnée","Maloya","Cuisine créole"],b:"Toujours partante pour un lever de soleil au Maïdo ou un pique-nique la ravine.",on:true},
  {n:"Kévin",a:31,v:"Le Tampon",e:"🏄",g:"linear-gradient(160deg,#3B7BD4,#153E8A)",t:["Surf","Moto","Football"],b:"Plaine des Cafres dans le cœur, l'océan dans la tête. Cherche une personne vraie."},
  {n:"Laura",a:26,v:"Saint-Denis",e:"📚",g:"linear-gradient(160deg,#9A6BD4,#5B2E9E)",t:["Lecture","Voyages","Yoga"],b:"Dionysienne curieuse de tout. Un bon carri et une bonne discussion, et je suis heureuse."},
  {n:"Jonathan",a:29,v:"Saint-Paul",e:"🎣",g:"linear-gradient(160deg,#2FA37A,#14614A)",t:["Pêche","VTT","Barbecue"],b:"Simple et souriant. Le dimanche c'est plage de l'Ermitage avec les amis."},
- {n:"Émeline",a:24,v:"Saint-Leu",e:"🌊",g:"linear-gradient(160deg,#F2A03D,#C55A11)",t:["Plongée","Photo","Danse"],b:"Née face au lagon. Je cherche quelqu'un pour explorer l'île, du volcan aux cascades."},
+ {n:"Émeline",a:24,v:"Saint-Leu",e:"🌊",g:"linear-gradient(160deg,#F2A03D,#C55A11)",t:["Plongée","Photo","Danse"],b:"Née face au lagon. Je cherche quelqu'un pour explorer l'île, du volcan aux cascades.",on:true},
  {n:"Dimitri",a:33,v:"Saint-Joseph",e:"🌋",g:"linear-gradient(160deg,#E14848,#8F1616)",t:["Trail","Volcan","Musique"],b:"Le Grand Raid deux fois. Troisième défi : trouver la bonne personne."},
  {n:"Anaïs",a:28,v:"L'Étang-Salé",e:"🐎",g:"linear-gradient(160deg,#43B8C9,#1A6E7E)",t:["Équitation","Forêt","Cinéma"],b:"Balades dans la forêt de l'Étang-Salé et soirées film. Douce mais avec du caractère."},
  {n:"Loïc",a:30,v:"Sainte-Marie",e:"🎸",g:"linear-gradient(160deg,#6B7ED9,#2C3E8F)",t:["Guitare","Séga","Cuisine"],b:"Musicien le week-end. Je te jouerai un morceau si tu ramènes les bonbons piment."}
@@ -729,17 +769,34 @@ function renderDeck(){
     const c=document.createElement('div');c.className='card';
     c.style.transform=top?'':'scale('+(0.94+0.03*i)+') translateY('+((arr.length-1-i)*12)+'px)';
     c.innerHTML=
-      '<div class="bg" style="background:'+p.g+'"><div class="initial">'+p.n[0]+'</div><div class="emoji">'+p.e+'</div></div>'+
+      '<div class="bg" style="background:'+p.g+'"><div class="initial">'+p.n[0]+'</div><div class="emoji">'+p.e+'</div>'+
+      '<img class="cupi-g" src="logo-mascotte.png" alt=""><img class="cupi-d" src="logo-mascotte.png" alt="">'+
+      '<div class="tir tir-g">➳<i></i></div><div class="tir tir-d">➳<i></i></div>'+
+      '<span class="etin e1">✨</span><span class="etin e2">✨</span></div>'+
       '<div class="veil"></div>'+
       '<button class="report" onclick="event.stopPropagation();document.getElementById(\'reportoverlay\').classList.add(\'show\')">🚩 Signaler</button>'+
       '<div class="stamp like">JE MATCHE 💘</div><div class="stamp nope">JE PASSE</div>'+
-      '<div class="info"><h2>'+p.n+', <span>'+p.a+'</span></h2>'+
+      '<div class="info"><h2>'+p.n+', <span>'+p.a+'</span>'+(p.on?' <em class="enligne">● En ligne</em>':'')+'</h2>'+
       '<div class="loc">📍 '+p.v+' · La Réunion</div>'+
       '<div class="tags">'+p.t.map(t=>'<span>'+t+'</span>').join('')+'</div>'+
       '<div class="bio">'+p.b+'</div></div>';
     if(top) attachDrag(c);
     deck.appendChild(c);
   });
+
+  /* Bulle discrète si la personne affichée est en ligne (une seule fois par visite) */
+  const haut=remaining[0];
+  if(haut&&haut.on&&!sessionStorage.getItem('cupidon_bulle_ligne')){
+    sessionStorage.setItem('cupidon_bulle_ligne','oui');
+    const top=deck.lastElementChild;
+    if(top){
+      const b=document.createElement('div');b.className='bulle-ligne';
+      b.textContent='🟢 Cette personne est connectée en ce moment. C\'est peut-être le bon moment pour lui dire bonjour !';
+      top.appendChild(b);
+      setTimeout(()=>b.classList.add('show'),700);
+      setTimeout(()=>{b.classList.remove('show');setTimeout(()=>b.remove(),400);},6500);
+    }
+  }
 }
 function attachDrag(card){
   let sx=0,sy=0,dx=0,dragging=false;
@@ -759,22 +816,24 @@ function attachDrag(card){
     dx=0;
   });
 }
-let cupiTimer=null;
-function playCupidAnim(liked){
-  const el=document.getElementById('cupidanim');
-  el.className='';void el.offsetWidth; // relance l'animation à chaque swipe
-  el.className=liked?'like':'pass';
-  clearTimeout(cupiTimer);
-  cupiTimer=setTimeout(()=>{el.className='';},1150);
+/* Tir de flèche du petit Cupidon de la carte (gauche = matche, droite = passe).
+   Mode allégé automatique si l'utilisateur a réduit les animations. */
+function animsReduites(){return window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;}
+function animerTir(card,liked){
+  if(animsReduites())return 0;
+  card.classList.add(liked?'anim-like':'anim-pass');
+  return 280;                       // petit temps pour voir le Cupidon décocher
 }
 function flyOut(card,liked){
-  playCupidAnim(liked);
-  card.style.transition='transform .4s ease, opacity .4s';
-  card.style.transform='translate('+(liked?600:-600)+'px,-40px) rotate('+(liked?28:-28)+'deg)';
-  card.style.opacity=0;
+  const delai=animerTir(card,liked);
+  setTimeout(()=>{
+    card.style.transition='transform .4s ease, opacity .4s';
+    card.style.transform='translate('+(liked?600:-600)+'px,-40px) rotate('+(liked?28:-28)+'deg)';
+    card.style.opacity=0;
+  },delai);
   const p=PROFILES[deckIndex];
   deckIndex++;
-  setTimeout(()=>{renderDeck();if(liked)maybeMatch(p);},380);
+  setTimeout(()=>{renderDeck();if(liked)maybeMatch(p);},delai+380);
 }
 function swipeTop(liked){
   const cards=document.querySelectorAll('#deck .card');
@@ -784,8 +843,18 @@ function swipeTop(liked){
   flyOut(top,liked);
 }
 function superLike(){
-  document.getElementById('premiumtext').textContent='Le Super j\'aime est inclus dans toutes les options — et tout est offert jusqu\'au 31 octobre pour fêter l\'ouverture !';
-  document.getElementById('premiumoverlay').classList.add('show');
+  const rest=+(localStorage.getItem('cupidon_supers')??3);
+  /* Première fois : petit message court et positif */
+  if(!localStorage.getItem('cupidon_supers_vu')){
+    localStorage.setItem('cupidon_supers_vu','oui');
+    document.getElementById('premiumtext').innerHTML='<b>⚡ 3 Super j\'aime te sont offerts. À toi d\'en faire bon usage !</b><br><span style="font-size:13px;color:var(--muted);display:block;margin-top:6px">Cupidon.re est une nouvelle application. Notre équipe travaille activement pour accueillir rapidement de nombreux nouveaux membres.</span>';
+    document.getElementById('premiumoverlay').classList.add('show');
+    return;
+  }
+  if(rest<=0){toast('Tu as utilisé tes 3 Super j\'aime offerts — d\'autres arrivent bientôt 😉');return;}
+  localStorage.setItem('cupidon_supers',rest-1);
+  toast('⚡ Super j\'aime envoyé ! Il t\'en reste '+(rest-1));
+  swipeTop(true);
 }
 function maybeMatch(p){
   // En démo : une personne sur deux te « matche » en retour
@@ -793,7 +862,7 @@ function maybeMatch(p){
     matches.push(p);convos[p.n]=convos[p.n]||[];
     document.getElementById('matchcirc').textContent=p.n[0];
     document.getElementById('matchcirc').style.background=p.g;
-    document.getElementById('matchtext').textContent='Toi et '+p.n+' vous êtes aimés mutuellement.';
+    document.getElementById('matchtext').textContent='Toi et '+p.n+', vous vous plaisez — c\'est un match !';
     currentChat=p;
     document.getElementById('matchoverlay').classList.add('show');
     document.getElementById('matchdot').classList.add('show');
@@ -805,7 +874,19 @@ function openChatFromMatch(){hideOverlay('matchoverlay');openChat(currentChat.n)
 function renderMatches(){
   const strip=document.getElementById('matchstrip'),list=document.getElementById('convolist');
   if(!matches.length){
-    strip.innerHTML='<p style="font-size:13.5px;color:var(--muted);padding:4px 0">Pas encore de match — c\'est le lancement, ça arrive vite ! Continue à découvrir 🌋 ou discute dans les Salons 💬 (tu seras prévenu·e par e-mail au moindre message).</p>';
+    strip.innerHTML=
+      '<div class="mvide">'+
+      '<div class="mbulles">'+
+      '<span>🌋 Application ouverte le 1ᵉʳ août 2026</span>'+
+      '<span>🌱 La communauté grandit chaque jour</span>'+
+      '<span>👀 Continue à découvrir de nouveaux profils</span>'+
+      '<span>💬 Discute dans les Salons</span>'+
+      '<span>📩 Tu seras averti·e par e-mail au moindre nouveau message</span>'+
+      '</div>'+
+      '<div class="mboutons">'+
+      '<button class="mb-plein" onclick="goTab(\'discover\',document.querySelector(\'[data-tab=discover]\'))">Découvrir des profils</button>'+
+      '<button class="mb-clair" onclick="goTab(\'salons\',document.querySelector(\'[data-tab=salons]\'))">Accéder aux Salons</button>'+
+      '</div></div>';
     list.innerHTML='';return;
   }
   strip.innerHTML=matches.map(p=>
@@ -865,18 +946,28 @@ const TOPICS=[
  "Quelle chanson péi te met tout de suite de bonne humeur ?"
 ];
 function topicOfWeek(){return TOPICS[Math.floor(Date.now()/6048e5)%TOPICS.length];}
+/* Sujet mis en avant cette semaine (carte moderne dans les Salons) */
+const TOPIC_VEDETTE={
+ q:"Quels sont les lieux de La Réunion à connaître absolument ?",
+ intro:"Plage, cascade, randonnée, restaurant, point de vue ou lieu insolite… Quel est l'endroit de La Réunion que tout le monde devrait connaître au moins une fois ?"
+};
+function topicHTML(){
+ return '<div class="t-tete">💡 Sujet de la semaine</div>'+
+        '<div class="t-q">«&nbsp;'+TOPIC_VEDETTE.q+'&nbsp;»</div>'+
+        '<div class="t-intro">'+TOPIC_VEDETTE.intro+'</div>';
+}
 const ROOMS=[
  {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble",on:23},
  {id:'18-25',n:'Salon 18-25 ans',e:'🎓',d:'La relève péi',on:9},
  {id:'26-35',n:'Salon 26-35 ans',e:'🌺',d:'La génération motivée',on:14},
  {id:'36-45',n:'Salon 36-45 ans',e:'🍹',d:'La belle époque',on:7},
- {id:'46plus',n:'Salon 46 ans et +',e:'🌅',d:"Jamais trop tard pour aimer",on:5}
+ {id:'46plus',n:'Salon 46 ans et +',e:'🌅',d:"Jamais trop tard pour se rencontrer",on:5}
 ];
 const GROUPMSGS={
  general:[
   {a:'Maëva',t:'Bonzour tout le monde ! Qui a vu le lever de soleil ce matin ? 😍'},
   {a:'Kévin',t:'Moi ! Plaine des Cafres, brouillard zéro, un régal 🌋'},
-  {a:'Laura',t:'Pour le sujet de la semaine : équipe Maïdo évidemment !'},
+  {a:'Laura',t:'Pour le sujet de la semaine : le lever de soleil au Maïdo, évidemment !'},
   {a:'Dimitri',t:'Alors là non, coucher de soleil à l\'Ermitage, y a pas photo 😄'},
   {a:'Émeline',t:'Les deux la même journée, et le pique-nique au milieu 🤙'}
  ],
@@ -896,7 +987,7 @@ const GROUP_REPLIES=["Tout à fait d'accord ! 😄","Haha excellent !","Bienvenu
 let currentRoom=null,dmTarget=null,roomPing=null;
 
 function renderSalons(){
-  document.getElementById('topicpin').innerHTML='💡 <b>Sujet de la semaine :</b> «&nbsp;'+topicOfWeek()+'&nbsp;»';
+  document.getElementById('topicpin').innerHTML=topicHTML();
   document.getElementById('roomlist').innerHTML=ROOMS.map(r=>
    '<button class="room" onclick="openRoom(\''+r.id+'\')"><span class="re">'+r.e+'</span><span class="rt"><b>'+r.n+'</b><span>'+r.d+'</span></span><span class="rn">● '+r.on+' en ligne</span></button>').join('');
 }
@@ -906,7 +997,7 @@ function openRoom(id){
   document.getElementById('gcname').textContent=currentRoom.n;
   document.getElementById('gcicon').textContent=currentRoom.e;
   document.getElementById('gccount').textContent=currentRoom.on+' en ligne';
-  document.getElementById('gctopic').innerHTML='💡 <b>Sujet de la semaine :</b> «&nbsp;'+topicOfWeek()+'&nbsp;»';
+  document.getElementById('gctopic').innerHTML=topicHTML();
   renderGroupMsgs();showScreen('groupchat');
   clearTimeout(roomPing);
   roomPing=setTimeout(()=>{
