@@ -60,7 +60,7 @@ p.sous{color:var(--muted);font-size:14.5px;line-height:1.55;margin-top:4px}
   padding:14px 16px;outline:none;width:100%;transition:border .15s, box-shadow .15s;
 }
 .field input:focus,.field select:focus{border-color:var(--lagon);box-shadow:0 0 0 3px rgba(26,167,196,.15)}
-.field input.err{border-color:var(--err);box-shadow:0 0 0 3px rgba(217,48,37,.12)}
+.field input.err,.field select.err{border-color:var(--err);box-shadow:0 0 0 3px rgba(217,48,37,.12)}
 .field .msg-err{font-size:13px;color:var(--err);display:none}
 .field .msg-err.show{display:block}
 

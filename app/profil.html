@@ -31,8 +31,12 @@
     <div class="etape" id="q-naissance">
       <div><h1 class="titre">Ta date de naissance 🎂</h1><p class="sous">L'appli est réservée aux 18 ans et plus. Seul ton âge sera affiché, jamais ta date complète.</p></div>
       <div class="field">
-        <label for="naissance">Date de naissance</label>
-        <input type="date" id="naissance">
+        <label>Date de naissance</label>
+        <div style="display:flex;gap:8px">
+          <select id="n-jour" style="flex:1" aria-label="Jour"></select>
+          <select id="n-mois" style="flex:1.6" aria-label="Mois"></select>
+          <select id="n-annee" style="flex:1.2" aria-label="Année"></select>
+        </div>
         <p class="msg-err" id="err-naissance">Il faut avoir au moins 18 ans pour t'inscrire.</p>
       </div>
       <button class="btn btn-gold" id="btn-naissance">Continuer</button>
@@ -193,13 +197,29 @@ document.querySelectorAll('.choix').forEach(bloc => {
   }));
 });
 
-/* ───── Naissance ───── */
+/* ───── Naissance : trois listes simples (jour / mois / année) ───── */
+const MOIS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const selJour = document.getElementById('n-jour'), selMois = document.getElementById('n-mois'), selAnnee = document.getElementById('n-annee');
+selJour.innerHTML = '<option value="">Jour</option>' + Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+selMois.innerHTML = '<option value="">Mois</option>' + MOIS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+const anneeMax = new Date().getFullYear() - 18;                 // 18 ans minimum
+selAnnee.innerHTML = '<option value="">Année</option>' + Array.from({length:82},(_,i)=>`<option value="${anneeMax-i}">${anneeMax-i}</option>`).join('');
+
 document.getElementById('btn-naissance').addEventListener('click', () => {
-  const v = document.getElementById('naissance').value;
-  const champ = document.getElementById('naissance');
-  const age = v ? calculerAge(v) : -1;
-  const mauvais = !v || age < 18 || age > 99;
-  champ.classList.toggle('err', mauvais);
+  const j = +selJour.value, m = +selMois.value, a = +selAnnee.value;
+  let mauvais = !j || !m || !a;
+  let v = null;
+  if (!mauvais) {
+    const d = new Date(a, m - 1, j);
+    /* rejette les dates impossibles (ex. 31 février) */
+    if (d.getFullYear() !== a || d.getMonth() !== m - 1 || d.getDate() !== j) mauvais = true;
+    else {
+      v = a + '-' + String(m).padStart(2,'0') + '-' + String(j).padStart(2,'0');
+      const age = calculerAge(v);
+      if (age < 18 || age > 99) mauvais = true;
+    }
+  }
+  [selJour, selMois, selAnnee].forEach(s => s.classList.toggle('err', mauvais));
   document.getElementById('err-naissance').classList.toggle('show', mauvais);
   if (mauvais) return;
   rep.date_naissance = v;
