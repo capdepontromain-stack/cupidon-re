@@ -310,6 +310,7 @@ body{
         </label>
         <button class="btn btn-gold" id="startbtn" disabled>Je prends ma place gratuite</button>
         <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="enterApp()">J'ai déjà un compte</button>
+        <button class="btn" style="background:none;color:#AAB9E3;font-size:14px;padding:6px" onclick="enterApp()">👀 Accès démo — partenaires & presse</button>
         <div class="scrollhint">▼ Fais défiler pour en savoir plus</div>
       </div>
       <div class="landing">
@@ -408,6 +409,7 @@ body{
       <button class="back" onclick="showScreen('matches')">‹</button>
       <div class="circ" id="chatavatar">M</div>
       <div><b id="chatname">Maëva</b><small>En ligne</small></div>
+      <button class="icon-btn" style="margin-left:auto" onclick="blockFromChat()" title="Bloquer cette personne">🚫</button>
     </div>
     <div id="msgs"></div>
     <div class="chatbox">
@@ -551,6 +553,7 @@ body{
       <h3>Signaler ce profil</h3>
       <p>Faux profil, photos inappropriées, arnaque… Notre équipe de modération examine chaque signalement sous 24 h.</p>
       <button class="btn btn-wine" onclick="hideOverlay('reportoverlay');toast('Merci, signalement transmis à la modération ✔')">Envoyer le signalement</button>
+      <button class="btn btn-ghost" style="color:var(--wine-dk)" onclick="blockProfile(PROFILES[deckIndex])">🚫 Bloquer ce profil</button>
       <button class="btn btn-ghost" onclick="hideOverlay('reportoverlay')">Annuler</button>
     </div>
   </div>
@@ -654,7 +657,7 @@ async function submitSignup(){
 /* ───────── Pile de cartes ───────── */
 function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
-  const remaining=PROFILES.slice(deckIndex);
+  const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.n));
   if(!remaining.length){
     deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>C\'est le lancement : l\'appli se remplit chaque jour. Dès qu\'il y a du nouveau, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p></div>';
     return;
@@ -886,6 +889,25 @@ function sendDMRequest(){
 }
 document.getElementById('gminput').addEventListener('keydown',e=>{if(e.key==='Enter')sendGroupMsg();});
 renderSalons();
+
+/* ───────── Blocage d'utilisateurs ───────── */
+const blocked=new Set();
+function blockProfile(p){
+  if(!p)return;
+  blocked.add(p.n);
+  matches=matches.filter(m=>m.n!==p.n);delete convos[p.n];
+  hideOverlay('reportoverlay');
+  renderDeck();renderMatches();
+  toast('🚫 '+p.n+' ne peut plus te voir ni t\'écrire');
+}
+function blockFromChat(){
+  const p=currentChat;
+  blockProfile(p);
+  showScreen('matches');
+}
+
+/* Accès démo direct pour les partenaires : cupidon.re/app/?demo */
+if(location.search.indexOf('demo')!==-1)enterApp();
 </script>
 </body>
 </html>
