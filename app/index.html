@@ -1079,6 +1079,18 @@ if(location.search.indexOf('demo')!==-1)enterApp();
 <script>
 (async () => {
   try {
+    /* Mode « repartir de zéro » pour les tests : cupidon.re/app/?reset
+       → déconnexion + effacement des marqueurs locaux (guide, Super j'aime,
+       dernière visite, brouillon de questionnaire). Ne touche à aucune donnée
+       du serveur : uniquement ce que cet appareil avait gardé en mémoire. */
+    if (new URLSearchParams(location.search).has('reset')) {
+      try { await sb.auth.signOut(); } catch (e) {}
+      Object.keys(localStorage).filter(k => k.toLowerCase().startsWith('cupidon')).forEach(k => localStorage.removeItem(k));
+      sessionStorage.clear();
+      location.replace('index.html');
+      return;
+    }
+
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return;                    // visiteur : accueil + démo inchangés
 
