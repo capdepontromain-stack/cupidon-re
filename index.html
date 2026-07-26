@@ -371,6 +371,12 @@
 #portail .p-card .tag{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#B8860B;background:#FFF4C2;border:1px solid #F2C200;padding:4px 12px;border-radius:999px}
 #portail .p-card .go{margin-top:auto;font-weight:600;font-size:15.5px;background:linear-gradient(135deg,#F60100,#C90D00);color:#fff;padding:13px 26px;border-radius:999px;box-shadow:0 8px 22px rgba(246,1,0,.28)}
 #portail .p-card.b2b .go{background:linear-gradient(135deg,#0E2A6B,#3A4E86);box-shadow:0 8px 22px rgba(14,42,107,.28)}
+/* Carte vedette : l'application de rencontre, mise en avant (or + badge NOUVEAU) */
+#portail .p-card.vedette{position:relative;border:3px solid #F2C200;background:linear-gradient(180deg,#FFFBEB,#fff 55%);box-shadow:0 16px 48px rgba(242,194,0,.38),0 8px 30px rgba(14,42,107,.08);transform:scale(1.045)}
+#portail .p-card.vedette:hover{transform:scale(1.045) translateY(-5px);box-shadow:0 26px 64px rgba(242,194,0,.5);border-color:#E8B722}
+#portail .p-card.vedette::before{content:'✨ NOUVEAU ✨';position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#F60100,#C90D00);color:#fff;font-weight:800;font-size:12.5px;letter-spacing:1.5px;white-space:nowrap;padding:7px 18px;border-radius:999px;box-shadow:0 6px 18px rgba(201,13,0,.4);animation:pulsenew 1.8s ease-in-out infinite}
+@keyframes pulsenew{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.09)}}
+@media(max-width:820px){#portail .p-card.vedette{transform:none;margin-top:8px}#portail .p-card.vedette:hover{transform:translateY(-5px)}}
 #portail .p-seo{font-size:13px;color:#6B7A9E;max-width:74ch;line-height:1.6}
 #portail .p-scroll{font-size:13px;color:#3A4E86;text-decoration:none;font-weight:500;animation:pbounce 2s ease-in-out infinite}
 @keyframes pbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
@@ -387,7 +393,7 @@
     <span>Romain, Ketsia, Flora — et toute l'équipe</span>
   </div>
   <div class="p-choices">
-    <a class="p-card" href="app/">
+    <a class="p-card vedette" href="app/">
       <span class="ico">❤️</span>
       <b>L'application<br>de rencontre</b>
       <span class="tag">3 mois gratuits</span>
