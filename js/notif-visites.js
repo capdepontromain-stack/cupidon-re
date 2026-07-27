@@ -25,11 +25,14 @@
 (function () {
   'use strict';
 
-  /* Canal e-mail. Après l'activation de FormSubmit, cette adresse peut
-     être remplacée par la clé aléatoire fournie par FormSubmit
-     (https://formsubmit.co/ajax/xxxxxxxxxxxx) pour ne plus exposer
-     l'adresse dans le code de la page. */
-  var CANAL_MAIL = 'https://formsubmit.co/ajax/contact@pullup.re';
+  /* Canaux d'envoi, essayés dans l'ordre. Le premier est la clé anonyme
+     fournie par FormSubmit : elle évite d'écrire l'adresse contact@pullup.re
+     en clair dans le code de la page (donc à l'abri des robots à spam).
+     Le second sert de secours si la clé ne répond pas. */
+  var CANAUX_MAIL = [
+    'https://formsubmit.co/ajax/a25833b0726786def63fa51e651d059a',
+    'https://formsubmit.co/ajax/contact@pullup.re'
+  ];
 
   var SB_URL = 'https://vincxrmtfjbenlzhjwby.supabase.co';
   var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpbmN4cm10ZmpiZW5semhqd2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyOTI1MTksImV4cCI6MjA5Nzg2ODUxOX0.M9_ChGDlOIUKKZtbBHs1xn4cdy4FwUAQKN0aYyXefQY';
@@ -150,12 +153,23 @@
       '7_Info': 'Aucune donnée personnelle n\'est collectée (ni nom, ni e-mail, ni adresse IP). Visiteur anonyme n°' + visiteur() + '.'
     };
     if (TEST) { console.log('[notif-visites] TEST — e-mail :', sujet, donnees); return; }
+    envoyer(0, JSON.stringify(donnees));
+  }
+
+  /* Essaie les canaux l'un après l'autre, sans jamais envoyer deux fois */
+  function envoyer(i, corps) {
+    if (i >= CANAUX_MAIL.length) return;
     try {
-      fetch(CANAL_MAIL, {
+      fetch(CANAUX_MAIL[i], {
         method: 'POST', keepalive: true,
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(donnees)
-      }).catch(function () {});
+        body: corps
+      }).then(function (res) {
+        if (res.ok) return res.json().catch(function () { return { success: 'true' }; });
+        return { success: 'false' };
+      }).then(function (rep) {
+        if (rep && String(rep.success) === 'false') envoyer(i + 1, corps);
+      }).catch(function () { envoyer(i + 1, corps); });
     } catch (e) { /* silencieux */ }
   }
 
