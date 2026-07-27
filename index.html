@@ -1124,10 +1124,19 @@
     });
   });
   // form
-  /* Formulaire de contact — envoi direct vers contact@pullup.re (relais
-     FormSubmit). Le message de confirmation ne s'affiche que si l'envoi a
-     réellement abouti ; sinon on bascule sur la messagerie du visiteur
-     pour ne perdre aucune demande. */
+  /* ═══════════════════════════════════════════════════════════════
+     ACHEMINEMENT DES DEMANDES — clé Web3Forms
+     Une seule clé, valable pour tous les sites Pull Up.
+     À créer sur https://web3forms.com (saisir contact@pullup.re,
+     la clé arrive par mail). Coller la clé entre les guillemets.
+     Tant qu'elle est vide, on retombe sur les canaux de secours.
+     ═══════════════════════════════════════════════════════════════ */
+  var CLE_WEB3FORMS = "";
+
+  /* Formulaire de contact — envoi direct vers contact@pullup.re.
+     Le message de confirmation ne s'affiche que si l'envoi a réellement
+     abouti ; sinon on bascule sur la messagerie du visiteur pour ne
+     perdre aucune demande. */
   (function(){
     var f   = document.getElementById('cupidForm');
     var btn = f.querySelector('button[type="submit"]');
@@ -1171,17 +1180,39 @@
       donnees._captcha  = "false";
       donnees["Reçu depuis"] = "cupidon.re";
 
-      /* Deux canaux essayés dans l'ordre. Le premier est la clé anonyme
-         FormSubmit : elle évite d'écrire contact@pullup.re en clair dans
-         la page (à l'abri des robots à spam). Le second sert de secours. */
-      var CANAUX = [
+      /* Canaux essayés dans l'ordre jusqu'à ce que l'un aboutisse :
+         1. Web3Forms (dès que la clé CLE_WEB3FORMS est renseignée) ;
+         2. FormSubmit — clé anonyme, puis adresse en clair ;
+         3. si tout échoue : la messagerie du visiteur (plus bas),
+            pour qu'aucune demande ne soit jamais perdue. */
+      function envoyerWeb3(){
+        if (!CLE_WEB3FORMS) return Promise.reject(new Error('clé Web3Forms non renseignée'));
+        var corps = {
+          access_key: CLE_WEB3FORMS,
+          subject:    donnees._subject,
+          from_name:  'Cupidon.re'
+        };
+        for (var k in donnees) if (k.charAt(0) !== '_') corps[k] = donnees[k];
+        return fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(corps)
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(rep){
+          if (rep && rep.success) return rep;
+          throw new Error(rep && rep.message ? rep.message : 'envoi refusé');
+        });
+      }
+
+      var CANAUX_FS = [
         'https://formsubmit.co/ajax/a25833b0726786def63fa51e651d059a',
         'https://formsubmit.co/ajax/contact@pullup.re'
       ];
 
-      function envoyer(i){
-        if (i >= CANAUX.length) return Promise.reject(new Error('aucun canal disponible'));
-        return fetch(CANAUX[i], {
+      function envoyerFormsubmit(i){
+        if (i >= CANAUX_FS.length) return Promise.reject(new Error('aucun canal disponible'));
+        return fetch(CANAUX_FS[i], {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify(donnees)
@@ -1193,12 +1224,13 @@
           throw new Error(rep && rep.message ? rep.message : 'envoi refusé');
         })
         .catch(function(err){
-          if (i + 1 < CANAUX.length) return envoyer(i + 1);
+          if (i + 1 < CANAUX_FS.length) return envoyerFormsubmit(i + 1);
           throw err;
         });
       }
 
-      envoyer(0)
+      envoyerWeb3()
+      .catch(function(){ return envoyerFormsubmit(0); })
       .then(function(){
         f.style.display = 'none';
         document.getElementById('formOk').style.display = 'block';
