@@ -1125,6 +1125,48 @@
   });
   // form
   /* ═══════════════════════════════════════════════════════════════
+     SUIVI — Google Analytics 4 + conversions Google Ads
+     Remplir les 3 valeurs et le suivi démarre tout seul.
+     Tant qu'elles sont vides, rien n'est chargé (aucun cookie posé).
+     GA4       : Analytics > Admin > Flux de données  →  "G-XXXXXXXXXX"
+     ADS       : Google Ads > Objectifs > Conversions > Balise Google
+     ADS_DEVIS : même page, colonne "Étiquette de conversion"
+     ═══════════════════════════════════════════════════════════════ */
+  var SUIVI = { GA4: "", ADS: "", ADS_DEVIS: "" };
+  var SITE  = "cupidon.re";
+
+  (function(){
+    var ids = [SUIVI.GA4, SUIVI.ADS].filter(Boolean);
+    if (!ids.length) return;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date());
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ids[0];
+    document.head.appendChild(s);
+    ids.forEach(function(id){ gtag('config', id); });
+  })();
+
+  function pisterEvenement(nom, params){
+    if (typeof gtag !== 'function') return;
+    gtag('event', nom, params || {});
+  }
+
+  function pisterConversionDevis(){
+    pisterEvenement('demande_contact', { source: SITE });
+    if (typeof gtag === 'function' && SUIVI.ADS_DEVIS) {
+      gtag('event', 'conversion', { send_to: SUIVI.ADS_DEVIS });
+    }
+  }
+
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      pisterEvenement('clic_telephone', { source: SITE });
+    });
+  });
+
+  /* ═══════════════════════════════════════════════════════════════
      ACHEMINEMENT DES DEMANDES — clé Web3Forms
      Une seule clé, valable pour tous les sites Pull Up.
      À créer sur https://web3forms.com (saisir contact@pullup.re,
@@ -1234,6 +1276,7 @@
       .then(function(){
         f.style.display = 'none';
         document.getElementById('formOk').style.display = 'block';
+        pisterConversionDevis();
       })
       .catch(function(){
         btn.disabled = false;
