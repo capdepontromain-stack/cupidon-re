@@ -1124,21 +1124,94 @@
     });
   });
   // form
-  document.getElementById('cupidForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var f = this;
-    var corps = "Bonjour,%0D%0A%0D%0AJe souhaite être recontacté(e) par Cupidon.%0D%0A%0D%0A"
-      + "Prénom : " + encodeURIComponent(f.prenom.value) + "%0D%0A"
-      + "Nom : " + encodeURIComponent(f.nom.value) + "%0D%0A"
-      + "Téléphone : " + encodeURIComponent(f.telephone.value) + "%0D%0A"
-      + "E-mail : " + encodeURIComponent(f.email.value) + "%0D%0A"
-      + "Recherche : " + encodeURIComponent(f.recherche.value) + "%0D%0A"
-      + "Message : " + encodeURIComponent(f.message.value) + "%0D%0A%0D%0A"
-      + "(Demande envoyée depuis le site cupidon.re)";
-    window.location.href = "mailto:contact@pullup.re?subject=" + encodeURIComponent("Demande Cupidon — " + f.prenom.value) + "&body=" + corps;
-    f.style.display='none';
-    document.getElementById('formOk').style.display='block';
-  });
+  /* Formulaire de contact — envoi direct vers contact@pullup.re (relais
+     FormSubmit). Le message de confirmation ne s'affiche que si l'envoi a
+     réellement abouti ; sinon on bascule sur la messagerie du visiteur
+     pour ne perdre aucune demande. */
+  (function(){
+    var f   = document.getElementById('cupidForm');
+    var btn = f.querySelector('button[type="submit"]');
+    if (!f) return;
+
+    var etat = document.createElement('p');
+    etat.setAttribute('role', 'status');
+    etat.setAttribute('aria-live', 'polite');
+    btn.parentNode.insertBefore(etat, btn.nextSibling);
+
+    function champs(){
+      return {
+        "Prénom":    f.prenom.value,
+        "Nom":       f.nom.value || "—",
+        "Téléphone": f.telephone.value,
+        "E-mail":    f.email.value || "—",
+        "Recherche": f.recherche.value,
+        "Message":   f.message.value || "—"
+      };
+    }
+
+    function secoursMessagerie(){
+      var d = champs(), corps = "Bonjour,\r\n\r\nJe souhaite être recontacté(e) par Cupidon.\r\n\r\n";
+      for (var k in d) corps += k + " : " + d[k] + "\r\n";
+      corps += "\r\n(Demande envoyée depuis cupidon.re)";
+      window.location.href = "mailto:contact@pullup.re?subject="
+        + encodeURIComponent("Demande Cupidon — " + f.prenom.value)
+        + "&body=" + encodeURIComponent(corps);
+    }
+
+    f.addEventListener('submit', function(e){
+      e.preventDefault();
+      btn.disabled = true;
+      var libelle = btn.textContent;
+      btn.textContent = "Envoi en cours…";
+      etat.textContent = "";
+
+      var donnees = champs();
+      donnees._subject  = "💘 Demande Cupidon — " + f.prenom.value;
+      donnees._template = "table";
+      donnees._captcha  = "false";
+      donnees["Reçu depuis"] = "cupidon.re";
+
+      /* Deux canaux essayés dans l'ordre. Le premier est la clé anonyme
+         FormSubmit : elle évite d'écrire contact@pullup.re en clair dans
+         la page (à l'abri des robots à spam). Le second sert de secours. */
+      var CANAUX = [
+        'https://formsubmit.co/ajax/a25833b0726786def63fa51e651d059a',
+        'https://formsubmit.co/ajax/contact@pullup.re'
+      ];
+
+      function envoyer(i){
+        if (i >= CANAUX.length) return Promise.reject(new Error('aucun canal disponible'));
+        return fetch(CANAUX[i], {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(donnees)
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(rep){
+          /* FormSubmit répond 200 même en cas de refus : on lit le champ success */
+          if (rep && String(rep.success) === 'true') return rep;
+          throw new Error(rep && rep.message ? rep.message : 'envoi refusé');
+        })
+        .catch(function(err){
+          if (i + 1 < CANAUX.length) return envoyer(i + 1);
+          throw err;
+        });
+      }
+
+      envoyer(0)
+      .then(function(){
+        f.style.display = 'none';
+        document.getElementById('formOk').style.display = 'block';
+      })
+      .catch(function(){
+        btn.disabled = false;
+        btn.textContent = libelle;
+        etat.style.cssText = 'font-size:.82rem;font-weight:700;text-align:center;margin-top:12px;color:#c0392b';
+        etat.textContent = "L'envoi automatique n'a pas fonctionné — nous ouvrons votre messagerie avec la demande pré-remplie.";
+        secoursMessagerie();
+      });
+    });
+  })();
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","@id":"https://cupidon.re/#organization","name":"Cupidon","alternateName":"Cupidon.re — agence matrimoniale à La Réunion","url":"https://cupidon.re/","logo":"https://cupidon.re/img/hero-volcan.jpg","image":"https://cupidon.re/img/hero-volcan.jpg","description":"Agence matrimoniale de La Réunion : accompagnement humain, sur-mesure et confidentiel de célibataires vers une relation sérieuse. Marque distincte, sans accueil du public — mise en relation sur rendez-vous uniquement.","email":"contact@pullup.re","foundingDate":"2017","areaServed":{"@type":"AdministrativeArea","name":"La Réunion"},"knowsLanguage":["fr","rcf"],"parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re/"},"sameAs":["https://cupidon.re/app/"]}
