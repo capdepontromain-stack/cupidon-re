@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://cupidon.re/img/hero-volcan.jpg">
 <meta property="og:locale" content="fr_FR">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, alertes par e-mail ou WhatsApp.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Offre d'ouverture : gratuit pour tous du 1er août au 31 octobre 2026. Ensuite 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon — Agence matrimoniale à La Réunion","url":"https://cupidon.re","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re","address":{"@type":"PostalAddress","streetAddress":"6 Impasse des Sœurs Brontë","addressLocality":"Le Tampon","postalCode":"97430","addressRegion":"La Réunion","addressCountry":"FR"}}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, alertes par e-mail ou WhatsApp.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Offre d'ouverture : gratuit pour tous du 1er août au 31 octobre 2026. Ensuite 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon","url":"https://cupidon.re","@id":"https://cupidon.re/#organization","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re"}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -566,7 +566,7 @@ body{
       <div class="setlist">
         <button class="setrow" id="row-connexion" onclick="location.href='connexion.html'"><span class="ico">🔑</span><span><b>Se connecter / Créer mon compte</b><small>Retrouve tes matchs et ton profil</small></span></button>
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>Gratuit jusqu'au 31 octobre (ouverture), puis 10 €/mois à vie</small></span></button>
-        <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, avatar, centres d'intérêt</small></span></button>
+        <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, passions, description — sans refaire le questionnaire</small></span></button>
         <button class="setrow" id="row-compte" style="display:none" onclick="location.href='compte.html'"><span class="ico">🛡️</span><span>Mon compte & sécurité<small>E-mail, mot de passe, appareils, mes données</small></span></button>
         <button class="setrow" onclick="contacterEquipe()"><span class="ico">💍</span><span><b>Parler à l'équipe Cupidon</b><small>Agence matrimoniale · 1ᵉʳ rendez-vous téléphonique offert · Écris-nous : contact@pullup.re</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
@@ -1161,5 +1161,7 @@ if(location.search.indexOf('demo')!==-1)enterApp();
   } catch (e) { console.warn('session:', e); }
 })();
 </script>
+<!-- Alerte visites (voir js/notif-visites.js) -->
+<script src="../js/notif-visites.js" defer></script>
 </body>
 </html>

@@ -13,12 +13,30 @@
 </head>
 <body>
 <div id="phone">
+  <!-- Rappel permanent de la gratuité pendant tout le questionnaire -->
+  <div class="ruban-gratuit" id="ruban-gratuit">
+    <span class="etoile">✨</span><span><b>Inscription 100 % gratuite</b> — offre d'ouverture, gratuit jusqu'au 31 octobre</span><span class="etoile">✨</span>
+  </div>
   <div class="scrolly">
+    <button class="barre-retour" id="barre-retour" style="display:none">‹ Retour à mon profil</button>
     <div class="steps" id="progress"></div>
+
+    <!-- 0. MENU DE MODIFICATION (mode édition uniquement) -->
+    <div class="etape" id="q-menu">
+      <button class="backlink" onclick="location.href='index.html'">‹ Retour à l'appli</button>
+      <div><h1 class="titre">Mon profil ✏️</h1><p class="sous">Choisis simplement ce que tu veux changer : le reste ne bouge pas, et pas besoin de refaire le questionnaire. Chaque modification est enregistrée tout de suite.</p></div>
+      <div class="entete-profil">
+        <div class="rond" id="m-photo">🙂</div>
+        <div><b id="m-nom">Mon profil</b><small id="m-type"></small></div>
+      </div>
+      <div class="reglages" id="m-liste"></div>
+      <button class="btn btn-ghost" onclick="location.href='index.html'">Terminé, retour à l'appli 🌋</button>
+    </div>
 
     <!-- 1. Genre -->
     <div class="etape" id="q-genre">
       <div><h1 class="titre">Tu es… 💫</h1><p class="sous">Ces réponses servent uniquement à te proposer les bons profils.</p></div>
+      <div class="pastille-gratuit mention-gratuit">✅ Gratuit — aucune carte bancaire demandée</div>
       <div class="choix" data-question="genre">
         <button data-val="homme"><span class="em">👨</span>Homme</button>
         <button data-val="femme"><span class="em">👩</span>Femme</button>
@@ -60,6 +78,7 @@
     <!-- 4. Recherche -->
     <div class="etape" id="q-recherche">
       <div><h1 class="titre">Tu recherches… 💘</h1></div>
+      <div class="rappel-gratuit mention-gratuit">🎁 <span>Tout est <b>gratuit</b> pendant l'ouverture : messages illimités, profils illimités.</span></div>
       <div class="choix" data-question="recherche">
         <button data-val="serieuse"><span class="em">💍</span>Une relation sérieuse</button>
         <button data-val="amicale"><span class="em">🤝</span>Une rencontre amicale</button>
@@ -91,6 +110,7 @@
     <!-- 7. Centres d'intérêt -->
     <div class="etape" id="q-interets">
       <div><h1 class="titre">Tes passions ✨</h1><p class="sous">Choisis-en au moins 3 — c'est ce qui nous aide le plus à te suggérer de belles rencontres.</p></div>
+      <div class="pastille-gratuit mention-gratuit">💛 Toujours gratuit, sans engagement</div>
       <p class="compteur-chips" id="compteur">0 / 3 minimum</p>
       <div class="chips" id="chips-interets"></div>
       <button class="btn btn-gold" id="btn-interets" disabled>Continuer</button>
@@ -106,7 +126,17 @@
         <p class="sous">D'après tes réponses, voilà ton profil Cupidon ! Il apparaîtra sur ta fiche avec cette petite description :</p>
       </div>
       <div class="carte"><p id="res-description" style="font-style:italic"></p></div>
+      <div class="pastille-gratuit mention-gratuit">✅ Ce profil est gratuit — 0 € à payer</div>
       <button class="btn btn-gold" id="btn-resultat">Parfait, on continue 👌</button>
+    </div>
+
+    <!-- 8 bis. Ma description (mode édition) -->
+    <div class="etape" id="q-description">
+      <div><h1 class="titre">Ma description 📝</h1><p class="sous">C'est le petit texte que les autres membres verront sur ta fiche. Tu peux l'écrire à ta façon, ou en regénérer une automatiquement d'après tes réponses.</p></div>
+      <textarea class="zone-texte" id="desc-txt" maxlength="400" placeholder="Quelques mots sur toi…"></textarea>
+      <p class="compteur-chips" id="desc-compte">0 / 400</p>
+      <button class="btn btn-ghost" id="btn-desc-auto">✨ Regénérer automatiquement</button>
+      <button class="btn btn-gold" id="btn-desc-ok">Enregistrer ma description</button>
     </div>
 
     <!-- 9. Photo ou avatar -->
@@ -127,7 +157,8 @@
         <div id="avatar-controles" style="display:flex;flex-direction:column;gap:14px;margin-top:14px"></div>
       </div>
 
-      <button class="btn btn-gold" id="btn-terminer">Terminer mon inscription 🎉</button>
+      <div class="rappel-gratuit mention-gratuit">🎉 <span>Dernière étape — et c'est <b>gratuit</b> : 0 € aujourd'hui, 0 € jusqu'au 31 octobre.</span></div>
+      <button class="btn btn-gold" id="btn-terminer">Terminer mon inscription gratuite 🎉</button>
       <p class="centre" id="etat-envoi" style="display:none">Enregistrement en cours…</p>
     </div>
 
@@ -138,6 +169,7 @@
         <div class="big">💘</div>
         <h1 class="titre">Bienvenue dans l'aventure !</h1>
         <p class="sous" id="msg-fin">Ton profil est prêt. Belles rencontres !</p>
+        <div class="rappel-gratuit mention-gratuit" style="text-align:left">🌋 <span>Ton compte est <b>gratuit jusqu'au 31 octobre</b> (offre d'ouverture). Ensuite, tarif membre fondateur : 10 €/mois à vie, sans engagement — et tu restes libre d'arrêter.</span></div>
         <button class="btn btn-gold" onclick="location.href='index.html'">Découvrir les profils 🌋</button>
       </div>
     </div>
@@ -157,26 +189,117 @@ const COMMUNES = ['Saint-Denis','Saint-Paul','Saint-Pierre','Le Tampon','Saint-A
 let utilisateur = null;
 let rep = { genre:null, date_naissance:null, situation:null, ville:null, recherche:[], personnalite:null, premier_rdv:null, interets:[], profil_type:null, description:null };
 let avatarCfg = Object.assign({}, AVATAR_DEFAUT);
-let photos = [null, null, null];          // fichiers (Blob) en attente d'envoi
+let photos = [null, null, null];          // { blob, url } (nouvelle) ou { chemin, url } (déjà en ligne)
 let modePhoto = 'photos';
+
+/* Mode « création » (premier questionnaire) ou « édition » (modifier son profil
+   existant, rubrique par rubrique, sans tout refaire). */
+let mode = 'creation';
+let descriptionPerso = false;             // vrai si la description a été écrite à la main
 
 const ORDRE = ['q-genre','q-naissance','q-situation','q-recherche','q-personnalite','q-rdv','q-interets','q-resultat','q-photo','q-fin'];
 let etapeCourante = 0;
 
+function afficherEtape(id) {
+  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.scrolly').scrollTop = 0;
+}
 function montrer(i) {
   etapeCourante = i;
-  document.querySelectorAll('.etape').forEach(e => e.classList.remove('active'));
-  document.getElementById(ORDRE[i]).classList.add('active');
+  afficherEtape(ORDRE[i]);
   document.getElementById('progress').innerHTML = ORDRE.slice(0, -1).map((_, k) => `<span class="${k <= i ? 'on' : ''}"></span>`).join('');
-  document.querySelector('.scrolly').scrollTop = 0;
   sauverBrouillon();
 }
-function suivant() { montrer(Math.min(etapeCourante + 1, ORDRE.length - 1)); }
+function suivant() {
+  if (mode === 'edition') { validerRubrique(); return; }
+  montrer(Math.min(etapeCourante + 1, ORDRE.length - 1));
+}
 
 function sauverBrouillon() {
-  if (!utilisateur) return;
+  if (!utilisateur || mode === 'edition') return;     // en édition, tout est déjà en base
   localStorage.setItem('cupidon_brouillon_' + utilisateur.id, JSON.stringify({ rep, avatarCfg, etapeCourante }));
 }
+
+/* ═════════════════ MODE ÉDITION : menu des rubriques ═════════════════ */
+const LIB = {
+  genre:      { homme:'Homme', femme:'Femme', nonbinaire:'Non binaire / Autre', nonprecise:'Non précisé' },
+  situation:  { resident:'J\'habite à La Réunion', vacances:'En vacances à La Réunion', bientot:'J\'arrive bientôt' },
+  recherche:  { serieuse:'Une relation sérieuse', amicale:'Une rencontre amicale', hasard:'Je laisse faire le hasard' },
+  personnalite:{ maison:'Tranquille à la maison', mixte:'Un peu des deux', sortir:'Sortir, découvrir, bouger' },
+  premier_rdv:{ rapide:'Se rencontrer vite', jours:'Discuter quelques jours', semaines:'Discuter plusieurs semaines' }
+};
+
+const RUBRIQUES = [
+  { etape:'q-photo',        em:'📸', titre:'Mes photos et mon avatar',
+    valeur:() => modePhoto === 'avatar' ? 'Avatar personnalisé' : (photos.filter(Boolean).length + ' photo(s)') },
+  { etape:'q-interets',     em:'✨', titre:'Mes passions',
+    valeur:() => rep.interets.length ? rep.interets.length + ' sélectionnées' : 'aucune' },
+  { etape:'q-description',  em:'📝', titre:'Ma description',
+    valeur:() => rep.description ? rep.description.slice(0, 52) + '…' : 'à écrire' },
+  { etape:'q-recherche',    em:'💘', titre:'Ce que je recherche',
+    valeur:() => rep.recherche.length ? rep.recherche.map(r => LIB.recherche[r]).join(' + ') : '—' },
+  { etape:'q-situation',    em:'🌍', titre:'Ma ville et ma situation',
+    valeur:() => (rep.ville ? rep.ville + ' · ' : '') + (LIB.situation[rep.situation] || '—') },
+  { etape:'q-personnalite', em:'🌴', titre:'Mes week-ends',
+    valeur:() => LIB.personnalite[rep.personnalite] || '—' },
+  { etape:'q-rdv',          em:'☕', titre:'Mon premier rendez-vous',
+    valeur:() => LIB.premier_rdv[rep.premier_rdv] || '—' },
+  { etape:'q-genre',        em:'💫', titre:'Mon genre',
+    valeur:() => LIB.genre[rep.genre] || '—' },
+  { etape:'q-naissance',    em:'🎂', titre:'Ma date de naissance',
+    valeur:() => rep.date_naissance ? calculerAge(rep.date_naissance) + ' ans' : '—' }
+];
+
+function montrerMenu() {
+  afficherEtape('q-menu');
+  document.getElementById('barre-retour').style.display = 'none';
+  document.getElementById('progress').style.display = 'none';
+  rafraichirMenu();
+}
+
+function rafraichirMenu() {
+  const prenom = (utilisateur && utilisateur.user_metadata && utilisateur.user_metadata.prenom) || 'Mon profil';
+  const age = rep.date_naissance ? ', ' + calculerAge(rep.date_naissance) : '';
+  document.getElementById('m-nom').textContent = prenom + age;
+  const t = PROFILS_TYPES[rep.profil_type];
+  document.getElementById('m-type').textContent = (t ? t.emoji + ' Profil ' + t.label : '') + (rep.ville ? ' · 📍 ' + rep.ville : '');
+
+  /* Vignette : avatar, première photo, ou initiale */
+  const rond = document.getElementById('m-photo');
+  if (modePhoto === 'avatar') rond.innerHTML = renderAvatar(avatarCfg);
+  else {
+    const p = photos.find(Boolean);
+    rond.innerHTML = p ? '<img src="' + p.url + '" alt="">' : (prenom[0] || '🙂');
+  }
+
+  document.getElementById('m-liste').innerHTML = RUBRIQUES.map(r =>
+    `<button class="rg" data-etape="${r.etape}"><span class="em">${r.em}</span><span>${r.titre}<small>${r.valeur()}</small></span><span class="fleche">›</span></button>`
+  ).join('');
+  document.querySelectorAll('#m-liste .rg').forEach(b =>
+    b.addEventListener('click', () => ouvrirRubrique(b.dataset.etape)));
+}
+
+function ouvrirRubrique(id) {
+  if (id === 'q-description') preparerDescription();
+  if (id === 'q-photo') dessinerGrille();
+  afficherEtape(id);
+  document.getElementById('barre-retour').style.display = '';
+}
+
+/* Valide la rubrique en cours : enregistre en base puis revient au menu. */
+async function validerRubrique(avecPhotos) {
+  if (avecPhotos && modePhoto === 'photos' && !photos.some(Boolean)) {
+    toast('Garde au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
+  }
+  const ok = await enregistrerProfil(!!avecPhotos);
+  if (ok) toast('Modification enregistrée ✓');
+  montrerMenu();
+}
+document.getElementById('barre-retour').addEventListener('click', () => {
+  /* Si on quitte l'écran photos, on envoie aussi les photos ajoutées */
+  validerRubrique(document.getElementById('q-photo').classList.contains('active'));
+});
 
 /* ───── Questions à choix unique : sélection + passage auto ───── */
 document.querySelectorAll('.choix').forEach(bloc => {
@@ -249,14 +372,40 @@ zoneChips.querySelectorAll('button').forEach(b => b.addEventListener('click', ()
 }));
 document.getElementById('btn-interets').addEventListener('click', () => {
   rep.profil_type = calculerProfil(rep);
-  rep.description = genererDescription(rep);
+  /* On ne réécrit jamais une description que le membre a écrite lui-même */
+  if (!descriptionPerso) rep.description = genererDescription(rep);
   const t = PROFILS_TYPES[rep.profil_type];
   document.getElementById('res-emoji').textContent = t.emoji;
   document.getElementById('res-nom').textContent = t.label;
   document.getElementById('res-description').textContent = '« ' + rep.description + ' »';
+  if (mode === 'edition') toast('Profil recalculé : ' + t.emoji + ' ' + t.label);
   suivant();
 });
 document.getElementById('btn-resultat').addEventListener('click', suivant);
+
+/* ───── Ma description (modifiable à la main, mode édition) ───── */
+const champDesc = document.getElementById('desc-txt');
+function preparerDescription() {
+  champDesc.value = rep.description || '';
+  majCompteurDesc();
+}
+function majCompteurDesc() {
+  document.getElementById('desc-compte').textContent = champDesc.value.length + ' / 400';
+}
+champDesc.addEventListener('input', majCompteurDesc);
+document.getElementById('btn-desc-auto').addEventListener('click', () => {
+  rep.profil_type = calculerProfil(rep);
+  champDesc.value = genererDescription(rep);
+  majCompteurDesc();
+  toast('Description regénérée d\'après tes réponses ✨');
+});
+document.getElementById('btn-desc-ok').addEventListener('click', () => {
+  const txt = champDesc.value.trim();
+  if (txt.length < 20) { toast('Écris au moins une petite phrase (20 caractères) 😊'); return; }
+  rep.description = txt;
+  descriptionPerso = txt !== genererDescription(rep);   // texte personnel : on ne l'écrasera plus
+  validerRubrique(false);
+});
 
 /* ───── Onglets photos / avatar ───── */
 const ongP = document.getElementById('onglet-photos'), ongA = document.getElementById('onglet-avatar');
@@ -346,28 +495,25 @@ function construireControles() {
 }
 construireControles();
 
-/* ───── Enregistrement final ───── */
-document.getElementById('btn-terminer').addEventListener('click', async () => {
-  if (modePhoto === 'photos' && !photos.some(Boolean)) {
-    toast('Ajoute au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
-  }
-  const btn = document.getElementById('btn-terminer');
-  btn.disabled = true; document.getElementById('etat-envoi').style.display = '';
-
+/* ───── Enregistrement du profil (création finale ET modifications) ─────
+   avecPhotos : envoie les photos ajoutées depuis l'appareil. Les photos déjà
+   en ligne gardent simplement leur chemin, elles ne sont pas renvoyées. */
+async function enregistrerProfil(avecPhotos) {
+  if (!utilisateur || utilisateur.id === 'apercu') return false;
   try {
-    /* 1. Envoi des photos éventuelles */
     const chemins = [];
-    if (modePhoto === 'photos') {
-      for (let i = 0; i < photos.length; i++) {
-        if (!photos[i]) continue;
+    for (let i = 0; i < photos.length; i++) {
+      const p = photos[i];
+      if (!p) continue;
+      if (p.blob && avecPhotos) {
         const chemin = utilisateur.id + '/photo-' + (i + 1) + '.jpg';
-        const { error } = await sb.storage.from('photos-cupidon').upload(chemin, photos[i].blob, { upsert: true, contentType: 'image/jpeg' });
+        const { error } = await sb.storage.from('photos-cupidon').upload(chemin, p.blob, { upsert: true, contentType: 'image/jpeg' });
         if (error) throw new Error('photo : ' + error.message);
+        photos[i] = { chemin, url: p.url };           // devient une photo « en ligne »
         chemins.push(chemin);
-      }
+      } else if (p.chemin) chemins.push(p.chemin);
     }
 
-    /* 2. Enregistrement du profil */
     const prenom = (utilisateur.user_metadata && utilisateur.user_metadata.prenom) || '';
     const enreg = {
       user_id: utilisateur.id,
@@ -388,43 +534,129 @@ document.getElementById('btn-terminer').addEventListener('click', async () => {
     };
     const { error } = await sb.from('profils_cupidon').upsert(enreg, { onConflict: 'user_id' });
     if (error) throw new Error('profil : ' + error.message);
-
-    /* 3. Notification à l'équipe (best effort, ne bloque jamais l'utilisateur) */
-    const t = PROFILS_TYPES[rep.profil_type];
-    const notif = {
-      prenom, age: calculerAge(rep.date_naissance) + ' ans',
-      genre: { homme:'Homme', femme:'Femme', nonbinaire:'Non binaire / Autre', nonprecise:'Non précisé' }[rep.genre],
-      ville: rep.ville || '—',
-      statut: { resident:'Habitant de La Réunion', vacances:'En vacances à La Réunion', bientot:'Arrive bientôt à La Réunion' }[rep.situation],
-      recherche: rep.recherche.map(r => ({ serieuse:'Relation sérieuse', amicale:'Rencontre amicale', hasard:'Au hasard' }[r])).join(' + '),
-      profil: t.emoji + ' ' + t.label,
-      date: new Date().toLocaleDateString('fr-FR')
-    };
-    envoyerMailCupidon('nouvelle-inscription', { inscription: notif }).then(ok => {
-      if (!ok) {
-        /* Filet de secours : formulaire relais vers contact@pullup.re */
-        fetch('https://formsubmit.co/ajax/contact@pullup.re', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ _subject: 'Nouvelle inscription PullUpCupidon.re', ...notif })
-        }).catch(() => {});
-      }
-    });
-
-    localStorage.removeItem('cupidon_brouillon_' + utilisateur.id);
-    document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est en ligne. Belles rencontres 💛';
-    montrer(ORDRE.indexOf('q-fin'));
+    return true;
   } catch (e) {
     console.warn(e);
     toast('Impossible d\'enregistrer pour le moment — réessaie dans un instant 🙏');
-  } finally {
-    btn.disabled = false; document.getElementById('etat-envoi').style.display = 'none';
+    return false;
   }
+}
+
+/* ───── Bouton final du questionnaire / validation des photos ───── */
+document.getElementById('btn-terminer').addEventListener('click', async () => {
+  if (modePhoto === 'photos' && !photos.some(Boolean)) {
+    toast('Ajoute au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
+  }
+  const btn = document.getElementById('btn-terminer');
+  btn.disabled = true; document.getElementById('etat-envoi').style.display = '';
+
+  const ok = await enregistrerProfil(true);
+
+  btn.disabled = false; document.getElementById('etat-envoi').style.display = 'none';
+  if (!ok) return;
+
+  if (mode === 'edition') { toast('Photos enregistrées ✓'); montrerMenu(); return; }
+
+  /* Première inscription : on prévient l'équipe et on affiche l'écran de fin */
+  const prenom = (utilisateur.user_metadata && utilisateur.user_metadata.prenom) || '';
+  const t = PROFILS_TYPES[rep.profil_type];
+  const notif = {
+    prenom, age: calculerAge(rep.date_naissance) + ' ans',
+    genre: LIB.genre[rep.genre],
+    ville: rep.ville || '—',
+    statut: { resident:'Habitant de La Réunion', vacances:'En vacances à La Réunion', bientot:'Arrive bientôt à La Réunion' }[rep.situation],
+    recherche: rep.recherche.map(r => ({ serieuse:'Relation sérieuse', amicale:'Rencontre amicale', hasard:'Au hasard' }[r])).join(' + '),
+    profil: t.emoji + ' ' + t.label,
+    date: new Date().toLocaleDateString('fr-FR')
+  };
+  envoyerMailCupidon('nouvelle-inscription', { inscription: notif }).then(envoye => {
+    if (!envoye) {
+      /* Filet de secours : formulaire relais vers contact@pullup.re */
+      fetch('https://formsubmit.co/ajax/contact@pullup.re', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: 'Nouvelle inscription PullUpCupidon.re', ...notif })
+      }).catch(() => {});
+    }
+  });
+
+  localStorage.removeItem('cupidon_brouillon_' + utilisateur.id);
+  document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est en ligne, et c\'est gratuit. Belles rencontres 💛';
+  montrer(ORDRE.indexOf('q-fin'));
 });
 
-/* ───── Démarrage : session obligatoire + reprise du brouillon ───── */
+/* ───── Pré-remplissage de l'interface d'après les réponses connues ───── */
+function refleterReponses() {
+  document.querySelectorAll('.choix').forEach(bloc => {
+    const q = bloc.dataset.question;
+    let valeur = rep[q];
+    if (q === 'recherche') valeur = (rep.recherche || []).length > 1 ? 'deux' : (rep.recherche || [])[0];
+    bloc.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.val === valeur));
+  });
+
+  if (rep.date_naissance) {
+    const [a, m, j] = rep.date_naissance.split('-').map(Number);
+    selJour.value = j; selMois.value = m; selAnnee.value = a;
+  }
+  if (rep.situation) {
+    document.getElementById('bloc-ville').style.display = '';
+    document.querySelector('#bloc-ville label').textContent = rep.situation === 'resident' ? 'Ta ville' : 'La ville où tu séjournes (ou séjourneras)';
+    document.getElementById('btn-situation').style.display = '';
+    if (rep.ville) selVille.value = rep.ville;
+  }
+  if (rep.interets && rep.interets.length) {
+    zoneChips.querySelectorAll('button').forEach(b => b.classList.toggle('on', rep.interets.includes(b.dataset.id)));
+    const n = rep.interets.length, cpt = document.getElementById('compteur');
+    cpt.textContent = n >= 3 ? n + ' choisis ✓' : n + ' / 3 minimum';
+    cpt.classList.toggle('ok', n >= 3);
+    document.getElementById('btn-interets').disabled = n < 3;
+  }
+  basculer(modePhoto);
+  construireControles();
+  dessinerGrille();
+}
+
+/* ───── Démarrage : session obligatoire, puis création OU édition ───── */
 (async () => {
   utilisateur = await exigerSession();
   if (!utilisateur) return;
+
+  /* Profil déjà enregistré → on ouvre directement le menu de modification
+     (plus besoin de refaire tout le questionnaire). */
+  const existant = utilisateur.id === 'apercu' ? null : await chargerProfil(utilisateur.id);
+
+  if (existant) {
+    mode = 'edition';
+    document.title = 'Modifier mon profil — Cupidon Rencontres';
+    document.getElementById('ruban-gratuit').style.display = 'none';
+    document.querySelectorAll('.mention-gratuit').forEach(e => e.style.display = 'none');
+    document.getElementById('btn-terminer').textContent = 'Enregistrer mes photos 💾';
+    document.getElementById('btn-resultat').textContent = 'C\'est noté 👌';
+
+    rep = {
+      genre: existant.genre, date_naissance: existant.date_naissance,
+      situation: existant.situation, ville: existant.ville,
+      recherche: existant.recherche || [], personnalite: existant.personnalite,
+      premier_rdv: existant.premier_rdv, interets: existant.interets || [],
+      profil_type: existant.profil_type, description: existant.description || ''
+    };
+    if (existant.avatar) { avatarCfg = Object.assign({}, AVATAR_DEFAUT, existant.avatar); modePhoto = 'avatar'; }
+    descriptionPerso = !!existant.description && existant.description !== genererDescription(rep);
+
+    /* Photos déjà en ligne : on récupère un lien temporaire pour les afficher */
+    if (existant.photos && existant.photos.length) {
+      for (let i = 0; i < existant.photos.length && i < 3; i++) {
+        const { data } = await sb.storage.from('photos-cupidon').createSignedUrl(existant.photos[i], 3600);
+        photos[i] = { chemin: existant.photos[i], url: data ? data.signedUrl : '' };
+      }
+    }
+
+    refleterReponses();
+    dessinerAvatar();
+    montrerMenu();
+    return;
+  }
+
+  /* Première fois : questionnaire classique, avec reprise du brouillon */
   const brouillon = localStorage.getItem('cupidon_brouillon_' + utilisateur.id);
   if (brouillon) {
     try {

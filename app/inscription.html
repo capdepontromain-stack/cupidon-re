@@ -13,6 +13,10 @@
 </head>
 <body>
 <div id="phone">
+  <!-- Rappel permanent de la gratuité -->
+  <div class="ruban-gratuit">
+    <span class="etoile">✨</span><span><b>Inscription 100 % gratuite</b> — offre d'ouverture, gratuit jusqu'au 31 octobre</span><span class="etoile">✨</span>
+  </div>
   <div class="scrolly">
 
     <!-- ÉTAPE 1 : identité + mot de passe -->
@@ -21,9 +25,10 @@
       <div class="brandmini"><img src="logo-mascotte.png" alt=""><span>cupidon<span class="dot">.</span>re</span></div>
       <div class="steps"><span class="on"></span><span></span><span></span><span></span></div>
       <div>
-        <h1 class="titre">Crée ton compte</h1>
+        <h1 class="titre">Crée ton compte gratuit</h1>
         <p class="sous">Étape 1 sur 4 — Après validation, tu recevras un e-mail pour confirmer ton adresse. Ton compte s'active à ce moment-là. 💌</p>
       </div>
+      <div class="rappel-gratuit">🎁 <span><b>C'est gratuit</b> : aucune carte bancaire, aucun paiement, aucun engagement. On fête l'ouverture de l'appli 🌋</span></div>
 
       <form id="form-inscription" novalidate autocomplete="on">
         <div class="field" style="margin-bottom:14px">
@@ -62,7 +67,8 @@
           <span>J'ai 18 ans ou plus et j'accepte les <a class="lien" href="cgu.html" target="_blank">conditions d'utilisation</a> et la <a class="lien" href="confidentialite.html" target="_blank">politique de confidentialité</a>.</span>
         </label>
 
-        <button class="btn btn-gold" id="btn-creer" type="submit">Créer mon compte 💛</button>
+        <button class="btn btn-gold" id="btn-creer" type="submit">Créer mon compte gratuit 💛</button>
+        <p class="centre" style="margin-top:10px">✅ Gratuit · sans carte bancaire · sans engagement</p>
       </form>
 
       <p class="centre">Déjà membre ? <a class="lien" href="connexion.html">Se connecter</a></p>
@@ -78,6 +84,7 @@
         <p class="sous">On vient d'envoyer un e-mail à<br><b id="mail-envoye" style="color:var(--ink)"></b><br><br>
         Clique sur le bouton <b>« Confirmer mon adresse e-mail »</b> dans ce message pour activer ton compte.
         Tant que ce n'est pas fait, ton compte reste inactif.</p>
+        <div class="rappel-gratuit" style="text-align:left">💛 <span>Rappel : ton compte est <b>totalement gratuit</b> jusqu'au 31 octobre. Rien à payer pour t'inscrire.</span></div>
         <div class="carte" style="text-align:left">
           <p>💡 <b>Tu ne vois rien ?</b> Regarde dans tes <b>courriers indésirables (spam)</b>, ou attends 1 à 2 minutes.
           Si tu as déjà un compte avec cette adresse, utilise plutôt la <a class="lien" href="connexion.html">page de connexion</a>.</p>
@@ -163,7 +170,7 @@ document.getElementById('form-inscription').addEventListener('submit', async (ev
   } catch (e) {
     toast('Connexion impossible — vérifie ton réseau et réessaie 🙏');
   } finally {
-    btn.disabled = false; btn.textContent = 'Créer mon compte 💛';
+    btn.disabled = false; btn.textContent = 'Créer mon compte gratuit 💛';
   }
 });
 
