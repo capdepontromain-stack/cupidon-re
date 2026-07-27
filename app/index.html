@@ -62,9 +62,23 @@ body{
 #onboard .scrollwrap{position:relative;flex:1;overflow-y:auto;min-height:0}
 #onboard .inner{min-height:100%;padding:calc(38px + env(safe-area-inset-top)) 28px 18px;display:flex;flex-direction:column;justify-content:flex-end;gap:14px}
 .datebanner{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:rgba(242,194,0,.16);border:1.5px solid var(--gold);color:var(--gold-lt);font-weight:600;font-size:13.5px;padding:8px 15px;border-radius:999px;backdrop-filter:blur(8px)}
-.lancement{align-self:flex-start;background:rgba(242,194,0,.15);border:1.5px solid var(--gold);border-radius:16px;padding:11px 15px;font-size:13.5px;color:var(--gold-lt);line-height:1.5;backdrop-filter:blur(8px)}
-.lancement b{color:#fff}
-.lancement span{display:block;font-size:12.5px;color:#DCE6FF;margin-top:4px;font-weight:400}
+/* Bandeau d'ouverture — c'est l'information n°1 de l'écran d'accueil,
+   il doit se voir immédiatement sur la photo sombre du volcan. */
+.lancement{align-self:stretch;background:linear-gradient(135deg,#FFE68A,var(--gold) 45%,#E8A800);border-radius:18px;padding:14px 16px 15px;color:#3A2C00;box-shadow:0 10px 30px rgba(242,194,0,.35),0 2px 0 rgba(255,255,255,.5) inset;position:relative;overflow:hidden}
+.lancement::after{content:'';position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);animation:lueur 4.5s ease-in-out infinite}
+@keyframes lueur{0%,72%{left:-60%}100%{left:130%}}
+.lancement .lc-haut{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.lancement .lc-pastille{flex:none;background:#B3121B;color:#fff;font-family:'Fraunces',serif;font-weight:900;font-size:19px;line-height:1;padding:9px 12px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.28);text-align:center;white-space:nowrap;animation:battement 2.4s ease-in-out infinite}
+@keyframes battement{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.lancement .lc-titre{font-family:'Fraunces',serif;font-weight:900;font-size:17.5px;line-height:1.2;color:#2A2000}
+.lancement .lc-titre em{font-style:normal;display:block;font-family:'Jost',sans-serif;font-weight:700;font-size:13px;color:#5A4600;margin-top:3px}
+.lancement .lc-offre{position:relative;z-index:1;margin-top:11px;background:rgba(255,255,255,.55);border-radius:11px;padding:9px 11px;font-size:14px;font-weight:700;color:#2A2000;line-height:1.5;text-align:center}
+.lancement .lc-offre b{color:#B3121B;white-space:nowrap}
+.lancement .lc-fond{font-size:12.5px;font-weight:600;color:#5A4600}
+@media(prefers-reduced-motion:reduce){
+  .lancement::after,.lancement .lc-pastille{animation:none}
+  .lancement::after{display:none}
+}
 .count-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px 18px;backdrop-filter:blur(10px)}
 .count-card .freebig{font-family:'Fraunces',serif;font-weight:900;font-size:24px;color:var(--gold)}
 .count-card .freebig span{font-family:'Jost';font-weight:600;font-size:14.5px;color:#fff}
@@ -376,7 +390,13 @@ body{
             <div class="wordsub">Rencontres · La Réunion · 974</div>
           </div>
         </a>
-        <div class="lancement">🌋 <b>Ouverture officielle le 1ᵉʳ août 2026</b> · Les 3 premiers mois sont offerts.<span>Vous faites partie des premiers membres de Cupidon.re, et nous vous en remercions. Notre équipe travaille activement pour agrandir rapidement la communauté.</span></div>
+        <div class="lancement" id="lancement">
+          <div class="lc-haut">
+            <div class="lc-pastille" id="lc-pastille">J–<span id="lc-jours">–</span></div>
+            <div class="lc-titre"><span id="lc-titre">Ouverture officielle<br>le 1ᵉʳ août 2026</span><em id="lc-sous">🌋 Sois là dès le premier jour</em></div>
+          </div>
+          <div class="lc-offre" id="lc-offre">🎁 <b>3 mois offerts</b> pour tout le monde<br><span class="lc-fond">puis <b>10 €/mois à vie</b> pour les membres fondateurs</span></div>
+        </div>
         <h1>Faites de belles rencontres<br>au pied <em>du volcan</em></h1>
         <p class="lead">Rencontres amoureuses, <b>amicales</b> et activités 100 % péi — profils vérifiés, en toute simplicité.</p>
         <div class="count-card">
@@ -754,6 +774,40 @@ function majCompteARebours(){
 }
 majCompteARebours();
 setInterval(majCompteARebours,1000);
+
+/* Bandeau d'ouverture : compte à rebours avant le 1ᵉʳ août, puis bascule
+   tout seul sur « C'est ouvert » le jour J — rien à modifier à la main. */
+function majBandeauOuverture(){
+  const pastille=document.getElementById('lc-pastille');
+  const titre=document.getElementById('lc-titre');
+  const sous=document.getElementById('lc-sous');
+  if(!pastille||!titre)return;
+
+  if(!sous)return;
+  const reste=OUVERTURE-new Date();
+
+  if(reste<=0){                       /* c'est ouvert */
+    pastille.textContent='🎉';
+    pastille.style.background='#1F7A4D';
+    titre.textContent='C\'est ouvert !';
+    sous.textContent='🌋 Rejoins les premiers membres de Cupidon.re';
+    return;
+  }
+
+  titre.innerHTML='Ouverture officielle<br>le 1ᵉʳ août 2026';
+  pastille.style.background='#B3121B';
+
+  const j=Math.floor(reste/864e5);
+  if(j>=1){
+    pastille.textContent='J–'+j;
+    sous.textContent=(j===1?'🌋 Plus qu\'un jour — prends ta place':'🌋 Sois là dès le premier jour');
+  }else{                              /* dernier jour : on passe aux heures */
+    pastille.textContent='H–'+Math.floor(reste/36e5);
+    sous.textContent='🌋 C\'est pour aujourd\'hui — prends ta place';
+  }
+}
+majBandeauOuverture();
+setInterval(majBandeauOuverture,30000);
 
 /* ───────── Inscription ───────── */
 let notifMode='app';
