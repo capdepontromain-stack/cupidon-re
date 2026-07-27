@@ -399,7 +399,10 @@ body{
         </div>
         <h1>Faites de belles rencontres<br>au pied <em>du volcan</em></h1>
         <p class="lead">Rencontres amoureuses, <b>amicales</b> et activités 100 % péi — profils vérifiés, en toute simplicité.</p>
-        <div class="count-card">
+        <!-- Ce compte à rebours porte sur la FIN des 3 mois offerts. Il reste
+             masqué jusqu'au 1ᵉʳ août pour laisser le bandeau d'ouverture seul
+             en vedette : deux chronos d'affilée brouillent le message. -->
+        <div class="count-card" id="count-card" style="display:none">
           <div class="freebig">🎉 Pour fêter l'ouverture <span>: 3 mois gratuits pour tout le monde</span></div>
           <div class="cd-label" id="cd-label">⏳ Il reste, pour profiter de l'offre d'ouverture :</div>
           <div class="cd" id="countdown">
@@ -791,11 +794,16 @@ function majBandeauOuverture(){
     pastille.style.background='#1F7A4D';
     titre.textContent='C\'est ouvert !';
     sous.textContent='🌋 Rejoins les premiers membres de Cupidon.re';
+    /* Dès l'ouverture, le chrono des 3 mois offerts prend le relais. */
+    const carte=document.getElementById('count-card');
+    if(carte)carte.style.display='';
     return;
   }
 
   titre.innerHTML='Ouverture officielle<br>le 1ᵉʳ août 2026';
   pastille.style.background='#B3121B';
+  const carte=document.getElementById('count-card');
+  if(carte)carte.style.display='none';   /* avant l'ouverture : un seul chrono */
 
   const j=Math.floor(reste/864e5);
   if(j>=1){
