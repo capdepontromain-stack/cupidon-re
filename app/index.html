@@ -363,7 +363,6 @@ body{
 </head>
 <body>
 <div id="phone">
-  <div class="demo-tag">Prototype · profils fictifs</div>
 
   <!-- ══════════ ONBOARDING ══════════ -->
   <section class="screen active" id="onboard">
@@ -397,7 +396,6 @@ body{
         </label>
         <button class="btn btn-gold" id="startbtn" disabled>Je prends ma place gratuite</button>
         <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="location.href='connexion.html'">J'ai déjà un compte — Se connecter</button>
-        <button class="btn" style="background:none;color:#AAB9E3;font-size:14px;padding:6px" onclick="enterApp()">👀 Accès démo — partenaires & presse</button>
         <div class="scrollhint">▼ Fais défiler pour en savoir plus</div>
       </div>
       <div class="landing">
@@ -510,7 +508,7 @@ body{
     <div class="chathead">
       <button class="back" onclick="showScreen('matches')">‹</button>
       <div class="circ" id="chatavatar">M</div>
-      <div><b id="chatname">Maëva</b><small>En ligne</small></div>
+      <div><b id="chatname"></b><small>Discussion privée</small></div>
       <button class="icon-btn" style="margin-left:auto" onclick="blockFromChat()" title="Bloquer cette personne">🚫</button>
     </div>
     <div id="msgs"></div>
@@ -558,7 +556,7 @@ body{
       <div class="hero">
         <div class="circ" id="me-circ">R</div>
         <h2 id="me-nom">Romain, 34</h2>
-        <p id="me-lieu">📍 Le Tampon · profil de démonstration</p>
+        <p id="me-lieu"></p>
         <div class="founder" id="me-badge">🌱 Membre fondateur — parmi les premiers inscrits</div>
         <p id="me-description" style="display:none;font-size:14px;color:var(--ink-soft);font-style:italic;line-height:1.5;margin-top:10px;text-align:center"></p>
         <div id="me-interets" style="display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:10px"></div>
@@ -618,7 +616,7 @@ body{
         <div class="circ" id="matchcirc">M</div>
       </div>
       <h3 class="serif">C'est un match !</h3>
-      <p id="matchtext">Toi et Maëva vous êtes aimés mutuellement.</p>
+      <p id="matchtext"></p>
       <button class="btn btn-gold" onclick="openChatFromMatch()">Envoyer un message</button>
       <button class="btn" style="background:rgba(255,255,255,.14);color:#fff" onclick="hideOverlay('matchoverlay')">Continuer à découvrir</button>
     </div>
@@ -648,7 +646,7 @@ body{
     <div class="modal">
       <div class="match-avatars"><div class="circ" id="dmcirc" style="background:#888">M</div></div>
       <h3 class="serif">Discuter en privé ?</h3>
-      <p id="dmtext">Envoie une demande à Maëva. Elle pourra accepter ou refuser — pas de message privé sans accord.</p>
+      <p id="dmtext"></p>
       <button class="btn btn-wine" onclick="sendDMRequest()">Envoyer la demande 💌</button>
       <button class="btn btn-ghost" onclick="hideOverlay('dmoverlay')">Annuler</button>
     </div>
@@ -670,20 +668,14 @@ body{
 </div>
 
 <script>
-/* ───────── Données de démonstration (profils fictifs) ───────── */
-const PROFILES=[
- {n:"Maëva",a:27,v:"Saint-Pierre",e:"🌺",g:"linear-gradient(160deg,#F0699B,#B0336B)",t:["Randonnée","Maloya","Cuisine créole"],b:"Toujours partante pour un lever de soleil au Maïdo ou un pique-nique la ravine.",on:true},
- {n:"Kévin",a:31,v:"Le Tampon",e:"🏄",g:"linear-gradient(160deg,#3B7BD4,#153E8A)",t:["Surf","Moto","Football"],b:"Plaine des Cafres dans le cœur, l'océan dans la tête. Cherche une personne vraie."},
- {n:"Laura",a:26,v:"Saint-Denis",e:"📚",g:"linear-gradient(160deg,#9A6BD4,#5B2E9E)",t:["Lecture","Voyages","Yoga"],b:"Dionysienne curieuse de tout. Un bon carri et une bonne discussion, et je suis heureuse."},
- {n:"Jonathan",a:29,v:"Saint-Paul",e:"🎣",g:"linear-gradient(160deg,#2FA37A,#14614A)",t:["Pêche","VTT","Barbecue"],b:"Simple et souriant. Le dimanche c'est plage de l'Ermitage avec les amis."},
- {n:"Émeline",a:24,v:"Saint-Leu",e:"🌊",g:"linear-gradient(160deg,#F2A03D,#C55A11)",t:["Plongée","Photo","Danse"],b:"Née face au lagon. Je cherche quelqu'un pour explorer l'île, du volcan aux cascades.",on:true},
- {n:"Dimitri",a:33,v:"Saint-Joseph",e:"🌋",g:"linear-gradient(160deg,#E14848,#8F1616)",t:["Trail","Volcan","Musique"],b:"Le Grand Raid deux fois. Troisième défi : trouver la bonne personne."},
- {n:"Anaïs",a:28,v:"L'Étang-Salé",e:"🐎",g:"linear-gradient(160deg,#43B8C9,#1A6E7E)",t:["Équitation","Forêt","Cinéma"],b:"Balades dans la forêt de l'Étang-Salé et soirées film. Douce mais avec du caractère."},
- {n:"Loïc",a:30,v:"Sainte-Marie",e:"🎸",g:"linear-gradient(160deg,#6B7ED9,#2C3E8F)",t:["Guitare","Séga","Cuisine"],b:"Musicien le week-end. Je te jouerai un morceau si tu ramènes les bonbons piment."}
-];
-const REPLIES=["Oui carrément, avec plaisir ! 😊","Haha j'adore ! Tu fais quoi ce week-end ?","Trop bien ! Moi aussi j'adore ça 🌋","On pourrait aller boire un verre à Saint-Pierre ?","Mi aime bien out profil 😄"];
+/* ───────── Données réelles ─────────
+   Les profils et les conversations viennent de Supabase (js/rencontres.js).
+   Rien n'est simulé : s'il n'y a pas encore de membres, l'appli le dit
+   honnêtement plutôt que d'afficher de faux profils. */
+let PROFILES=[];
 
 let deckIndex=0, matches=[], convos={}, currentChat=null, demoUnlocked=false, lastTab='discover';
+let superEnCours=false;
 
 /* ───────── Navigation ───────── */
 function showScreen(id){
@@ -691,7 +683,15 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
   if(['discover','salons','matches','me'].includes(id)) lastTab=id;
 }
-function goTab(id){ showScreen(id); if(id==='matches'){document.getElementById('matchdot').classList.remove('show');renderMatches();} }
+async function goTab(id){
+  showScreen(id);
+  if(id==='matches'){
+    document.getElementById('matchdot').classList.remove('show');
+    renderMatches();
+    if(MOI){ matches=await chargerMatchs(); renderMatches(); }
+  }
+  if(id==='salons') renderSalons();
+}
 function toast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),2600);
@@ -705,8 +705,22 @@ document.getElementById('agecheck').addEventListener('change',e=>{
   document.getElementById('startbtn').disabled=!e.target.checked;
 });
 document.getElementById('startbtn').addEventListener('click',()=>location.href='inscription.html');
-function enterApp(){
-  showScreen('discover');renderDeck();
+async function enterApp(){
+  showScreen('discover');
+  const deck=document.getElementById('deck');
+  deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:120px;opacity:.6"><b>Chargement…</b></div>';
+
+  /* Vrais profils et vrais matchs, chargés depuis la base. */
+  const [profils,mesMatchs]=await Promise.all([chargerProfilsADecouvrir(),chargerMatchs()]);
+  PROFILES=profils; deckIndex=0; matches=mesMatchs;
+  renderDeck(); renderMatches();
+
+  /* Pastille sur l'onglet Matchs s'il y a des messages non lus. */
+  try{
+    const nonLus=await compterNonLus();
+    if(Object.keys(nonLus).length)document.getElementById('matchdot').classList.add('show');
+  }catch(e){}
+
   /* Premier passage : petit guide « glisse à droite / à gauche » */
   if(!localStorage.getItem('cupidon_guide_vu'))document.getElementById('swipehint').classList.add('show');
 }
@@ -759,9 +773,11 @@ function submitSignup(){ location.href='inscription.html'; }
 /* ───────── Pile de cartes ───────── */
 function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
-  const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.n));
+  const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.id));
   if(!remaining.length){
-    deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>C\'est le lancement : l\'appli se remplit chaque jour. Dès qu\'il y a du nouveau, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p></div>';
+    deck.innerHTML = PROFILES.length
+      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p></div>'
+      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Dès qu\'un membre s\'inscrit, tu seras prévenu·e par e-mail.</p></div>';
     return;
   }
   remaining.slice(0,3).reverse().forEach((p,i,arr)=>{
@@ -769,24 +785,24 @@ function renderDeck(){
     const c=document.createElement('div');c.className='card';
     c.style.transform=top?'':'scale('+(0.94+0.03*i)+') translateY('+((arr.length-1-i)*12)+'px)';
     c.innerHTML=
-      '<div class="bg" style="background:'+p.g+'"><div class="initial">'+p.n[0]+'</div><div class="emoji">'+p.e+'</div>'+
+      '<div class="bg" style="background:'+p.g+'"><div class="initial">'+echapper(p.n[0])+'</div><div class="emoji">'+echapper(p.e)+'</div>'+
       '<img class="cupi-g" src="logo-mascotte.png" alt=""><img class="cupi-d" src="logo-mascotte.png" alt="">'+
       '<div class="tir tir-g">➳<i></i></div><div class="tir tir-d">➳<i></i></div>'+
       '<span class="etin e1">✨</span><span class="etin e2">✨</span></div>'+
       '<div class="veil"></div>'+
       '<button class="report" onclick="event.stopPropagation();document.getElementById(\'reportoverlay\').classList.add(\'show\')">🚩 Signaler</button>'+
       '<div class="stamp like">JE MATCHE 💘</div><div class="stamp nope">JE PASSE</div>'+
-      '<div class="info"><h2>'+p.n+', <span>'+p.a+'</span>'+(p.on?' <em class="enligne">● En ligne</em>':'')+'</h2>'+
-      '<div class="loc">📍 '+p.v+' · La Réunion</div>'+
-      '<div class="tags">'+p.t.map(t=>'<span>'+t+'</span>').join('')+'</div>'+
-      '<div class="bio">'+p.b+'</div></div>';
+      '<div class="info"><h2>'+echapper(p.n)+(p.a?', <span>'+p.a+'</span>':'')+'</h2>'+
+      '<div class="loc">📍 '+echapper(p.v)+' · La Réunion</div>'+
+      '<div class="tags">'+p.t.map(t=>'<span>'+echapper(t)+'</span>').join('')+'</div>'+
+      '<div class="bio">'+echapper(p.b)+'</div></div>';
     if(top) attachDrag(c);
     deck.appendChild(c);
   });
 
   /* Bulle discrète si la personne affichée est en ligne (une seule fois par visite) */
   const haut=remaining[0];
-  if(haut&&haut.on&&!sessionStorage.getItem('cupidon_bulle_ligne')){
+  if(false){   /* désactivé : nous ne savons pas qui est réellement connecté */
     sessionStorage.setItem('cupidon_bulle_ligne','oui');
     const top=deck.lastElementChild;
     if(top){
@@ -833,7 +849,11 @@ function flyOut(card,liked){
   },delai);
   const p=PROFILES[deckIndex];
   deckIndex++;
-  setTimeout(()=>{renderDeck();if(liked)maybeMatch(p);},delai+380);
+  /* La décision part en base : c'est elle qui fera foi pour les matchs. */
+  if(p) enregistrerDecision(p.id, liked ? (superEnCours?'superlike':'aime') : 'passe')
+          .then(estUnMatch=>{ if(estUnMatch) annoncerMatch(p); });
+  superEnCours=false;
+  setTimeout(()=>{renderDeck();},delai+380);
 }
 function swipeTop(liked){
   const cards=document.querySelectorAll('#deck .card');
@@ -854,21 +874,21 @@ function superLike(){
   if(rest<=0){toast('Tu as utilisé tes 3 Super j\'aime offerts — d\'autres arrivent bientôt 😉');return;}
   localStorage.setItem('cupidon_supers',rest-1);
   toast('⚡ Super j\'aime envoyé ! Il t\'en reste '+(rest-1));
+  superEnCours=true;
   swipeTop(true);
 }
-function maybeMatch(p){
-  // En démo : une personne sur deux te « matche » en retour
-  if(matches.length===0 || Math.abs(p.n.length*7+p.a)%2===0){
-    matches.push(p);convos[p.n]=convos[p.n]||[];
-    document.getElementById('matchcirc').textContent=p.n[0];
-    document.getElementById('matchcirc').style.background=p.g;
-    document.getElementById('matchtext').textContent='Toi et '+p.n+', vous vous plaisez — c\'est un match !';
-    currentChat=p;
-    document.getElementById('matchoverlay').classList.add('show');
-    document.getElementById('matchdot').classList.add('show');
-  }
+/* Un match n'existe que si les deux personnes se sont aimées : c'est la
+   base de données qui le confirme, jamais l'application seule. */
+function annoncerMatch(p){
+  if(!matches.some(m=>m.id===p.id)) matches.push(p);
+  document.getElementById('matchcirc').textContent=p.n[0];
+  document.getElementById('matchcirc').style.background=p.g;
+  document.getElementById('matchtext').textContent='Toi et '+p.n+', vous vous plaisez — c\'est un match !';
+  currentChat=p;
+  document.getElementById('matchoverlay').classList.add('show');
+  document.getElementById('matchdot').classList.add('show');
 }
-function openChatFromMatch(){hideOverlay('matchoverlay');openChat(currentChat.n);}
+function openChatFromMatch(){hideOverlay('matchoverlay');openChat(currentChat.id);}
 
 /* ───────── Matchs & conversations ───────── */
 function renderMatches(){
@@ -877,8 +897,8 @@ function renderMatches(){
     strip.innerHTML=
       '<div class="mvide">'+
       '<div class="mbulles">'+
-      '<span>🌋 Application ouverte le 1ᵉʳ août 2026</span>'+
-      '<span>🌱 La communauté grandit chaque jour</span>'+
+      '<span>💘 Aucun match pour l\'instant</span>'+
+      '<span>🌱 Un match apparaît quand vous vous êtes aimés tous les deux</span>'+
       '<span>👀 Continue à découvrir de nouveaux profils</span>'+
       '<span>💬 Discute dans les Salons</span>'+
       '<span>📩 Tu seras averti·e par e-mail au moindre nouveau message</span>'+
@@ -890,29 +910,57 @@ function renderMatches(){
     list.innerHTML='';return;
   }
   strip.innerHTML=matches.map(p=>
-    '<button class="mavatar" onclick="openChat(\''+p.n+'\')"><span class="circ" style="background:'+p.g+'">'+p.n[0]+'</span>'+p.n+'</button>').join('');
+    '<button class="mavatar" onclick="openChat(\''+p.id+'\')"><span class="circ" style="background:'+p.g+'">'+echapper(p.n[0])+'</span>'+echapper(p.n)+'</button>').join('');
   list.innerHTML=matches.map(p=>{
-    const msgs=convos[p.n]||[];
-    const last=msgs.length?msgs[msgs.length-1].t:'Nouveau match ! Dis bonjour 👋';
-    return '<button class="convo" onclick="openChat(\''+p.n+'\')">'+
-      '<span class="circ" style="background:'+p.g+'">'+p.n[0]+'</span>'+
-      '<span class="txt"><b>'+p.n+', '+p.a+'</b><span>'+last+'</span></span>'+
-      '<span class="when">'+p.v+'</span></button>';
+    const msgs=convos[p.id]||[];
+    const last=msgs.length?echapper(msgs[msgs.length-1].t):'Nouveau match ! Dis bonjour 👋';
+    return '<button class="convo" onclick="openChat(\''+p.id+'\')">'+
+      '<span class="circ" style="background:'+p.g+'">'+echapper(p.n[0])+'</span>'+
+      '<span class="txt"><b>'+echapper(p.n)+(p.a?', '+p.a:'')+'</b><span>'+last+'</span></span>'+
+      '<span class="when">'+echapper(p.v)+'</span></button>';
   }).join('');
 }
-function openChat(name){
-  currentChat=PROFILES.find(p=>p.n===name);
-  document.getElementById('chatname').textContent=currentChat.n+', '+currentChat.a;
+async function openChat(id){
+  currentChat=matches.find(p=>p.id===id)||PROFILES.find(p=>p.id===id);
+  if(!currentChat)return;
+  document.getElementById('chatname').textContent=currentChat.n+(currentChat.a?', '+currentChat.a:'');
   const av=document.getElementById('chatavatar');
   av.textContent=currentChat.n[0];av.style.background=currentChat.g;
-  renderMsgs();showScreen('chat');
+  showScreen('chat');
+  renderMsgs();
+  convos[currentChat.id]=await chargerMessages(currentChat.id);
+  renderMsgs();
+  ecouterMessages(currentChat.id);
+}
+
+/* Les nouveaux messages arrivent sans rafraîchir la page. */
+let canalChat=null;
+function ecouterMessages(autreId){
+  if(canalChat){ sb.removeChannel(canalChat); canalChat=null; }
+  canalChat=sb.channel('chat-'+autreId)
+    .on('postgres_changes',
+        {event:'INSERT',schema:'public',table:'messages_cupidon'},
+        async (charge)=>{
+          const m=charge.new;
+          if(!MOI)return;
+          const concerne=(m.expediteur_id===autreId&&m.destinataire_id===MOI.id)
+                       ||(m.expediteur_id===MOI.id&&m.destinataire_id===autreId);
+          if(!concerne)return;
+          convos[autreId]=await chargerMessages(autreId);
+          if(currentChat&&currentChat.id===autreId)renderMsgs();
+        })
+    .subscribe();
+}
+function echapper(t){
+  const d=document.createElement('div');d.textContent=t;return d.innerHTML;
 }
 function renderMsgs(){
   const box=document.getElementById('msgs');
-  const msgs=convos[currentChat.n]||[];
+  const msgs=convos[currentChat.id]||[];
   box.innerHTML=msgs.length
-    ? msgs.map(m=>'<div class="bubble '+(m.me?'me':'them')+'">'+m.t+'</div>').join('')
-    : '<div class="bubble them">Salut ! Contente de matcher avec toi 😊 ('+currentChat.n+' — profil de démonstration)</div>';
+    ? msgs.map(m=>'<div class="bubble '+(m.me?'me':'them')+'">'+echapper(m.t)+'</div>').join('')
+    : '<div class="vide-chat" style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 20px;line-height:1.6">'+
+      'Vous venez de matcher — la conversation est toute neuve.<br>À toi de dire le premier mot 👋</div>';
   box.scrollTop=box.scrollHeight;
 }
 function sendMsg(){
@@ -924,14 +972,19 @@ function sendMsg(){
     document.getElementById('premiumoverlay').classList.add('show');
     return;
   }
-  convos[currentChat.n]=convos[currentChat.n]||[];
-  convos[currentChat.n].push({me:true,t:txt});
-  input.value='';renderMsgs();
   const who=currentChat;
-  setTimeout(()=>{
-    convos[who.n].push({me:false,t:REPLIES[(convos[who.n].length)%REPLIES.length]});
-    if(currentChat&&currentChat.n===who.n)renderMsgs();
-  },1100);
+  input.value='';
+  /* Affichage immédiat, puis envoi réel. En cas d'échec on le dit. */
+  convos[who.id]=convos[who.id]||[];
+  convos[who.id].push({me:true,t:txt});
+  renderMsgs();
+  envoyerMessage(who.id,txt).then(async ok=>{
+    if(!ok){
+      toast('Message non envoyé — vérifie ta connexion');
+      convos[who.id]=await chargerMessages(who.id);
+      if(currentChat&&currentChat.id===who.id)renderMsgs();
+    }
+  });
 }
 function unlockDemo(){demoUnlocked=true;hideOverlay('premiumoverlay');toast('🎁 Offre de lancement activée — messages illimités !');}
 document.getElementById('msginput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
@@ -957,97 +1010,100 @@ function topicHTML(){
         '<div class="t-intro">'+TOPIC_VEDETTE.intro+'</div>';
 }
 const ROOMS=[
- {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble",on:23},
- {id:'18-25',n:'Salon 18-25 ans',e:'🎓',d:'La relève péi',on:9},
- {id:'26-35',n:'Salon 26-35 ans',e:'🌺',d:'La génération motivée',on:14},
- {id:'36-45',n:'Salon 36-45 ans',e:'🍹',d:'La belle époque',on:7},
- {id:'46plus',n:'Salon 46 ans et +',e:'🌅',d:"Jamais trop tard pour se rencontrer",on:5}
+ {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble"},
+ {id:'18-25',n:'Salon 18-25 ans',e:'🎓',d:'La relève péi'},
+ {id:'26-35',n:'Salon 26-35 ans',e:'🌺',d:'La génération motivée'},
+ {id:'36-45',n:'Salon 36-45 ans',e:'🍹',d:'La belle époque'},
+ {id:'46plus',n:'Salon 46 ans et +',e:'🌅',d:"Jamais trop tard pour se rencontrer"}
 ];
-const GROUPMSGS={
- general:[
-  {a:'Maëva',t:'Bonzour tout le monde ! Qui a vu le lever de soleil ce matin ? 😍'},
-  {a:'Kévin',t:'Moi ! Plaine des Cafres, brouillard zéro, un régal 🌋'},
-  {a:'Laura',t:'Pour le sujet de la semaine : le lever de soleil au Maïdo, évidemment !'},
-  {a:'Dimitri',t:'Alors là non, coucher de soleil à l\'Ermitage, y a pas photo 😄'},
-  {a:'Émeline',t:'Les deux la même journée, et le pique-nique au milieu 🤙'}
- ],
- '18-25':[
-  {a:'Émeline',t:'Salut la jeunesse ! Quelqu\'un va au marché de Saint-Paul vendredi ?'}
- ],
- '26-35':[
-  {a:'Maëva',t:'Team 26-35 ! Qui est plutôt rando ou plutôt lagon le dimanche ?'},
-  {a:'Jonathan',t:'Lagon le matin, barbecue l\'après-midi 😎'}
- ],
- '36-45':[
-  {a:'Dimitri',t:'Bonzour ! Un petit trail entre nous un de ces quatre ?'}
- ],
- '46plus':[]
-};
-const GROUP_REPLIES=["Tout à fait d'accord ! 😄","Haha excellent !","Bienvenue dans le salon ! 👋","Bonne question, je me la pose aussi…","Mi aime bien ce salon 😊"];
+/* Messages des salons : chargés depuis Supabase, jamais inventés. */
+const GROUPMSGS={};
 let currentRoom=null,dmTarget=null,roomPing=null;
 
 function renderSalons(){
   document.getElementById('topicpin').innerHTML=topicHTML();
   document.getElementById('roomlist').innerHTML=ROOMS.map(r=>
-   '<button class="room" onclick="openRoom(\''+r.id+'\')"><span class="re">'+r.e+'</span><span class="rt"><b>'+r.n+'</b><span>'+r.d+'</span></span><span class="rn">● '+r.on+' en ligne</span></button>').join('');
+   '<button class="room" onclick="openRoom(\''+r.id+'\')"><span class="re">'+r.e+'</span><span class="rt"><b>'+r.n+'</b><span>'+r.d+'</span></span></button>').join('');
 }
-function openRoom(id){
+let canalSalon=null;
+async function openRoom(id){
   currentRoom=ROOMS.find(r=>r.id===id);
   GROUPMSGS[id]=GROUPMSGS[id]||[];
   document.getElementById('gcname').textContent=currentRoom.n;
   document.getElementById('gcicon').textContent=currentRoom.e;
-  document.getElementById('gccount').textContent=currentRoom.on+' en ligne';
+  document.getElementById('gccount').textContent='';
   document.getElementById('gctopic').innerHTML=topicHTML();
   renderGroupMsgs();showScreen('groupchat');
-  clearTimeout(roomPing);
-  roomPing=setTimeout(()=>{
-    if(!document.getElementById('groupchat').classList.contains('active'))return;
-    const p=PROFILES[(GROUPMSGS[id].length*3+id.length)%PROFILES.length];
-    GROUPMSGS[id].push({a:p.n,t:GROUP_REPLIES[GROUPMSGS[id].length%GROUP_REPLIES.length]});
-    renderGroupMsgs();
-  },2600);
+
+  GROUPMSGS[id]=await chargerMessagesSalon(id);
+  if(currentRoom&&currentRoom.id===id)renderGroupMsgs();
+
+  /* Les messages des autres apparaissent en direct. */
+  if(canalSalon){ sb.removeChannel(canalSalon); canalSalon=null; }
+  canalSalon=sb.channel('salon-'+id)
+    .on('postgres_changes',
+        {event:'INSERT',schema:'public',table:'messages_salon_cupidon',filter:'salon=eq.'+id},
+        async ()=>{
+          GROUPMSGS[id]=await chargerMessagesSalon(id);
+          if(currentRoom&&currentRoom.id===id)renderGroupMsgs();
+        })
+    .subscribe();
 }
-function profByName(n){return PROFILES.find(p=>p.n===n);}
+function profParId(id){return matches.find(p=>p.id===id)||PROFILES.find(p=>p.id===id)||null;}
 function renderGroupMsgs(){
   const box=document.getElementById('gmsgs');
-  box.innerHTML=(GROUPMSGS[currentRoom.id]||[]).map(m=>{
-    if(m.a==='Moi')return '<div class="gmsg me"><div class="bub"><p>'+m.t+'</p></div></div>';
-    const p=profByName(m.a);
-    return '<div class="gmsg"><div class="circ" style="background:'+(p?p.g:'#6B7A9E')+'">'+m.a[0]+'</div><div class="bub">'+
-      '<span class="name" onclick="askDM(\''+m.a+'\')">'+m.a+(p?', '+p.a:'')+' ›</span><p>'+m.t+'</p></div></div>';
+  const msgs=GROUPMSGS[currentRoom.id]||[];
+  if(!msgs.length){
+    box.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13.5px;padding:34px 20px;line-height:1.6">'+
+      'Ce salon est encore vide.<br>Lance la discussion — les autres membres verront ton message.</div>';
+    return;
+  }
+  box.innerHTML=msgs.map(m=>{
+    if(m.a==='Moi')return '<div class="gmsg me"><div class="bub"><p>'+echapper(m.t)+'</p></div></div>';
+    const couleur=m.id?degradePour(m.id):'#6B7A9E';
+    return '<div class="gmsg"><div class="circ" style="background:'+couleur+'">'+echapper(m.a[0])+'</div><div class="bub">'+
+      '<span class="name" onclick="askDM(\''+(m.id||'')+'\')">'+echapper(m.a)+(m.age?', '+m.age:'')+' ›</span><p>'+echapper(m.t)+'</p></div></div>';
   }).join('');
   box.scrollTop=box.scrollHeight;
 }
 function sendGroupMsg(){
   const input=document.getElementById('gminput');
   const txt=input.value.trim();
-  if(!txt)return;
-  GROUPMSGS[currentRoom.id].push({a:'Moi',t:txt});
-  input.value='';renderGroupMsgs();
+  if(!txt||!currentRoom)return;
   const roomId=currentRoom.id;
-  setTimeout(()=>{
-    const p=PROFILES[(GROUPMSGS[roomId].length*5+roomId.length)%PROFILES.length];
-    GROUPMSGS[roomId].push({a:p.n,t:GROUP_REPLIES[GROUPMSGS[roomId].length%GROUP_REPLIES.length]});
-    if(currentRoom&&currentRoom.id===roomId&&document.getElementById('groupchat').classList.contains('active'))renderGroupMsgs();
-  },1300);
+  input.value='';
+  GROUPMSGS[roomId]=GROUPMSGS[roomId]||[];
+  GROUPMSGS[roomId].push({a:'Moi',t:txt,id:MOI&&MOI.id});
+  renderGroupMsgs();
+  envoyerMessageSalon(roomId,txt).then(async ok=>{
+    if(!ok){
+      toast('Message non envoyé — vérifie ta connexion');
+      GROUPMSGS[roomId]=await chargerMessagesSalon(roomId);
+      if(currentRoom&&currentRoom.id===roomId)renderGroupMsgs();
+    }
+  });
 }
-function askDM(name){
-  dmTarget=profByName(name);
-  if(!dmTarget)return;
+function askDM(id){
+  if(!id)return;
+  dmTarget=profParId(id)||{id:id,n:'cette personne',a:'',v:'',g:degradePour(id)};
   const c=document.getElementById('dmcirc');
   c.textContent=dmTarget.n[0];c.style.background=dmTarget.g;
-  document.getElementById('dmtext').textContent='Envoie une demande à '+dmTarget.n+' ('+dmTarget.a+' ans, '+dmTarget.v+'). Acceptation ou refus : pas de message privé sans accord.';
+  document.getElementById('dmtext').textContent='Envoyer un « j\'aime » à '+dmTarget.n+(dmTarget.a?' ('+dmTarget.a+' ans'+(dmTarget.v?', '+dmTarget.v:'')+')':'')+'. Vous pourrez discuter en privé uniquement si cette personne t\'aime aussi — pas de message privé sans accord des deux côtés.';
   document.getElementById('dmoverlay').classList.add('show');
 }
-function sendDMRequest(){
+async function sendDMRequest(){
   hideOverlay('dmoverlay');
   const t=dmTarget;
-  toast('Demande envoyée à '+t.n+' 💌');
-  setTimeout(()=>{
-    if(!matches.includes(t)){matches.push(t);convos[t.n]=convos[t.n]||[];}
-    document.getElementById('matchdot').classList.add('show');
-    toast(t.n+' a accepté ta demande ! Direction l\'onglet Matchs 🎉');
-  },3200);
+  if(!t)return;
+  const estUnMatch=await enregistrerDecision(t.id,'aime');
+  if(estUnMatch){
+    const carte=profParId(t.id)||t;
+    annoncerMatch(carte);
+    matches=await chargerMatchs();
+    renderMatches();
+  } else {
+    toast('Ton « j\'aime » est envoyé à '+t.n+' 💌');
+  }
 }
 document.getElementById('gminput').addEventListener('keydown',e=>{if(e.key==='Enter')sendGroupMsg();});
 renderSalons();
@@ -1056,9 +1112,11 @@ renderSalons();
 const blocked=new Set();
 function blockProfile(p){
   if(!p)return;
-  blocked.add(p.n);
-  matches=matches.filter(m=>m.n!==p.n);delete convos[p.n];
+  blocked.add(p.id);
+  matches=matches.filter(m=>m.id!==p.id);delete convos[p.id];
   hideOverlay('reportoverlay');
+  bloquerMembre(p.id);           /* enregistré en base : le blocage tient */
+  PROFILES=PROFILES.filter(x=>x.id!==p.id);
   renderDeck();renderMatches();
   toast('🚫 '+p.n+' ne peut plus te voir ni t\'écrire');
 }
@@ -1068,14 +1126,15 @@ function blockFromChat(){
   showScreen('matches');
 }
 
-/* Accès démo direct pour les partenaires : cupidon.re/app/?demo */
-if(location.search.indexOf('demo')!==-1)enterApp();
+/* Il n'y a plus d'accès sans compte : profils et discussions sont
+   réservés aux membres inscrits (les règles de la base l'imposent aussi). */
 </script>
 
 <!-- ═══ Compte membre réel (Supabase) : session + affichage du vrai profil ═══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/avatar.js"></script>
+<script src="js/rencontres.js"></script>
 <script>
 (async () => {
   try {
@@ -1096,12 +1155,14 @@ if(location.search.indexOf('demo')!==-1)enterApp();
 
     const profil = await chargerProfil(session.user.id);
     if (!profil) {                           // e-mail confirmé mais questionnaire pas terminé
-      if (location.search.indexOf('demo') === -1) location.href = 'profil.html';
+      location.href = 'profil.html';
       return;
     }
 
-    /* Membre connecté : on saute l'accueil marketing et on remplit l'onglet Profil */
-    if (location.search.indexOf('demo') === -1) enterApp();
+    /* Membre connecté : on note qui il est, puis on charge les vraies
+       données (profils à découvrir, matchs, messages non lus). */
+    MOI = { id: session.user.id, profil: profil };
+    enterApp();
 
     const prenom = profil.prenom || 'Moi';
 
