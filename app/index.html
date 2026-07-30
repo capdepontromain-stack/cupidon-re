@@ -156,6 +156,15 @@ body{
 .card .bg{position:absolute;inset:0}
 .card .bg .initial{position:absolute;top:16%;left:50%;transform:translateX(-50%);font-family:'Fraunces',serif;font-weight:900;font-size:120px;color:rgba(255,255,255,.28)}
 .card .bg .emoji{position:absolute;top:38%;left:50%;transform:translateX(-50%);font-size:64px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.25))}
+/* Vraie photo du membre : plein cadre. Avatar personnalisé : buste centré. */
+.card .bg .photo-carte{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .bg .avatar-carte{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-bottom:18%}
+.card .bg .avatar-carte svg{width:min(62%,300px);height:auto;border-radius:50%;filter:drop-shadow(0 18px 44px rgba(0,0,0,.28))}
+/* Photo ou avatar dans tous les petits ronds (matchs, discussions, salons) */
+.circ{overflow:hidden}
+.circ img,.circ svg{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
+/* Dans un petit rond, on zoome sur le visage de l'avatar */
+.circ svg{transform:scale(1.65);transform-origin:50% 40%}
 .card .veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,18,50,.88) 0%,rgba(8,18,50,.35) 38%,transparent 62%)}
 .card .info{position:relative;padding:22px 20px 20px;color:#fff}
 .card .info h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700}
@@ -850,6 +859,14 @@ function pickNotif(mode){
    la connexion au compte se fait via js/config.js (chargé en fin de page). */
 function submitSignup(){ location.href='inscription.html'; }
 
+/* Visuel d'un membre pour les petits ronds : photo réelle si elle existe,
+   sinon avatar personnalisé, sinon l'initiale du prénom. */
+function circHTML(p){
+  if(p.photoUrl)return '<img src="'+echapper(p.photoUrl)+'" alt="">';
+  if(p.avatar)return renderAvatar(p.avatar);
+  return echapper(p.n[0]);
+}
+
 /* ───────── Pile de cartes ───────── */
 function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
@@ -865,8 +882,12 @@ function renderDeck(){
     const top=i===arr.length-1;
     const c=document.createElement('div');c.className='card';
     c.style.transform=top?'':'scale('+(0.94+0.03*i)+') translateY('+((arr.length-1-i)*12)+'px)';
+    const visuel=p.photoUrl
+      ? '<img class="photo-carte" src="'+echapper(p.photoUrl)+'" alt="">'
+      : (p.avatar ? '<div class="avatar-carte">'+renderAvatar(p.avatar)+'</div>'
+                  : '<div class="initial">'+echapper(p.n[0])+'</div>');
     c.innerHTML=
-      '<div class="bg" style="background:'+p.g+'"><div class="initial">'+echapper(p.n[0])+'</div><div class="emoji">'+echapper(p.e)+'</div>'+
+      '<div class="bg" style="background:'+p.g+'">'+visuel+(p.photoUrl||p.avatar?'':'<div class="emoji">'+echapper(p.e)+'</div>')+
       '<img class="cupi-g" src="logo-mascotte.png" alt=""><img class="cupi-d" src="logo-mascotte.png" alt="">'+
       '<div class="tir tir-g">➳<i></i></div><div class="tir tir-d">➳<i></i></div>'+
       '<span class="etin e1">✨</span><span class="etin e2">✨</span></div>'+
@@ -962,7 +983,7 @@ function superLike(){
    base de données qui le confirme, jamais l'application seule. */
 function annoncerMatch(p){
   if(!matches.some(m=>m.id===p.id)) matches.push(p);
-  document.getElementById('matchcirc').textContent=p.n[0];
+  document.getElementById('matchcirc').innerHTML=circHTML(p);
   document.getElementById('matchcirc').style.background=p.g;
   document.getElementById('matchtext').textContent='Toi et '+p.n+', vous vous plaisez — c\'est un match !';
   currentChat=p;
@@ -991,12 +1012,12 @@ function renderMatches(){
     list.innerHTML='';return;
   }
   strip.innerHTML=matches.map(p=>
-    '<button class="mavatar" onclick="openChat(\''+p.id+'\')"><span class="circ" style="background:'+p.g+'">'+echapper(p.n[0])+'</span>'+echapper(p.n)+'</button>').join('');
+    '<button class="mavatar" onclick="openChat(\''+p.id+'\')"><span class="circ" style="background:'+p.g+'">'+circHTML(p)+'</span>'+echapper(p.n)+'</button>').join('');
   list.innerHTML=matches.map(p=>{
     const msgs=convos[p.id]||[];
     const last=msgs.length?echapper(msgs[msgs.length-1].t):'Nouveau match ! Dis bonjour 👋';
     return '<button class="convo" onclick="openChat(\''+p.id+'\')">'+
-      '<span class="circ" style="background:'+p.g+'">'+echapper(p.n[0])+'</span>'+
+      '<span class="circ" style="background:'+p.g+'">'+circHTML(p)+'</span>'+
       '<span class="txt"><b>'+echapper(p.n)+(p.a?', '+p.a:'')+'</b><span>'+last+'</span></span>'+
       '<span class="when">'+echapper(p.v)+'</span></button>';
   }).join('');
@@ -1006,7 +1027,7 @@ async function openChat(id){
   if(!currentChat)return;
   document.getElementById('chatname').textContent=currentChat.n+(currentChat.a?', '+currentChat.a:'');
   const av=document.getElementById('chatavatar');
-  av.textContent=currentChat.n[0];av.style.background=currentChat.g;
+  av.innerHTML=circHTML(currentChat);av.style.background=currentChat.g;
   showScreen('chat');
   renderMsgs();
   convos[currentChat.id]=await chargerMessages(currentChat.id);
@@ -1147,7 +1168,8 @@ function renderGroupMsgs(){
   box.innerHTML=msgs.map(m=>{
     if(m.a==='Moi')return '<div class="gmsg me"><div class="bub"><p>'+echapper(m.t)+'</p></div></div>';
     const couleur=m.id?degradePour(m.id):'#6B7A9E';
-    return '<div class="gmsg"><div class="circ" style="background:'+couleur+'">'+echapper(m.a[0])+'</div><div class="bub">'+
+    const rond=m.av?renderAvatar(m.av):echapper(m.a[0]);
+    return '<div class="gmsg"><div class="circ" style="background:'+couleur+'">'+rond+'</div><div class="bub">'+
       '<span class="name" onclick="askDM(\''+(m.id||'')+'\')">'+echapper(m.a)+(m.age?', '+m.age:'')+' ›</span><p>'+echapper(m.t)+'</p></div></div>';
   }).join('');
   box.scrollTop=box.scrollHeight;
@@ -1173,7 +1195,7 @@ function askDM(id){
   if(!id)return;
   dmTarget=profParId(id)||{id:id,n:'cette personne',a:'',v:'',g:degradePour(id)};
   const c=document.getElementById('dmcirc');
-  c.textContent=dmTarget.n[0];c.style.background=dmTarget.g;
+  c.innerHTML=circHTML(dmTarget);c.style.background=dmTarget.g;
   document.getElementById('dmtext').textContent='Envoyer un « j\'aime » à '+dmTarget.n+(dmTarget.a?' ('+dmTarget.a+' ans'+(dmTarget.v?', '+dmTarget.v:'')+')':'')+'. Vous pourrez discuter en privé uniquement si cette personne t\'aime aussi — pas de message privé sans accord des deux côtés.';
   document.getElementById('dmoverlay').classList.add('show');
 }

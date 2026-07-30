@@ -55,6 +55,22 @@ function versCarte(p) {
   };
 }
 
+/* Ajoute l'adresse (signée, temporaire) de la première photo de chaque
+   carte. Une seule requête pour toute la liste. Sans photo, l'avatar
+   personnalisé prend le relais, sinon l'initiale. */
+async function ajouterPhotos(cartes) {
+  const avecPhoto = cartes.filter(c => c.photos && c.photos.length);
+  if (!avecPhoto.length) return cartes;
+  try {
+    const { data, error } = await sb.storage.from('photos-cupidon')
+      .createSignedUrls(avecPhoto.map(c => c.photos[0]), 3600);
+    if (!error && data) data.forEach((d, i) => {
+      if (d && d.signedUrl) avecPhoto[i].photoUrl = d.signedUrl;
+    });
+  } catch (e) { /* pas bloquant : on retombe sur avatar/initiale */ }
+  return cartes;
+}
+
 /* ───────── Profils à découvrir ─────────
    Les autres membres actifs, moins ceux que j'ai déjà vus ou bloqués. */
 async function chargerProfilsADecouvrir() {
@@ -77,7 +93,7 @@ async function chargerProfilsADecouvrir() {
     .limit(100);
 
   if (error) { console.warn('profils:', error.message); return []; }
-  return (data || []).filter(p => !exclus.has(p.user_id)).map(versCarte);
+  return ajouterPhotos((data || []).filter(p => !exclus.has(p.user_id)).map(versCarte));
 }
 
 /* ───────── J'aime / je passe ─────────
@@ -123,7 +139,7 @@ async function chargerMatchs() {
   /* On garde l'ordre des matchs les plus récents. */
   const parId = {};
   (profils || []).forEach(p => { parId[p.user_id] = versCarte(p); });
-  return ids.map(id => parId[id]).filter(Boolean);
+  return ajouterPhotos(ids.map(id => parId[id]).filter(Boolean));
 }
 
 /* ───────── Messages privés ───────── */
@@ -183,10 +199,10 @@ async function chargerMessagesSalon(salon) {
   const messages = (data || []).slice().reverse();
   if (!messages.length) return [];
 
-  /* Prénoms des auteurs */
+  /* Prénoms et avatars des auteurs */
   const ids = [...new Set(messages.map(m => m.auteur_id))];
   const { data: profils } = await sb.from('profils_cupidon')
-    .select('user_id, prenom, date_naissance').in('user_id', ids);
+    .select('user_id, prenom, date_naissance, avatar').in('user_id', ids);
 
   const parId = {};
   (profils || []).forEach(p => { parId[p.user_id] = p; });
@@ -197,6 +213,7 @@ async function chargerMessagesSalon(salon) {
       id: m.auteur_id,
       a: (m.auteur_id === (MOI && MOI.id)) ? 'Moi' : (p ? p.prenom : 'Membre'),
       age: p && p.date_naissance ? calculerAge(p.date_naissance) : '',
+      av: p ? p.avatar : null,
       t: m.texte
     };
   });
