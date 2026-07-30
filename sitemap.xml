@@ -25,8 +25,14 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cupidon.re/blog/cupidon-rencontres-ouverture-rendez-vous-20h.html</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cupidon.re/blog/appli-rencontre-reunion.html</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
