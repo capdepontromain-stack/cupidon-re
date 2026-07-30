@@ -165,6 +165,25 @@ body{
 .circ img,.circ svg{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
 /* Dans un petit rond, on zoome sur le visage de l'avatar */
 .circ svg{transform:scale(1.65);transform-origin:50% 40%}
+/* ───── Fiche profil complète (toucher une carte) ───── */
+.dp-modal{max-height:88%;overflow-y:auto;text-align:left;padding:14px 14px 16px}
+#dp-visuel{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/5;background:var(--blush);cursor:pointer}
+#dp-visuel img{width:100%;height:100%;object-fit:cover;display:block}
+.dp-avatar{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.dp-avatar svg{width:66%;height:auto;border-radius:50%;filter:drop-shadow(0 14px 34px rgba(0,0,0,.22))}
+.dp-ini{font-family:'Fraunces',serif;font-size:90px;color:rgba(255,255,255,.55)}
+.dp-points{position:absolute;top:10px;left:0;right:0;display:flex;gap:6px;justify-content:center}
+.dp-points i{width:26px;height:4px;border-radius:99px;background:rgba(255,255,255,.45)}
+.dp-points i.on{background:#fff}
+.dp-astuce{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:11.5px;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.65)}
+.dp-modal h3{margin:14px 2px 2px;text-align:left}
+.dp-lieu{color:var(--muted);font-size:13.5px;margin:0 2px 10px;text-align:left}
+.dp-type{display:inline-block;font-size:12.5px;background:var(--blush);border:1px solid var(--line);padding:5px 11px;border-radius:999px;margin:0 2px 10px}
+.dp-tags{display:flex;flex-wrap:wrap;gap:7px;margin:0 2px 10px}
+.dp-tags span{font-size:12.5px;background:var(--blush);border:1px solid var(--line);padding:5px 11px;border-radius:999px}
+.dp-bio{font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0 2px 6px;text-align:left}
+.dp-actions{display:flex;gap:10px;margin-top:10px}
+.dp-actions .btn{flex:1;margin-top:0}
 .card .veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,18,50,.88) 0%,rgba(8,18,50,.35) 38%,transparent 62%)}
 .card .info{position:relative;padding:22px 20px 20px;color:#fff}
 .card .info h2{font-family:'Fraunces',serif;font-size:28px;font-weight:700}
@@ -603,6 +622,7 @@ body{
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>Gratuit jusqu'au 31 octobre (ouverture), puis 10 €/mois à vie</small></span></button>
         <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, passions, description — sans refaire le questionnaire</small></span></button>
         <button class="setrow" id="row-compte" style="display:none" onclick="location.href='compte.html'"><span class="ico">🛡️</span><span>Mon compte & sécurité<small>E-mail, mot de passe, appareils, mes données</small></span></button>
+        <button class="setrow" onclick="partagerCupidon()"><span class="ico">💌</span><span><b>Faire connaître Cupidon</b><small>Invite tes amis — plus on est nombreux, plus il y a de rencontres</small></span></button>
         <button class="setrow" onclick="contacterEquipe()"><span class="ico">💍</span><span><b>Parler à l'équipe Cupidon</b><small>Agence matrimoniale · 1ᵉʳ rendez-vous téléphonique offert · Écris-nous : contact@pullup.re</small></span></button>
         <button class="setrow" onclick="toast('Bientôt : réglages de recherche')"><span class="ico">🎯</span><span>Préférences de recherche<small>Distance, âge, secteur de l'île</small></span></button>
         <button class="setrow" onclick="window.open('cgu.html','_blank')"><span class="ico">📄</span><span>Conditions d'utilisation<small>Règles du service, tarifs, rétractation</small></span></button>
@@ -697,6 +717,22 @@ body{
       <button class="btn btn-wine" onclick="hideOverlay('reportoverlay');toast('Merci, signalement transmis à la modération ✔')">Envoyer le signalement</button>
       <button class="btn btn-ghost" style="color:var(--wine-dk)" onclick="blockProfile(PROFILES[deckIndex])">🚫 Bloquer ce profil</button>
       <button class="btn btn-ghost" onclick="hideOverlay('reportoverlay')">Annuler</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="profiloverlay">
+    <div class="modal dp-modal">
+      <div id="dp-visuel" onclick="detailPhotoSuivante()"></div>
+      <h3 id="dp-nom"></h3>
+      <p id="dp-lieu" class="dp-lieu"></p>
+      <div id="dp-type" class="dp-type"></div>
+      <div id="dp-tags" class="dp-tags"></div>
+      <p id="dp-bio" class="dp-bio"></p>
+      <div class="dp-actions">
+        <button class="btn btn-ghost" onclick="detailDecision(false)">👋 Je passe</button>
+        <button class="btn btn-wine" onclick="detailDecision(true)">🏹 Je matche</button>
+      </div>
+      <button class="btn btn-ghost" onclick="hideOverlay('profiloverlay')">Fermer</button>
     </div>
   </div>
 
@@ -859,6 +895,62 @@ function pickNotif(mode){
    la connexion au compte se fait via js/config.js (chargé en fin de page). */
 function submitSignup(){ location.href='inscription.html'; }
 
+/* ───── Fiche profil complète ─────
+   S'ouvre en touchant une carte (sans glisser). Montre toutes les photos
+   (toucher pour passer à la suivante), le profil type, toutes les
+   passions et la description entière. */
+let detailProfil=null,detailPhotoIdx=0;
+function urlsDe(p){return (p.photoUrls&&p.photoUrls.length)?p.photoUrls:(p.photoUrl?[p.photoUrl]:[]);}
+function ouvrirDetail(p){
+  if(!p)return;
+  detailProfil=p;detailPhotoIdx=0;
+  majDetailVisuel();
+  document.getElementById('dp-nom').innerHTML=echapper(p.n)+(p.a?', <span style="font-weight:500;opacity:.75">'+p.a+'</span>':'');
+  document.getElementById('dp-lieu').textContent='📍 '+p.v+' · La Réunion';
+  const type=document.getElementById('dp-type');
+  type.textContent=p.tl?(p.e+' Profil '+p.tl):'';type.style.display=p.tl?'':'none';
+  const tags=(p.tousTags&&p.tousTags.length)?p.tousTags:p.t;
+  document.getElementById('dp-tags').innerHTML=(tags||[]).map(t=>'<span>'+echapper(t)+'</span>').join('');
+  const bio=document.getElementById('dp-bio');
+  bio.textContent=p.b||'';bio.style.display=p.b?'':'none';
+  document.getElementById('profiloverlay').classList.add('show');
+}
+function majDetailVisuel(){
+  const p=detailProfil,zone=document.getElementById('dp-visuel');
+  const urls=urlsDe(p);
+  if(urls.length){
+    const i=detailPhotoIdx%urls.length;
+    zone.innerHTML='<img src="'+echapper(urls[i])+'" alt="">'+
+      (urls.length>1
+        ? '<div class="dp-points">'+urls.map((_,j)=>'<i class="'+(j===i?'on':'')+'"></i>').join('')+'</div>'+
+          '<div class="dp-astuce">Touche la photo pour voir la suivante</div>'
+        : '');
+  }else if(p.avatar){
+    zone.innerHTML='<div class="dp-avatar" style="background:'+p.g+'">'+renderAvatar(p.avatar)+'</div>';
+  }else{
+    zone.innerHTML='<div class="dp-avatar" style="background:'+p.g+'"><b class="dp-ini">'+echapper(p.n[0])+'</b></div>';
+  }
+}
+function detailPhotoSuivante(){
+  if(detailProfil&&urlsDe(detailProfil).length>1){detailPhotoIdx++;majDetailVisuel();}
+}
+function detailDecision(aime){hideOverlay('profiloverlay');swipeTop(aime);}
+
+/* ───── Faire connaître Cupidon (partage natif du téléphone) ───── */
+async function partagerCupidon(){
+  const donnees={
+    title:'Cupidon Rencontres — La Réunion',
+    text:'Rejoins-moi sur Cupidon, l\'appli de rencontres 100 % péi 🌋 Gratuite pour fêter l\'ouverture !',
+    url:'https://cupidon.re/app/'
+  };
+  if(navigator.share){
+    try{await navigator.share(donnees);return;}
+    catch(e){if(e&&e.name==='AbortError')return;}
+  }
+  try{await navigator.clipboard.writeText(donnees.url);toast('Lien copié ! Colle-le à tes amis 💌');}
+  catch(e){toast('L\'adresse à partager : cupidon.re/app');}
+}
+
 /* Visuel d'un membre pour les petits ronds : photo réelle si elle existe,
    sinon avatar personnalisé, sinon l'initiale du prénom. */
 function circHTML(p){
@@ -872,7 +964,8 @@ function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
   const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.id));
   if(!remaining.length){
-    const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>';
+    const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>'+
+      '<button class="btn btn-ghost" style="font-size:14px;padding:10px 20px" onclick="partagerCupidon()">💌 Inviter des amis sur Cupidon</button>';
     deck.innerHTML = PROFILES.length
       ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p>'+boutonActualiser+'</div>'
       : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Dès qu\'un membre s\'inscrit, tu seras prévenu·e par e-mail.</p>'+boutonActualiser+'</div>';
@@ -898,7 +991,7 @@ function renderDeck(){
       '<div class="loc">📍 '+echapper(p.v)+' · La Réunion</div>'+
       '<div class="tags">'+p.t.map(t=>'<span>'+echapper(t)+'</span>').join('')+'</div>'+
       '<div class="bio">'+echapper(p.b)+'</div></div>';
-    if(top) attachDrag(c);
+    if(top) attachDrag(c,p);
     deck.appendChild(c);
   });
 
@@ -916,21 +1009,29 @@ function renderDeck(){
     }
   }
 }
-function attachDrag(card){
-  let sx=0,sy=0,dx=0,dragging=false;
-  card.addEventListener('pointerdown',e=>{dragging=true;sx=e.clientX;sy=e.clientY;card.setPointerCapture(e.pointerId);card.style.transition='none';});
+function attachDrag(card,profil){
+  let sx=0,sy=0,dx=0,bouge=0,dragging=false;
+  card.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.report'))return;          /* le bouton Signaler garde son propre rôle */
+    dragging=true;bouge=0;sx=e.clientX;sy=e.clientY;
+    card.setPointerCapture(e.pointerId);card.style.transition='none';
+  });
   card.addEventListener('pointermove',e=>{
     if(!dragging)return;
     dx=e.clientX-sx;const dy=e.clientY-sy;
+    bouge=Math.max(bouge,Math.abs(dx),Math.abs(dy));
     card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx/18)+'deg)';
     card.querySelector('.stamp.like').style.opacity=Math.min(1,Math.max(0,dx/45));
     card.querySelector('.stamp.nope').style.opacity=Math.min(1,Math.max(0,-dx/45));
   });
   card.addEventListener('pointerup',()=>{
+    if(!dragging)return;
     dragging=false;
     if(Math.abs(dx)>110){flyOut(card,dx>0);}
     else{card.style.transition='transform .3s';card.style.transform='';
-      card.querySelectorAll('.stamp').forEach(s=>s.style.opacity=0);}
+      card.querySelectorAll('.stamp').forEach(s=>s.style.opacity=0);
+      /* Simple toucher (pas un glissement) : on ouvre la fiche complète */
+      if(bouge<8)ouvrirDetail(profil);}
     dx=0;
   });
 }

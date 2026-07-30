@@ -37,7 +37,7 @@ function degradePour(id) {
 /* Transforme une ligne de profils_cupidon en carte affichable. */
 function versCarte(p) {
   const type = (typeof PROFILS_TYPES !== 'undefined' && PROFILS_TYPES[p.profil_type]) || null;
-  const tags = (p.interets || []).slice(0, 3).map(id => {
+  const libelles = (p.interets || []).map(id => {
     const i = (typeof INTERETS !== 'undefined') ? INTERETS.find(x => x.id === id) : null;
     return i ? i.label : id;
   });
@@ -47,8 +47,10 @@ function versCarte(p) {
     a:  p.date_naissance ? calculerAge(p.date_naissance) : '',
     v:  p.ville || 'La Réunion',
     e:  type ? type.emoji : '💛',
+    tl: type ? type.label : '',
     g:  degradePour(p.user_id),
-    t:  tags,
+    t:  libelles.slice(0, 3),
+    tousTags: libelles,
     b:  p.description || '',
     avatar: p.avatar || null,
     photos: p.photos || []
@@ -59,13 +61,19 @@ function versCarte(p) {
    carte. Une seule requête pour toute la liste. Sans photo, l'avatar
    personnalisé prend le relais, sinon l'initiale. */
 async function ajouterPhotos(cartes) {
-  const avecPhoto = cartes.filter(c => c.photos && c.photos.length);
-  if (!avecPhoto.length) return cartes;
+  /* Chaque profil peut avoir jusqu'à 3 photos : on signe tout d'un coup. */
+  const paires = [];
+  cartes.forEach(c => (c.photos || []).forEach(chemin => paires.push({ carte: c, chemin })));
+  if (!paires.length) return cartes;
   try {
     const { data, error } = await sb.storage.from('photos-cupidon')
-      .createSignedUrls(avecPhoto.map(c => c.photos[0]), 3600);
+      .createSignedUrls(paires.map(p => p.chemin), 3600);
     if (!error && data) data.forEach((d, i) => {
-      if (d && d.signedUrl) avecPhoto[i].photoUrl = d.signedUrl;
+      if (d && d.signedUrl) {
+        const c = paires[i].carte;
+        (c.photoUrls = c.photoUrls || []).push(d.signedUrl);
+        if (!c.photoUrl) c.photoUrl = d.signedUrl;   // la 1ʳᵉ sert à la carte
+      }
     });
   } catch (e) { /* pas bloquant : on retombe sur avatar/initiale */ }
   return cartes;
