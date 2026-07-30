@@ -320,6 +320,8 @@ body{
 .bubble{max-width:76%;padding:11px 15px;border-radius:18px;font-size:14.5px;line-height:1.4}
 .bubble.them{align-self:flex-start;background:#fff;border-bottom-left-radius:6px;box-shadow:var(--shadow-sm)}
 .bubble.me{align-self:flex-end;background:linear-gradient(135deg,var(--wine),var(--wine-dk));color:#fff;border-bottom-right-radius:6px}
+.bubble .quand{display:block;font-size:10.5px;opacity:.62;margin-top:3px;text-align:right}
+.jour-sep{align-self:center;font-size:11.5px;color:var(--muted);background:var(--blush);border:1px solid var(--line);padding:4px 12px;border-radius:999px;margin:8px 0 2px}
 .chatbox{display:flex;gap:10px;padding:12px 14px calc(14px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
 .chatbox input{flex:1;border:1.5px solid var(--line);border-radius:999px;padding:13px 18px;font-family:'Jost';font-size:15px;outline:none;background:var(--cream)}
 .chatbox input:focus{border-color:var(--ink-soft)}
@@ -757,8 +759,8 @@ body{
       <div id="dp-tags" class="dp-tags"></div>
       <p id="dp-bio" class="dp-bio"></p>
       <div class="dp-actions">
-        <button class="btn btn-ghost" onclick="detailDecision(false)">👋 Je passe</button>
-        <button class="btn btn-wine" onclick="detailDecision(true)">🏹 Je matche</button>
+        <button class="btn btn-ghost" id="dp-btn-passe" onclick="detailDecision(false)">👋 Je passe</button>
+        <button class="btn btn-wine" id="dp-btn-aime" onclick="detailDecision(true)">🏹 Je matche</button>
       </div>
       <button class="btn btn-ghost" onclick="hideOverlay('profiloverlay')">Fermer</button>
     </div>
@@ -928,11 +930,13 @@ function submitSignup(){ location.href='inscription.html'; }
    S'ouvre en touchant une carte (sans glisser). Montre toutes les photos
    (toucher pour passer à la suivante), le profil type, toutes les
    passions et la description entière. */
-let detailProfil=null,detailPhotoIdx=0;
+let detailProfil=null,detailPhotoIdx=0,detailMode='deck';
 function urlsDe(p){return (p.photoUrls&&p.photoUrls.length)?p.photoUrls:(p.photoUrl?[p.photoUrl]:[]);}
-function ouvrirDetail(p){
+function ouvrirDetail(p,mode){
   if(!p)return;
-  detailProfil=p;detailPhotoIdx=0;
+  detailProfil=p;detailPhotoIdx=0;detailMode=mode||'deck';
+  /* Depuis un salon, on n'est pas dans la pile : le bouton devient un vrai « j'aime » */
+  document.getElementById('dp-btn-aime').textContent=(detailMode==='salon')?'💘 Envoyer un j\'aime':'🏹 Je matche';
   majDetailVisuel();
   document.getElementById('dp-nom').innerHTML=echapper(p.n)+(p.a?', <span style="font-weight:500;opacity:.75">'+p.a+'</span>':'');
   document.getElementById('dp-lieu').textContent='📍 '+p.v+' · La Réunion';
@@ -963,7 +967,23 @@ function majDetailVisuel(){
 function detailPhotoSuivante(){
   if(detailProfil&&urlsDe(detailProfil).length>1){detailPhotoIdx++;majDetailVisuel();}
 }
-function detailDecision(aime){hideOverlay('profiloverlay');swipeTop(aime);}
+async function detailDecision(aime){
+  hideOverlay('profiloverlay');
+  if(detailMode==='salon'){
+    const p=detailProfil;
+    if(!MOI){toast('Connecte-toi d\'abord pour envoyer un j\'aime 😊');return;}
+    const estUnMatch=await enregistrerDecision(p.id,aime?'aime':'passe');
+    if(!aime){toast('C\'est noté 👌');return;}
+    if(estUnMatch){
+      annoncerMatch(p);
+      matches=await chargerMatchs();renderMatches();
+    }else{
+      toast('Ton « j\'aime » est envoyé à '+p.n+' 💌');
+    }
+    return;
+  }
+  swipeTop(aime);
+}
 
 /* ───── Préférences de recherche ─────
    Enregistrées sur l'appareil. Les profils non binaires ou qui n'ont
@@ -1224,13 +1244,36 @@ function ecouterMessages(autreId){
 function echapper(t){
   const d=document.createElement('div');d.textContent=t;return d.innerHTML;
 }
+/* Libellé du jour d'un message : Aujourd'hui, Hier, ou la date. */
+function libelleJour(iso){
+  if(!iso)return '';
+  const d=new Date(iso),now=new Date();
+  const debut=x=>new Date(x.getFullYear(),x.getMonth(),x.getDate()).getTime();
+  const ecart=Math.round((debut(now)-debut(d))/864e5);
+  if(ecart<=0)return 'Aujourd\'hui';
+  if(ecart===1)return 'Hier';
+  return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+}
+function heureDe(iso){
+  if(!iso)return '';
+  return new Date(iso).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+}
 function renderMsgs(){
   const box=document.getElementById('msgs');
   const msgs=convos[currentChat.id]||[];
-  box.innerHTML=msgs.length
-    ? msgs.map(m=>'<div class="bubble '+(m.me?'me':'them')+'">'+echapper(m.t)+'</div>').join('')
-    : '<div class="vide-chat" style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 20px;line-height:1.6">'+
+  if(!msgs.length){
+    box.innerHTML='<div class="vide-chat" style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 20px;line-height:1.6">'+
       'Vous venez de matcher — la conversation est toute neuve.<br>À toi de dire le premier mot 👋</div>';
+    return;
+  }
+  let html='',jourCourant='';
+  msgs.forEach(m=>{
+    const j=libelleJour(m.le);
+    if(j&&j!==jourCourant){jourCourant=j;html+='<div class="jour-sep">'+j+'</div>';}
+    html+='<div class="bubble '+(m.me?'me':'them')+'">'+echapper(m.t)+
+      (m.le?'<span class="quand">'+heureDe(m.le)+'</span>':'')+'</div>';
+  });
+  box.innerHTML=html;
   box.scrollTop=box.scrollHeight;
 }
 function sendMsg(){
@@ -1246,7 +1289,7 @@ function sendMsg(){
   input.value='';
   /* Affichage immédiat, puis envoi réel. En cas d'échec on le dit. */
   convos[who.id]=convos[who.id]||[];
-  convos[who.id].push({me:true,t:txt});
+  convos[who.id].push({me:true,t:txt,le:new Date().toISOString()});
   renderMsgs();
   envoyerMessage(who.id,txt).then(async ok=>{
     if(!ok){
@@ -1359,8 +1402,19 @@ function sendGroupMsg(){
     }
   });
 }
-function askDM(id){
-  if(!id)return;
+async function askDM(id){
+  if(!id||(MOI&&id===MOI.id))return;
+  /* On montre d'abord la fiche complète de la personne : photos, passions,
+     description — pour ne plus envoyer de « j'aime » à l'aveugle. */
+  try{
+    const ligne=await chargerProfil(id);
+    if(ligne&&ligne.statut==='actif'){
+      const carte=versCarte(ligne);
+      await ajouterPhotos([carte]);
+      ouvrirDetail(carte,'salon');
+      return;
+    }
+  }catch(e){/* repli ci-dessous */}
   dmTarget=profParId(id)||{id:id,n:'cette personne',a:'',v:'',g:degradePour(id)};
   const c=document.getElementById('dmcirc');
   c.innerHTML=circHTML(dmTarget);c.style.background=dmTarget.g;
