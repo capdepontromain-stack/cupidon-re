@@ -479,6 +479,10 @@ body{
           <p>Dès que quelqu'un t'écrit, la <b>pastille s'allume sur l'onglet Matchs</b> et le message t'attend. Les alertes par <b>e-mail</b> et <b>WhatsApp</b> arrivent très bientôt — ton choix est déjà enregistré.</p>
         </div>
         <div class="lcard">
+          <h3>🕗 Le rendez-vous de 20 h</h3>
+          <p>Chaque soir à <b>20 h</b>, tout le monde se retrouve au <b>Salon général 974</b> pour discuter. Tu n'arrives jamais dans une appli vide : il y a une heure et un lieu où ça se passe — et l'équipe Cupidon y est chaque soir de la première semaine.</p>
+        </div>
+        <div class="lcard">
           <h3>🤝 Une vraie équipe derrière</h3>
           <p>Cupidon Rencontres est porté par <b>cupidon.re</b>, l'agence matrimoniale 100 % péi, et <b>Pull Up Événements</b>, l'agence événementielle du Tampon. Chaque profil est <b>vérifié par notre équipe</b>.</p>
         </div>
@@ -527,7 +531,7 @@ body{
         <button class="premium-chip" id="offerchip" onclick="showScreen('premium')">🎁 Offre</button>
       </div>
     </div>
-    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. L'appli se remplit chaque jour — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
+    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. Le rendez-vous : <b>chaque soir à 20 h au Salon général 974</b> 💬 — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
     <div id="deckwrap">
       <div id="deck"></div>
       <div id="swipehint">
@@ -590,6 +594,7 @@ body{
     <div class="appbar"><div class="brand"><a href="../" title="Retour à l'accueil cupidon.re"><img src="logo-mascotte.png" alt="Cupidon"></a><span class="serif">Salons</span></div></div>
     <div class="scrolly">
       <div class="pagehead"><p>Discute avec tout le monde avant de passer en privé 💬</p></div>
+      <div class="topicpin"><div class="t-tete">🕗 Le rendez-vous</div>Chaque soir à <b>20 h</b>, tout le monde se retrouve au <b>Salon général 974</b>. Entre, dis bonjour — c'est là que ça se passe.</div>
       <div class="topicpin" id="topicpin"></div>
       <div id="roomlist"></div>
       <p class="legalnote">Un nouveau sujet de conversation chaque semaine.<br>Clique sur un prénom dans un salon pour demander une discussion privée.</p>
@@ -1058,8 +1063,8 @@ function renderDeck(){
     const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>'+
       '<button class="btn btn-ghost" style="font-size:14px;padding:10px 20px" onclick="partagerCupidon()">💌 Inviter des amis sur Cupidon</button>';
     deck.innerHTML = PROFILES.length
-      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, elle apparaît ici — reviens faire un tour. En attendant, passe discuter dans les Salons 💬</p>'+boutonActualiser+'</div>'
-      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Reviens faire un tour — l\'appli se remplit chaque jour, et le bouton ci-dessous vérifie en direct.</p>'+boutonActualiser+'</div>';
+      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, elle apparaît ici — reviens faire un tour. Et le rendez-vous, c\'est chaque soir à 20 h au Salon général 💬</p>'+boutonActualiser+'</div>'
+      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Reviens faire un tour — l\'appli se remplit chaque jour, et le bouton ci-dessous vérifie en direct. Surtout : chaque soir à 20 h, tout le monde se retrouve au Salon général 💬</p>'+boutonActualiser+'</div>';
     return;
   }
   remaining.slice(0,3).reverse().forEach((p,i,arr)=>{
@@ -1327,7 +1332,7 @@ function topicHTML(){
         '<div class="t-intro">'+TOPIC_VEDETTE.intro+'</div>';
 }
 const ROOMS=[
- {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble"},
+ {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble — rendez-vous chaque soir à 20 h"},
  {id:'18-25',n:'Salon 18-25 ans',e:'🎓',d:'La relève péi'},
  {id:'26-35',n:'Salon 26-35 ans',e:'🌺',d:'La génération motivée'},
  {id:'36-45',n:'Salon 36-45 ans',e:'🍹',d:'La belle époque'},
