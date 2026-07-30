@@ -20,6 +20,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="../assets/favicon-64.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icone-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cupidon">
 <style>
 :root{
   --ink:#0E2A6B; --ink-soft:#3A4E86; --cream:#FBF9F3;
@@ -697,7 +702,10 @@ body{
    honnêtement plutôt que d'afficher de faux profils. */
 let PROFILES=[];
 
-let deckIndex=0, matches=[], convos={}, currentChat=null, demoUnlocked=false, lastTab='discover';
+let deckIndex=0, matches=[], convos={}, currentChat=null, lastTab='discover';
+/* La petite fenêtre « tout est offert » ne se montre qu'une seule fois
+   par appareil, plus à chaque visite. */
+let demoUnlocked=localStorage.getItem('cupidon_offre_vue')==='oui';
 let superEnCours=false;
 
 /* ───────── Navigation ───────── */
@@ -746,6 +754,16 @@ async function enterApp(){
 
   /* Premier passage : petit guide « glisse à droite / à gauche » */
   if(!localStorage.getItem('cupidon_guide_vu'))document.getElementById('swipehint').classList.add('show');
+}
+/* Recharge la pile de profils à la demande (jour d'ouverture : du monde
+   arrive en continu, autant pouvoir vérifier sans recharger la page). */
+async function actualiserDeck(bouton){
+  if(bouton){bouton.disabled=true;bouton.textContent='Je regarde…';}
+  const nouveaux=await chargerProfilsADecouvrir();
+  PROFILES=nouveaux;deckIndex=0;
+  renderDeck();
+  if(nouveaux.length)toast('✨ '+nouveaux.length+(nouveaux.length>1?' profils à découvrir !':' profil à découvrir !'));
+  else toast('Encore personne de nouveau — tu seras prévenu·e par e-mail 😉');
 }
 function fermerGuide(clic){
   localStorage.setItem('cupidon_guide_vu','oui');
@@ -837,9 +855,10 @@ function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
   const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.id));
   if(!remaining.length){
+    const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>';
     deck.innerHTML = PROFILES.length
-      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p></div>'
-      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Dès qu\'un membre s\'inscrit, tu seras prévenu·e par e-mail.</p></div>';
+      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p>'+boutonActualiser+'</div>'
+      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Dès qu\'un membre s\'inscrit, tu seras prévenu·e par e-mail.</p>'+boutonActualiser+'</div>';
     return;
   }
   remaining.slice(0,3).reverse().forEach((p,i,arr)=>{
@@ -1048,7 +1067,7 @@ function sendMsg(){
     }
   });
 }
-function unlockDemo(){demoUnlocked=true;hideOverlay('premiumoverlay');toast('🎁 Offre de lancement activée — messages illimités !');}
+function unlockDemo(){demoUnlocked=true;localStorage.setItem('cupidon_offre_vue','oui');hideOverlay('premiumoverlay');toast('🎁 Offre de lancement activée — messages illimités !');}
 document.getElementById('msginput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
 
 /* ───────── Salons de discussion ───────── */
@@ -1225,6 +1244,23 @@ function blockFromChat(){
        données (profils à découvrir, matchs, messages non lus). */
     MOI = { id: session.user.id, profil: profil };
     enterApp();
+
+    /* Alerte en direct : un nouveau message privé reçu fait apparaître la
+       pastille sur l'onglet Matchs, même si on est ailleurs dans l'appli. */
+    try {
+      sb.channel('mes-messages')
+        .on('postgres_changes',
+            { event: 'INSERT', schema: 'public', table: 'messages_cupidon' },
+            (charge) => {
+              const m = charge.new;
+              if (!m || m.destinataire_id !== MOI.id) return;
+              if (currentChat && currentChat.id === m.expediteur_id) return;  // déjà dans la conversation
+              document.getElementById('matchdot').classList.add('show');
+              const exp = profParId(m.expediteur_id);
+              toast('📩 Nouveau message' + (exp ? ' de ' + exp.n : '') + ' !');
+            })
+        .subscribe();
+    } catch (e) { /* jamais bloquant */ }
 
     const prenom = profil.prenom || 'Moi';
 
