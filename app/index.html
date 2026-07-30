@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://cupidon.re/img/partage-lancement-1200x630.jpg">
 <meta property="og:locale" content="fr_FR">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, alertes par e-mail ou WhatsApp.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Offre d'ouverture : gratuit pour tous du 1er août au 31 octobre 2026. Ensuite 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon","url":"https://cupidon.re","@id":"https://cupidon.re/#organization","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re"}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, notifications dans l'appli.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Offre d'ouverture : gratuit pour tous du 1er août au 31 octobre 2026. Ensuite 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon","url":"https://cupidon.re","@id":"https://cupidon.re/#organization","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re"}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -476,7 +476,7 @@ body{
         </div>
         <div class="lcard">
           <h3>💬 Ne loupe aucun message</h3>
-          <p>Dès que quelqu'un t'écrit, tu reçois une <b>alerte par e-mail</b> — ou par <b>WhatsApp</b> si tu préfères. Tu ne rates jamais une rencontre.</p>
+          <p>Dès que quelqu'un t'écrit, la <b>pastille s'allume sur l'onglet Matchs</b> et le message t'attend. Les alertes par <b>e-mail</b> et <b>WhatsApp</b> arrivent très bientôt — ton choix est déjà enregistré.</p>
         </div>
         <div class="lcard">
           <h3>🤝 Une vraie équipe derrière</h3>
@@ -510,7 +510,7 @@ body{
           <button class="chip" id="chip-mail" onclick="pickNotif('mail')">📧 E-mail</button>
           <button class="chip" id="chip-wa" onclick="pickNotif('wa')">💬 WhatsApp</button>
         </div>
-        <p style="font-size:12px;color:#93A3CF;margin-top:7px">« Dans l'appli » = une simple pastille sur l'onglet Matchs, rien d'autre. Tu pourras changer à tout moment.</p>
+        <p style="font-size:12px;color:#93A3CF;margin-top:7px">« Dans l'appli » = une simple pastille sur l'onglet Matchs, rien d'autre. E-mail et WhatsApp seront activés très bientôt — ton choix est gardé de côté. Tu pourras changer à tout moment.</p>
       </div>
       <div class="field" id="wa-field" style="display:none"><label>Ton numéro WhatsApp</label><input id="su-tel" type="tel" placeholder="0692 12 34 56"></div>
       <p style="font-size:12.5px;color:#93A3CF;line-height:1.5">📩 <b style="color:#C9D6F5">À l'ouverture, tu recevras un e-mail de validation</b> : un clic sur le lien, et ton accès s'ouvre automatiquement. C'est une protection simple : un seul profil par personne, pas de faux comptes.</p>
@@ -527,7 +527,7 @@ body{
         <button class="premium-chip" id="offerchip" onclick="showScreen('premium')">🎁 Offre</button>
       </div>
     </div>
-    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. L'appli se remplit chaque jour — et dès qu'on t'écrit, tu es prévenu·e par e-mail ou WhatsApp.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
+    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. L'appli se remplit chaque jour — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
     <div id="deckwrap">
       <div id="deck"></div>
       <div id="swipehint">
@@ -843,7 +843,7 @@ async function actualiserDeck(bouton){
   renderDeck();
   if(PROFILES.length)toast('✨ '+PROFILES.length+(PROFILES.length>1?' profils à découvrir !':' profil à découvrir !'));
   else if(nouveaux.length)toast('Du monde est inscrit, mais hors de tes préférences 🎯');
-  else toast('Encore personne de nouveau — tu seras prévenu·e par e-mail 😉');
+  else toast('Encore personne de nouveau — reviens faire un tour un peu plus tard 😉');
 }
 function fermerGuide(clic){
   localStorage.setItem('cupidon_guide_vu','oui');
@@ -1058,8 +1058,8 @@ function renderDeck(){
     const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>'+
       '<button class="btn btn-ghost" style="font-size:14px;padding:10px 20px" onclick="partagerCupidon()">💌 Inviter des amis sur Cupidon</button>';
     deck.innerHTML = PROFILES.length
-      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, tu seras prévenu·e par e-mail — pas besoin de guetter. En attendant, passe discuter dans les Salons 💬</p>'+boutonActualiser+'</div>'
-      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Dès qu\'un membre s\'inscrit, tu seras prévenu·e par e-mail.</p>'+boutonActualiser+'</div>';
+      ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, elle apparaît ici — reviens faire un tour. En attendant, passe discuter dans les Salons 💬</p>'+boutonActualiser+'</div>'
+      : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Reviens faire un tour — l\'appli se remplit chaque jour, et le bouton ci-dessous vérifie en direct.</p>'+boutonActualiser+'</div>';
     return;
   }
   remaining.slice(0,3).reverse().forEach((p,i,arr)=>{
@@ -1285,7 +1285,7 @@ function sendMsg(){
   const txt=input.value.trim();
   if(!txt)return;
   if(!demoUnlocked){
-    document.getElementById('premiumtext').textContent='Bonne nouvelle : pour fêter l\'ouverture, tout est offert jusqu\'au 31 octobre — la messagerie est illimitée ! Et dès qu\'on te répond, tu recevras une alerte par e-mail ou WhatsApp.';
+    document.getElementById('premiumtext').textContent='Bonne nouvelle : pour fêter l\'ouverture, tout est offert jusqu\'au 31 octobre — la messagerie est illimitée ! Et dès qu\'on te répond, la pastille s\'allume sur l\'onglet Matchs.';
     document.getElementById('premiumoverlay').classList.add('show');
     return;
   }
