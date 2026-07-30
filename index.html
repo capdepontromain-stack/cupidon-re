@@ -484,9 +484,10 @@
       <div class="pa-mockup">
         <img class="pa-ecran actif" src="img/appli-apercu.webp" alt="Aperçu de l'application de rencontre Cupidon à La Réunion : carte de profil de démonstration avec les boutons Je matche et Je passe" width="440" height="900" loading="eager">
         <img class="pa-ecran" src="img/appli-match.webp" alt="Écran « C'est un match ! » de l'application Cupidon (profil de démonstration)" width="440" height="900" loading="lazy">
+        <img class="pa-ecran" src="img/appli-discussion.webp" alt="Discussion privée dans l'application Cupidon (conversation de démonstration)" width="440" height="900" loading="lazy">
         <img class="pa-ecran" src="img/appli-salons.webp" alt="Salons de discussion de l'application Cupidon : par tranche d'âge, avec le sujet de la semaine" width="440" height="900" loading="lazy">
       </div>
-      <span class="pa-legende"><span id="pa-leg-txt">👀 Tu découvres les profils</span><span class="pa-pts"><i class="on"></i><i></i><i></i></span></span>
+      <span class="pa-legende"><span id="pa-leg-txt">👀 Tu découvres les profils</span><span class="pa-pts"><i class="on"></i><i></i><i></i><i></i></span></span>
     </div>
     <div class="pa-cta">
       <div class="pa-gratuit">🎁 <span><b>100 % gratuit</b> jusqu'au 31 octobre</span></div>
@@ -1142,7 +1143,7 @@
   (function(){
     var ecrans = document.querySelectorAll('#portail .pa-ecran');
     if (ecrans.length < 2) return;
-    var LEGENDES = ['👀 Tu découvres les profils', '💘 Vous vous plaisez ? Match !', '💬 Tu discutes dans les salons'];
+    var LEGENDES = ['👀 Tu découvres les profils', '💘 Vous vous plaisez ? Match !', '💬 Vous discutez en direct', '🌺 Et les salons pour papoter'];
     var txt = document.getElementById('pa-leg-txt');
     var pts = document.querySelectorAll('#portail .pa-pts i');
     var i = 0, minuteur = null;
