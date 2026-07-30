@@ -428,7 +428,11 @@
 #portail .pa-etoile.e3{bottom:8%;left:-16px;animation-delay:1.3s;font-size:18px}
 @keyframes scintille{0%,100%{transform:scale(.85) rotate(-8deg);opacity:.55}50%{transform:scale(1.2) rotate(8deg);opacity:1}}
 #portail .pa-legende{font-size:12.5px;font-weight:700;color:#3A4E86;background:#fff;border:1.5px solid rgba(14,42,107,.14);
-  padding:7px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(14,42,107,.08)}
+  padding:7px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(14,42,107,.08);display:flex;align-items:center;gap:9px}
+#portail #pa-leg-txt{transition:opacity .3s ease}
+#portail .pa-pts{display:flex;gap:4px}
+#portail .pa-pts i{width:6px;height:6px;border-radius:50%;background:rgba(14,42,107,.18);transition:background .3s ease}
+#portail .pa-pts i.on{background:#F60100}
 #portail .p-ou{font-size:14px;font-weight:600;color:#6B7A9E;margin-top:6px}
 @media(max-width:900px){
   /* Sur téléphone : le titre, puis un aperçu de l'appli, puis le gros bouton */
@@ -481,7 +485,7 @@
         <img class="pa-ecran" src="img/appli-match.webp" alt="Écran « C'est un match ! » de l'application Cupidon (profil de démonstration)" width="440" height="900" loading="lazy">
         <img class="pa-ecran" src="img/appli-salons.webp" alt="Salons de discussion de l'application Cupidon : par tranche d'âge, avec le sujet de la semaine" width="440" height="900" loading="lazy">
       </div>
-      <span class="pa-legende">👆 Un aperçu de l'appli</span>
+      <span class="pa-legende"><span id="pa-leg-txt">👀 Tu découvres les profils</span><span class="pa-pts"><i class="on"></i><i></i><i></i></span></span>
     </div>
     <div class="pa-cta">
       <div class="pa-gratuit">🎁 <span><b>100 % gratuit</b> jusqu'au 31 octobre</span></div>
@@ -1136,13 +1140,24 @@
   // défilé des écrans de l'appli dans la maquette de téléphone
   (function(){
     var ecrans = document.querySelectorAll('#portail .pa-ecran');
-    if (ecrans.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var i = 0;
-    setInterval(function(){
+    if (ecrans.length < 2) return;
+    var LEGENDES = ['👀 Tu découvres les profils', '💘 Vous vous plaisez ? Match !', '💬 Tu discutes dans les salons'];
+    var txt = document.getElementById('pa-leg-txt');
+    var pts = document.querySelectorAll('#portail .pa-pts i');
+    var i = 0, minuteur = null;
+    function montrer(n){
       ecrans[i].classList.remove('actif');
-      i = (i + 1) % ecrans.length;
+      if (pts[i]) pts[i].classList.remove('on');
+      i = n % ecrans.length;
       ecrans[i].classList.add('actif');
-    }, 3600);
+      if (pts[i]) pts[i].classList.add('on');
+      if (txt){
+        txt.style.opacity = 0;
+        setTimeout(function(){ txt.textContent = LEGENDES[i] || ''; txt.style.opacity = 1; }, 300);
+      }
+    }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+      minuteur = setInterval(function(){ montrer(i + 1); }, 3600);
   })();
   // nav scroll
   var nav = document.getElementById('nav');
