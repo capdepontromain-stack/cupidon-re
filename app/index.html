@@ -1113,6 +1113,11 @@ async function openRoom(id){
   document.getElementById('gcname').textContent=currentRoom.n;
   document.getElementById('gcicon').textContent=currentRoom.e;
   document.getElementById('gccount').textContent='';
+  /* Nombre réel de membres inscrits — jamais un chiffre inventé. */
+  compterMembres().then(n=>{
+    if(n&&currentRoom&&currentRoom.id===id)
+      document.getElementById('gccount').textContent=n+' inscrit·e'+(n>1?'s':'')+' sur Cupidon';
+  });
   document.getElementById('gctopic').innerHTML=topicHTML();
   renderGroupMsgs();showScreen('groupchat');
 
