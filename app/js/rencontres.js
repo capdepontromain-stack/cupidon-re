@@ -48,6 +48,7 @@ function versCarte(p) {
     v:  p.ville || 'La Réunion',
     e:  type ? type.emoji : '💛',
     tl: type ? type.label : '',
+    ge: p.genre || null,
     g:  degradePour(p.user_id),
     t:  libelles.slice(0, 3),
     tousTags: libelles,
