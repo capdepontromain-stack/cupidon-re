@@ -1617,5 +1617,41 @@ function blockFromChat(){
   };
 })();
 </script>
+<style id="21st-cupidon-app-v2-css">
+/* Bulles de discussion : arrivée en douceur */
+@media(prefers-reduced-motion:no-preference){
+#msgs>*{animation:bulle21 .3s ease both}
+@keyframes bulle21{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* Le point « nouveau match » bat comme un petit cœur */
+.dot.show{animation:battre21 1.6s ease-in-out infinite}
+@keyframes battre21{0%,100%{transform:scale(1)}12%{transform:scale(1.35)}24%{transform:scale(1)}36%{transform:scale(1.25)}48%{transform:scale(1)}}
+}
+/* Petit cœur qui s'envole du bouton « Je matche » */
+.envol21{position:fixed;font-size:22px;pointer-events:none;z-index:2500;animation:envol21 .8s ease-out both}
+@keyframes envol21{from{opacity:1;transform:translateY(0) scale(.7)}to{opacity:0;transform:translateY(-56px) scale(1.25)}}
+</style>
+<script id="21st-cupidon-app-v2">
+(function(){
+  /* Un petit cœur s'envole à chaque « Je matche » */
+  if (typeof swipeTop === 'function'){
+    var origSwipe = swipeTop;
+    window.swipeTop = function(aime){
+      if (aime && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+        var b = document.querySelector('.actwrap.matche .act');
+        if (b){
+          var r = b.getBoundingClientRect();
+          var c = document.createElement('span');
+          c.className = 'envol21'; c.textContent = '\u2764\ufe0f';
+          c.style.left = (r.left + r.width/2 - 11) + 'px';
+          c.style.top = (r.top - 6) + 'px';
+          document.body.appendChild(c);
+          setTimeout(function(){ c.remove(); }, 850);
+        }
+      }
+      return origSwipe(aime);
+    };
+  }
+})();
+</script>
 </body>
 </html>
