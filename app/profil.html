@@ -17,7 +17,7 @@
 <div id="phone">
   <!-- Rappel permanent de la gratuité pendant tout le questionnaire -->
   <div class="ruban-gratuit" id="ruban-gratuit">
-    <span class="etoile">✨</span><span><b>Inscription 100 % gratuite</b> — offre d'ouverture, gratuit jusqu'au 31 octobre</span><span class="etoile">✨</span>
+    <span class="etoile">✨</span><span><b>Ouverture le 15 octobre</b> — tu fais partie des membres fondateurs</span><span class="etoile">✨</span>
   </div>
   <div class="scrolly">
     <button class="barre-retour" id="barre-retour" style="display:none">‹ Retour à mon profil</button>
@@ -38,7 +38,7 @@
     <!-- 1. Genre -->
     <div class="etape" id="q-genre">
       <div><h1 class="titre">Tu es… 💫</h1><p class="sous">Ces réponses servent uniquement à te proposer les bons profils.</p></div>
-      <div class="pastille-gratuit mention-gratuit">✅ Gratuit — aucune carte bancaire demandée</div>
+      <div class="pastille-gratuit mention-gratuit">✅ Membre fondateur — aucune carte bancaire demandée</div>
       <div class="choix" data-question="genre">
         <button data-val="homme"><span class="em">👨</span>Homme</button>
         <button data-val="femme"><span class="em">👩</span>Femme</button>
@@ -80,7 +80,7 @@
     <!-- 4. Recherche -->
     <div class="etape" id="q-recherche">
       <div><h1 class="titre">Tu recherches… 💘</h1></div>
-      <div class="rappel-gratuit mention-gratuit">🎁 <span>Tout est <b>gratuit</b> pendant l'ouverture : messages illimités, profils illimités.</span></div>
+      <div class="rappel-gratuit mention-gratuit">🎁 <span>Membre fondateur : <b>1ʳᵉ année offerte</b> dès l'ouverture — messages illimités, profils illimités.</span></div>
       <div class="choix" data-question="recherche">
         <button data-val="serieuse"><span class="em">💍</span>Une relation sérieuse</button>
         <button data-val="amicale"><span class="em">🤝</span>Une rencontre amicale</button>
@@ -112,7 +112,7 @@
     <!-- 7. Centres d'intérêt -->
     <div class="etape" id="q-interets">
       <div><h1 class="titre">Tes passions ✨</h1><p class="sous">Choisis-en au moins 3 — c'est ce qui nous aide le plus à te suggérer de belles rencontres.</p></div>
-      <div class="pastille-gratuit mention-gratuit">💛 Toujours gratuit, sans engagement</div>
+      <div class="pastille-gratuit mention-gratuit">💛 1ʳᵉ année offerte, sans engagement</div>
       <p class="compteur-chips" id="compteur">0 / 3 minimum</p>
       <div class="chips" id="chips-interets"></div>
       <button class="btn btn-gold" id="btn-interets" disabled>Continuer</button>
@@ -128,7 +128,7 @@
         <p class="sous">D'après tes réponses, voilà ton profil Cupidon ! Il apparaîtra sur ta fiche avec cette petite description :</p>
       </div>
       <div class="carte"><p id="res-description" style="font-style:italic"></p></div>
-      <div class="pastille-gratuit mention-gratuit">✅ Ce profil est gratuit — 0 € à payer</div>
+      <div class="pastille-gratuit mention-gratuit">✅ 0 € à payer — ta 1ʳᵉ année est offerte</div>
       <button class="btn btn-gold" id="btn-resultat">Parfait, on continue 👌</button>
     </div>
 
@@ -159,8 +159,8 @@
         <div id="avatar-controles" style="display:flex;flex-direction:column;gap:14px;margin-top:14px"></div>
       </div>
 
-      <div class="rappel-gratuit mention-gratuit">🎉 <span>Dernière étape — et c'est <b>gratuit</b> : 0 € aujourd'hui, 0 € jusqu'au 31 octobre.</span></div>
-      <button class="btn btn-gold" id="btn-terminer">Terminer mon inscription gratuite 🎉</button>
+      <div class="rappel-gratuit mention-gratuit">🎉 <span>Dernière étape — 0 € aujourd'hui, et <b>0 € pendant un an</b> après l'ouverture du 15 octobre.</span></div>
+      <button class="btn btn-gold" id="btn-terminer">Terminer mon inscription de fondateur 🎉</button>
       <p class="centre" id="etat-envoi" style="display:none">Enregistrement en cours…</p>
     </div>
 
@@ -171,8 +171,8 @@
         <div class="big">💘</div>
         <h1 class="titre">Bienvenue dans l'aventure !</h1>
         <p class="sous" id="msg-fin">Ton profil est prêt. Belles rencontres !</p>
-        <div class="rappel-gratuit mention-gratuit" style="text-align:left">🌋 <span>Ton compte est <b>gratuit jusqu'au 31 octobre</b> (offre d'ouverture). Ensuite, tarif membre fondateur : 10 €/mois à vie, sans engagement — et tu restes libre d'arrêter.</span></div>
-        <button class="btn btn-gold" onclick="location.href='index.html'">Découvrir les profils 🌋</button>
+        <div class="rappel-gratuit mention-gratuit" style="text-align:left">🌋 <span>Tu es <b>membre fondateur</b> : ta 1ʳᵉ année est offerte à partir de l'ouverture du 15 octobre, puis 10 €/mois à vie, sans engagement — et tu restes libre d'arrêter.</span></div>
+        <button class="btn btn-gold" onclick="location.href='index.html'">Voir ma place de fondateur 🌋</button>
       </div>
     </div>
 
@@ -582,7 +582,7 @@ document.getElementById('btn-terminer').addEventListener('click', async () => {
   });
 
   localStorage.removeItem('cupidon_brouillon_' + utilisateur.id);
-  document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est en ligne, et c\'est gratuit. Belles rencontres 💛';
+  document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est prêt. On te prévient par message dès l\'ouverture du 15 octobre 💛';
   montrer(ORDRE.indexOf('q-fin'));
 });
 

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Cupidon.re — Le site de rencontres à La Réunion | Amour, amitié, activités</title>
-<meta name="description" content="Cupidon.re, le site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités péi. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé seulement si vous le voulez. Profils vérifiés — pour fêter l'ouverture, gratuit pour tous du 1er août au 31 octobre, puis tarif fondateur 10 €/mois à vie.">
+<meta name="description" content="Cupidon.re, le site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et sorties péi. Ouverture le 15 octobre 2026 — inscrivez-vous dès maintenant pour être membre fondateur : 1re année offerte, puis 10 €/mois à vie, apéritif offert à votre premier événement, et un message dès l'ouverture.">
 <meta name="theme-color" content="#0E2A6B">
 <link rel="canonical" href="https://cupidon.re/app/">
 <meta property="og:title" content="Cupidon.re — Rencontres amoureuses, amicales et activités à La Réunion">
-<meta property="og:description" content="C'est ouvert — 3 mois gratuits pour tout le monde. Chat en direct, salons de groupe, privé seulement si vous le voulez. Profils vérifiés — par cupidon.re et Pull Up Événements.">
+<meta property="og:description" content="Ouverture le 15 octobre 2026. Inscrivez-vous avant : les membres fondateurs ont leur 1re année offerte, puis 10 €/mois à vie, et un apéritif offert à leur premier événement — par cupidon.re et Pull Up Événements.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cupidon.re/app/">
 <meta property="og:image" content="https://cupidon.re/img/partage-ouvert-1200x630.jpg">
@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://cupidon.re/img/partage-ouvert-1200x630.jpg">
 <meta property="og:locale" content="fr_FR">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, notifications dans l'appli.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Offre d'ouverture : gratuit pour tous du 1er août au 31 octobre 2026. Ensuite 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Toutes options, sans engagement."},"provider":{"@type":"Organization","name":"Cupidon","url":"https://cupidon.re","@id":"https://cupidon.re/#organization","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re"}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Cupidon Rencontres","alternateName":"Appli de rencontre La Réunion — cupidon.re","url":"https://cupidon.re/app/","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","inLanguage":"fr","description":"Site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et activités. Chat en direct, salons de discussion de groupe par tranche d'âge, passage en privé sur accord mutuel, profils vérifiés, notifications dans l'appli.","datePublished":"2026-10-15","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","availabilityStarts":"2026-10-15","description":"Ouverture le 15 octobre 2026. Offre membre fondateur, réservée aux inscriptions enregistrées avant cette date : 12 mois offerts du 15 octobre 2026 au 15 octobre 2027, puis 10 €/mois à vie, toutes options, sans engagement. Inscriptions ultérieures : 12,90 €/mois sans période offerte."},"provider":{"@type":"Organization","name":"Cupidon","url":"https://cupidon.re","@id":"https://cupidon.re/#organization","parentOrganization":{"@type":"Organization","name":"Pull Up Événements","url":"https://pullup.re"}},"areaServed":{"@type":"AdministrativeArea","name":"La Réunion"}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,6 +98,13 @@ body{
 .cd small{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold-lt)}
 .count-card .count-line{font-size:13.5px;color:#DCE6FF}
 .count-card .count-line b{font-family:'Fraunces',serif;font-size:19px;color:#fff}
+/* Les avantages réservés aux membres fondateurs, sur l'accueil et dans la salle d'attente */
+.avantages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.avantages li{display:grid;grid-template-columns:30px 1fr;gap:2px 11px;align-items:start;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;padding:12px 14px;font-size:13.4px;line-height:1.5;color:#C9D6F5;text-align:left}
+.avantages li span{grid-row:1/3;font-size:21px;line-height:1.1}
+.avantages li b{display:block;color:#fff;font-size:14.5px}
 .scrollhint{text-align:center;font-size:12px;color:#AAB9E3;padding-bottom:4px;animation:hintbounce 2s ease-in-out infinite}
 @keyframes hintbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 .landing{position:relative;padding:8px 24px calc(40px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:13px}
@@ -387,6 +394,13 @@ body{
 
 /* ===== Premium ===== */
 #premium{background:linear-gradient(rgba(11,25,70,.88),rgba(90,15,35,.9)),url('../img/hero-volcan.jpg') center/cover no-repeat;color:#fff}
+/* Salle d'attente : même ambiance volcan que l'inscription */
+#attente{background:linear-gradient(rgba(8,18,50,.9),rgba(8,18,50,.95)),url('../img/hero-volcan.jpg') center/cover no-repeat;color:#fff}
+#attente .scrolly{padding:calc(30px + env(safe-area-inset-top)) 22px 40px;display:flex;flex-direction:column;align-items:center;gap:15px}
+#attente .scrolly>*{flex:none}   /* sinon les blocs s'écrasent quand la page défile */
+#attente h2{color:#fff}
+#attente .lancement,#attente .cd,#attente .avantages,#attente p{width:100%}
+#attente h2{font-size:23px;line-height:1.25}
 #premium .scrolly{padding:0 24px 26px}
 #premium .close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:10;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer}
 #premium .top{text-align:center;padding:calc(56px + env(safe-area-inset-top)) 0 8px}
@@ -437,31 +451,38 @@ body{
         <div class="lancement" id="lancement">
           <div class="lc-haut">
             <div class="lc-pastille" id="lc-pastille">J–<span id="lc-jours">–</span></div>
-            <div class="lc-titre"><span id="lc-titre">Ouverture officielle<br>le 1ᵉʳ août 2026</span><em id="lc-sous">🌋 Sois là dès le premier jour</em></div>
+            <div class="lc-titre"><span id="lc-titre">Ouverture officielle<br>le 15 octobre 2026</span><em id="lc-sous">🌋 Inscris-toi maintenant : tu seras membre fondateur</em></div>
           </div>
-          <div class="lc-offre" id="lc-offre">🎁 <b>3 mois offerts</b> pour tout le monde<br><span class="lc-fond">puis <b>10 €/mois à vie</b> pour les membres fondateurs</span></div>
+          <div class="lc-offre" id="lc-offre">🎁 <b>1ʳᵉ année offerte</b> aux membres fondateurs<br><span class="lc-fond">puis <b>10 €/mois à vie</b> — et un <b>apéritif offert</b> à ton premier événement</span></div>
         </div>
         <h1>Faites de belles rencontres<br>au pied <em>du volcan</em></h1>
-        <p class="lead">Rencontres amoureuses, <b>amicales</b> et activités 100 % péi — profils vérifiés, en toute simplicité.</p>
-        <!-- Ce compte à rebours porte sur la FIN des 3 mois offerts. Il reste
-             masqué jusqu'au 1ᵉʳ août pour laisser le bandeau d'ouverture seul
-             en vedette : deux chronos d'affilée brouillent le message. -->
-        <div class="count-card" id="count-card" style="display:none">
-          <div class="freebig">🎉 Pour fêter l'ouverture <span>: 3 mois gratuits pour tout le monde</span></div>
-          <div class="cd-label" id="cd-label">⏳ Il reste, pour profiter de l'offre d'ouverture :</div>
+        <p class="lead">Rencontres amoureuses, <b>amicales</b> et sorties 100 % péi — profils vérifiés, en toute simplicité.</p>
+        <!-- Compte à rebours avant l'ouverture du 15 octobre. Tant que ce jour
+             n'est pas arrivé, l'appli ne s'ouvre pas : on inscrit les membres
+             fondateurs et on les prévient le jour J. -->
+        <div class="count-card" id="count-card">
+          <div class="freebig">🌱 Deviens membre fondateur <span>: les 1ᵉʳˢ inscrits de Cupidon</span></div>
+          <div class="cd-label" id="cd-label">⏳ Il reste, avant l'ouverture du 15 octobre :</div>
           <div class="cd" id="countdown">
             <div><b id="cd-j">–</b><small>jours</small></div>
             <div><b id="cd-h">–</b><small>heures</small></div>
             <div><b id="cd-m">–</b><small>min</small></div>
             <div><b id="cd-s">–</b><small>sec</small></div>
           </div>
-          <div class="count-line" id="cd-line">Du 1ᵉʳ août au 31 octobre, tout est offert à tous — c'est cadeau, pour célébrer le lancement. Et en t'inscrivant maintenant, tu gardes le <b>tarif fondateur : 10 €/mois à vie</b>.</div>
+          <div class="count-line" id="cd-line">Inscris-toi dès aujourd'hui : <b>on te prévient par message le jour de l'ouverture</b>, et ta place de membre fondateur est gardée au chaud.</div>
         </div>
+        <ul class="avantages">
+          <li><span>🎁</span><b>Ta 1ʳᵉ année offerte</b>Puis 10 €/mois à vie. Les inscrits après l'ouverture paieront plus cher.</li>
+          <li><span>🍹</span><b>Un apéritif offert</b>À ton premier événement Cupidon, c'est nous qui offrons.</li>
+          <li><span>📩</span><b>Prévenu·e en premier</b>On t'envoie un message dès que l'appli ouvre, le 15 octobre.</li>
+          <li><span>💛</span><b>Pas seulement l'amour</b>Cupidon, c'est aussi des connaissances, des sorties et des soirées. Même si tu rencontres quelqu'un d'ici là, ta place reste utile.</li>
+          <li><span>🤝</span><b>De vraies personnes</b>Cupidon est porté par une agence événementielle réunionnaise, pas par un robot.</li>
+        </ul>
         <label class="age-check">
           <input type="checkbox" id="agecheck">
           <span>Je certifie avoir <b>18 ans ou plus</b> et j'accepte les <a href="cgu.html" target="_blank" style="color:var(--gold-lt)">Conditions d'utilisation</a> et la <a href="confidentialite.html" target="_blank" style="color:var(--gold-lt)">Politique de confidentialité</a>.</span>
         </label>
-        <button class="btn btn-gold" id="startbtn" disabled>Je prends ma place gratuite</button>
+        <button class="btn btn-gold" id="startbtn" disabled>Je réserve ma place de membre fondateur</button>
         <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="location.href='connexion.html'">J'ai déjà un compte — Se connecter</button>
         <div class="scrollhint">▼ Fais défiler pour en savoir plus</div>
       </div>
@@ -471,20 +492,28 @@ body{
           <p>Participe aux <b>salons de discussion en direct</b> : le salon général 974 et les salons par tranche d'âge, avec un sujet de conversation chaque semaine. Pour faire de belles rencontres… <b>amoureuses ou simplement amicales</b>, et partager des activités péi. Et on ne passe en privé <b>que si les deux le veulent</b>.</p>
         </div>
         <div class="lcard">
-          <h3>🎉 Pour fêter l'ouverture : 3 mois gratuits pour tous</h3>
-          <p>Du <b>1ᵉʳ août au 31 octobre</b>, tout est offert à tous les inscrits — c'est cadeau, pour célébrer le lancement du site. Ensuite, <b>pas de mauvaise surprise</b> : les <b>membres fondateurs</b> (inscrits avant le 31 octobre) gardent un tarif de <b>10 €/mois à vie</b> ; les inscriptions suivantes seront à <b>12,90 €/mois</b> — toujours 2 fois moins cher que Tinder Gold. Toutes options comprises : messages illimités, profils illimités, <b>invitations aux événements Pull Up</b>. Résiliable à tout moment.</p>
+          <h3>🌱 Membre fondateur : ta 1ʳᵉ année offerte</h3>
+          <p>Toutes les personnes inscrites <b>avant l'ouverture du 15 octobre</b> deviennent <b>membres fondateurs</b> : <b>un an d'appli entièrement offert</b>, puis <b>10 €/mois à vie</b> — un tarif qui ne bougera jamais pour toi, alors que les inscriptions suivantes seront plus chères. Toutes options comprises : messages illimités, profils illimités, <b>invitations aux événements Pull Up</b>. Sans engagement, résiliable à tout moment.</p>
         </div>
         <div class="lcard">
-          <h3>💬 Ne loupe aucun message</h3>
-          <p>Dès que quelqu'un t'écrit, la <b>pastille s'allume sur l'onglet Matchs</b> et le message t'attend. Les alertes par <b>e-mail</b> et <b>WhatsApp</b> arrivent très bientôt — ton choix est déjà enregistré.</p>
+          <h3>🍹 Un apéritif offert à ton premier événement</h3>
+          <p>Cupidon, ce n'est pas qu'un écran. On organise de <b>vraies soirées et de vraies sorties</b> à La Réunion — et en tant que membre fondateur, <b>ton apéritif est offert</b> à ton premier événement Cupidon. De quoi rencontrer du monde en vrai, sans pression.</p>
         </div>
         <div class="lcard">
-          <h3>🕗 Le rendez-vous de 20 h</h3>
-          <p>Chaque soir à <b>20 h</b>, tout le monde se retrouve au <b>Salon général 974</b> pour discuter. Tu n'arrives jamais dans une appli vide : il y a une heure et un lieu où ça se passe — et l'équipe Cupidon y est chaque soir de la première semaine.</p>
+          <h3>📩 On te prévient le jour de l'ouverture</h3>
+          <p>Tu n'as rien d'autre à faire : tu t'inscris aujourd'hui, et <b>on t'envoie un message le 15 octobre</b>, dès que l'appli ouvre. Ta place est gardée, ton profil t'attend — pas besoin de revenir voir tous les jours.</p>
         </div>
         <div class="lcard">
-          <h3>🤝 Une vraie équipe derrière</h3>
-          <p>Cupidon Rencontres est porté par <b>cupidon.re</b>, l'agence matrimoniale 100 % péi, et <b>Pull Up Événements</b>, l'agence événementielle du Tampon. Chaque profil est <b>vérifié par notre équipe</b>.</p>
+          <h3>🕗 Dès l'ouverture : le rendez-vous de 20 h</h3>
+          <p>À partir du <b>15 octobre</b>, chaque soir à <b>20 h</b>, tout le monde se retrouve au <b>Salon général 974</b> pour discuter. Tu n'arriveras jamais dans une appli vide : il y a une heure et un lieu où ça se passe — et l'équipe Cupidon y sera chaque soir de la première semaine.</p>
+        </div>
+        <div class="lcard">
+          <h3>💛 Pas seulement l'amour : des connaissances et des sorties</h3>
+          <p>Beaucoup nous disent « et si je rencontre quelqu'un d'ici là ? ». Aucun souci : Cupidon sert aussi à <b>faire des connaissances</b>, <b>agrandir son cercle d'amis</b> et <b>sortir</b> — soirées, activités, salons de discussion. Ta place de fondateur reste utile, en couple comme célibataire.</p>
+        </div>
+        <div class="lcard">
+          <h3>🤝 De vraies personnes s'occupent de Cupidon</h3>
+          <p>Derrière Cupidon, il n'y a pas un robot à l'autre bout du monde : il y a <b>cupidon.re</b>, l'agence matrimoniale 100 % péi, et <b>Pull Up Événements</b>, l'agence événementielle du Tampon. Une équipe réunionnaise, avec de vrais visages — et chaque profil est <b>vérifié à la main par notre équipe</b>.</p>
         </div>
         <div class="lcard" style="border-color:rgba(242,194,0,.55)">
           <h3>💍 Envie d'être accompagné·e ? Parle à l'équipe</h3>
@@ -492,7 +521,7 @@ body{
           <a href="mailto:contact@pullup.re" onclick="contacterEquipe();return false" class="btn btn-gold" style="display:block;text-align:center;margin-top:14px;text-decoration:none;font-size:15px;color:#3A2C00">✉️ Écrire à l'équipe — contact@pullup.re</a>
           <p style="font-size:12.5px;color:#C9D6F5;margin-top:8px;text-align:center">Indique-nous tes <b>jours et créneaux de disponibilité</b> : un membre de l'équipe te rappelle.</p>
         </div>
-        <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je prends ma place gratuite 🎁</button>
+        <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je réserve ma place de membre fondateur 🎁</button>
       </div>
     </div>
   </section>
@@ -503,8 +532,8 @@ body{
       <button class="backlink" onclick="showScreen('onboard')">‹ Retour</button>
       <img src="logo-mascotte.png" alt="" style="width:95px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4))">
       <div>
-        <h2 class="serif" style="font-size:26px">Crée ton compte gratuit</h2>
-        <p style="color:#C9D6F5;font-size:14px;margin-top:4px">🎉 Pour fêter l'ouverture, tout est gratuit du 1ᵉʳ août au 31 octobre — et tu gardes le tarif fondateur de 10 €/mois à vie. Ton profil sera vérifié par notre équipe avant publication.</p>
+        <h2 class="serif" style="font-size:26px">Réserve ta place de membre fondateur</h2>
+        <p style="color:#C9D6F5;font-size:14px;margin-top:4px">🌱 L'appli ouvre le <b>15 octobre</b>. En t'inscrivant maintenant, tu deviens membre fondateur : <b>1ʳᵉ année offerte</b>, puis 10 €/mois à vie, et un apéritif offert à ton premier événement. Ton profil sera vérifié par notre équipe avant publication.</p>
       </div>
       <div class="field"><label>Ton prénom</label><input id="su-prenom" placeholder="Ex. Maëva" autocomplete="off"></div>
       <div class="field"><label>Ton e-mail</label><input id="su-email" type="email" placeholder="toi@email.re" autocomplete="off"></div>
@@ -635,7 +664,7 @@ body{
       </div>
       <div class="setlist">
         <button class="setrow" id="row-connexion" onclick="location.href='connexion.html'"><span class="ico">🔑</span><span><b>Se connecter / Créer mon compte</b><small>Retrouve tes matchs et ton profil</small></span></button>
-        <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>Gratuit jusqu'au 31 octobre (ouverture), puis 10 €/mois à vie</small></span></button>
+        <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>1ʳᵉ année offerte, puis 10 €/mois à vie</small></span></button>
         <button class="setrow" id="row-modifier" onclick="toast('Connecte-toi d\'abord pour créer ton profil 😊')"><span class="ico">✏️</span><span>Modifier mon profil<small>Photos, passions, description — sans refaire le questionnaire</small></span></button>
         <button class="setrow" id="row-compte" style="display:none" onclick="location.href='compte.html'"><span class="ico">🛡️</span><span>Mon compte & sécurité<small>E-mail, mot de passe, appareils, mes données</small></span></button>
         <button class="setrow" onclick="partagerCupidon()"><span class="ico">💌</span><span><b>Faire connaître Cupidon</b><small>Invite tes amis — plus on est nombreux, plus il y a de rencontres</small></span></button>
@@ -656,27 +685,63 @@ body{
     </nav>
   </section>
 
+  <!-- ══════════ SALLE D'ATTENTE (avant le 15 octobre) ══════════
+       Un membre déjà inscrit qui revient avant l'ouverture n'entre pas dans
+       l'appli : il arrive ici. Le jour J, ce même écran laisse passer tout le
+       monde tout seul (voir OUVERTURE dans le script). -->
+  <section class="screen" id="attente">
+    <div class="scrolly" style="text-align:center">
+      <img src="logo-mascotte.png" alt="" style="width:110px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4))">
+      <div class="lancement" style="align-self:auto">
+        <div class="lc-haut">
+          <div class="lc-pastille" id="at-pastille">J–<span>–</span></div>
+          <div class="lc-titre" style="text-align:left">Ouverture le<br>15 octobre 2026<em id="at-sous">🌋 Ta place est réservée</em></div>
+        </div>
+        <div class="lc-offre">🌱 <b id="at-nom">Tu es membre fondateur</b><br><span class="lc-fond">1ʳᵉ année offerte, puis 10 €/mois à vie</span></div>
+      </div>
+      <h2 class="serif" style="font-size:25px;margin-top:4px">C'est tout bon,<br>ton compte est bien enregistré ✅</h2>
+      <p style="color:#C9D6F5;font-size:14.5px;line-height:1.6">L'appli n'est pas encore ouverte au public. <b style="color:#fff">On t'envoie un message le 15 octobre</b>, dès la première minute — tu n'as rien d'autre à faire qu'attendre.</p>
+      <div class="cd" id="at-countdown" style="margin:4px 0 6px">
+        <div><b id="at-j">–</b><small>jours</small></div>
+        <div><b id="at-h">–</b><small>heures</small></div>
+        <div><b id="at-m">–</b><small>min</small></div>
+        <div><b id="at-s">–</b><small>sec</small></div>
+      </div>
+      <ul class="avantages" style="text-align:left">
+        <li><span>🎁</span><b>Ta 1ʳᵉ année est offerte</b>Puis 10 €/mois à vie, un tarif qui ne bougera jamais pour toi.</li>
+        <li><span>🍹</span><b>Un apéritif offert</b>À ton premier événement Cupidon, c'est nous qui offrons.</li>
+        <li><span>💛</span><b>Même si tu rencontres quelqu'un d'ici là</b>Cupidon, c'est aussi des connaissances, des sorties et des soirées. Garde ta place, elle servira.</li>
+        <li><span>🤝</span><b>De vraies personnes</b>Une équipe réunionnaise s'occupe de Cupidon, et vérifie chaque profil à la main.</li>
+      </ul>
+      <button class="btn btn-gold" style="width:100%" onclick="location.href='profil.html'">✏️ Compléter / modifier mon profil</button>
+      <button class="btn" style="width:100%;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="partagerCupidon()">📣 Prévenir un ami — qu'il soit fondateur aussi</button>
+      <p style="font-size:12.5px;color:#93A3CF;line-height:1.6">Une question ? Écris-nous à <a href="mailto:contact@pullup.re" style="color:var(--gold-lt)">contact@pullup.re</a> — c'est une vraie personne qui répond.</p>
+    </div>
+  </section>
+
   <!-- ══════════ PREMIUM ══════════ -->
   <section class="screen" id="premium">
     <button class="close" onclick="showScreen(lastTab)">✕</button>
     <div class="scrolly">
       <div class="top">
         <img src="logo-mascotte.png" alt="" style="width:120px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4));margin-bottom:10px">
-        <br><span class="badge">🎉 Offre d'ouverture</span>
-        <h2 class="serif">Un seul tarif,<br>pas de mauvaise surprise</h2>
-        <p style="font-size:15px;color:var(--gold-lt);font-weight:600;margin-top:10px">🌋 Pour fêter l'ouverture : GRATUIT pour tout le monde<br>du 1ᵉʳ août au 31 octobre !</p>
-        <div class="price">10 €<small> / mois · à vie · tarif membre fondateur</small></div>
-        <p style="font-size:13.5px;color:#C9D6F5;margin-top:6px">En t'inscrivant avant le 31 octobre, tu gardes ce tarif pour toujours.<br>Inscription après le 31 octobre : 12,90 €/mois.</p>
+        <br><span class="badge">🌱 Offre membre fondateur</span>
+        <h2 class="serif">Ta 1ʳᵉ année<br>entièrement offerte</h2>
+        <p style="font-size:15px;color:var(--gold-lt);font-weight:600;margin-top:10px">🌋 Inscrit·e avant l'ouverture du 15 octobre 2026 ?<br>Tu ne payes rien pendant un an entier.</p>
+        <div class="price">10 €<small> / mois · à vie · seulement à partir d'octobre 2027</small></div>
+        <p style="font-size:13.5px;color:#C9D6F5;margin-top:6px">Ce tarif de membre fondateur ne bougera jamais pour toi.<br>Inscription après le 15 octobre 2026 : 12,90 €/mois, sans année offerte.</p>
       </div>
       <ul>
+        <li><span class="ico">🎁</span><span><b>Un an offert</b><span>Du 15 octobre 2026 au 15 octobre 2027, tu ne payes rien</span></span></li>
+        <li><span class="ico">🍹</span><span><b>Apéritif offert</b><span>À ton premier événement Cupidon, c'est nous qui offrons</span></span></li>
         <li><span class="ico">💬</span><span><b>Messages illimités</b><span>Écris à tous tes matchs, autant que tu veux</span></span></li>
         <li><span class="ico">🔎</span><span><b>Profils illimités</b><span>Découvre tous les célibataires de l'île, sans limite</span></span></li>
         <li><span class="ico">🎉</span><span><b>Invitations aux événements</b><span>Soirées célibataires et animations Pull Up Événements</span></span></li>
         <li><span class="ico">👀</span><span><b>Vois qui t'a aimé</b><span>Plus besoin d'attendre le hasard</span></span></li>
         <li><span class="ico">✅</span><span><b>Profils vérifiés</b><span>Chaque inscription est contrôlée par notre équipe</span></span></li>
       </ul>
-      <button class="btn btn-gold" style="width:100%" onclick="location.href='inscription.html'">Je m'inscris gratuitement 🎁</button>
-      <p class="legal">Offre d'ouverture : service gratuit pour tous du 1ᵉʳ août au 31 octobre 2026. Ensuite, abonnement TTC toutes options, sans engagement et résiliable à tout moment : 10 €/mois à vie pour les membres inscrits avant le 31 octobre 2026 (tarif fondateur), 12,90 €/mois pour les inscriptions ultérieures. Droit de rétractation de 14 jours conformément au Code de la consommation. Paiement sécurisé.</p>
+      <button class="btn btn-gold" style="width:100%" onclick="location.href='inscription.html'">Je réserve ma place de fondateur 🎁</button>
+      <p class="legal">Offre membre fondateur : réservée aux inscriptions enregistrées avant le 15 octobre 2026 (date d'ouverture). Elle comprend 12 mois de service offerts, du 15 octobre 2026 au 15 octobre 2027, puis un abonnement TTC toutes options de 10 €/mois maintenu à vie, sans engagement et résiliable à tout moment. Les inscriptions postérieures au 15 octobre 2026 sont à 12,90 €/mois, sans période offerte. Droit de rétractation de 14 jours conformément au Code de la consommation. Paiement sécurisé.</p>
     </div>
   </section>
 
@@ -699,9 +764,9 @@ body{
     <div class="modal">
       <div style="font-size:44px">🎁</div>
       <h3>Offre de lancement</h3>
-      <p id="premiumtext">Bonne nouvelle : pour fêter l'ouverture, tout est offert jusqu'au 31 octobre — tout est illimité !</p>
+      <p id="premiumtext">Bonne nouvelle : en tant que membre fondateur, ta 1ʳᵉ année est offerte — tout est illimité !</p>
       <button class="btn btn-wine" onclick="unlockDemo()">Continuer 🎉</button>
-      <button class="btn btn-ghost" onclick="hideOverlay('premiumoverlay');showScreen('premium')">Voir l'offre 10 €/mois</button>
+      <button class="btn btn-ghost" onclick="hideOverlay('premiumoverlay');showScreen('premium')">Voir l'offre membre fondateur</button>
     </div>
   </div>
 
@@ -814,13 +879,21 @@ function toast(msg){
 function hideOverlay(id){document.getElementById(id).classList.remove('show')}
 
 /* ───────── Onboarding & offre de lancement ───────── */
-const OUVERTURE=new Date('2026-08-01T00:00:00+04:00');      // ouverture officielle (heure Réunion)
-const FIN_GRATUIT=new Date('2026-11-01T00:00:00+04:00');    // fin des 3 mois offerts (31 octobre inclus, prolongeable)
+/* Ouverture au public le 15 octobre 2026 à 00 h (heure Réunion). Avant cette
+   date, personne n'entre dans l'appli : on inscrit les membres fondateurs et
+   on les fait patienter dans l'écran « attente ». Le jour J, tout se débloque
+   tout seul — il n'y a aucune ligne à modifier à la main. */
+const OUVERTURE=new Date('2026-10-15T00:00:00+04:00');
+const FIN_ANNEE_OFFERTE=new Date('2027-10-15T00:00:00+04:00');  // fin de l'année offerte aux fondateurs
+function estOuvert(){return new Date()>=OUVERTURE;}
 document.getElementById('agecheck').addEventListener('change',e=>{
   document.getElementById('startbtn').disabled=!e.target.checked;
 });
 document.getElementById('startbtn').addEventListener('click',()=>location.href='inscription.html');
 async function enterApp(){
+  /* Avant le 15 octobre, un membre inscrit ne voit ni les profils, ni les
+     salons : il arrive dans la salle d'attente des membres fondateurs. */
+  if(!estOuvert()){ showScreen('attente'); return; }
   showScreen('discover');
   const deck=document.getElementById('deck');
   deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:120px;opacity:.6"><b>Chargement…</b></div>';
@@ -862,26 +935,35 @@ function contacterEquipe(){
   location.href='mailto:contact@pullup.re?subject='+sujet+'&body='+corps;
 }
 
-/* Compte à rebours : jours restants de l'offre gratuite (jusqu'au 31 octobre inclus) */
-document.getElementById('offerchip').textContent='🎉 Offre d\'ouverture';
+/* Compte à rebours avant l'ouverture du 15 octobre. Il alimente le chrono de
+   l'accueil et celui de la salle d'attente en même temps. Une fois l'appli
+   ouverte, il laisse la place au décompte de l'année offerte. */
+document.getElementById('offerchip').textContent='🌱 Offre fondateur';
+function poser(id,valeur){const e=document.getElementById(id);if(e)e.textContent=valeur;}
 function majCompteARebours(){
-  const now=new Date();
-  const diff=FIN_GRATUIT-now;
-  if(diff<=0){
+  const diff=OUVERTURE-new Date();
+  if(diff<=0){                       /* c'est ouvert : on bascule sur l'année offerte */
     document.getElementById('countdown').style.display='none';
     document.getElementById('cd-label').style.display='none';
-    document.getElementById('cd-line').innerHTML="L'offre de lancement est terminée — un seul tarif : 10 €/mois toutes options.";
+    const jours=Math.max(0,Math.ceil((FIN_ANNEE_OFFERTE-new Date())/864e5));
+    document.getElementById('cd-line').innerHTML=jours
+      ? "C'est ouvert ! Les membres fondateurs profitent encore de <b>"+jours+" jours offerts</b>, puis 10 €/mois à vie."
+      : "L'année offerte est terminée — un seul tarif : 10 €/mois toutes options.";
     return;
   }
-  document.getElementById('cd-j').textContent=Math.floor(diff/864e5);
-  document.getElementById('cd-h').textContent=String(Math.floor(diff%864e5/36e5)).padStart(2,'0');
-  document.getElementById('cd-m').textContent=String(Math.floor(diff%36e5/6e4)).padStart(2,'0');
-  document.getElementById('cd-s').textContent=String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
+  const j=Math.floor(diff/864e5),
+        h=String(Math.floor(diff%864e5/36e5)).padStart(2,'0'),
+        m=String(Math.floor(diff%36e5/6e4)).padStart(2,'0'),
+        s=String(Math.floor(diff%6e4/1e3)).padStart(2,'0');
+  poser('cd-j',j);  poser('cd-h',h);  poser('cd-m',m);  poser('cd-s',s);
+  poser('at-j',j);  poser('at-h',h);  poser('at-m',m);  poser('at-s',s);
+  const pastille=document.getElementById('at-pastille');
+  if(pastille)pastille.textContent=(j>=1?'J–'+j:'H–'+Math.floor(diff/36e5));
 }
 majCompteARebours();
 setInterval(majCompteARebours,1000);
 
-/* Bandeau d'ouverture : compte à rebours avant le 1ᵉʳ août, puis bascule
+/* Bandeau d'ouverture : compte à rebours avant le 15 octobre, puis bascule
    tout seul sur « C'est ouvert » le jour J — rien à modifier à la main. */
 function majBandeauOuverture(){
   const pastille=document.getElementById('lc-pastille');
@@ -897,24 +979,21 @@ function majBandeauOuverture(){
     pastille.style.background='#1F7A4D';
     titre.textContent='C\'est ouvert !';
     sous.textContent='🌋 Rejoins les premiers membres de Cupidon.re';
-    /* Dès l'ouverture, le chrono des 3 mois offerts prend le relais. */
-    const carte=document.getElementById('count-card');
-    if(carte)carte.style.display='';
+    const btn=document.getElementById('startbtn');
+    if(btn)btn.textContent='J\'entre dans l\'appli';
     return;
   }
 
-  titre.innerHTML='Ouverture officielle<br>le 1ᵉʳ août 2026';
+  titre.innerHTML='Ouverture officielle<br>le 15 octobre 2026';
   pastille.style.background='#B3121B';
-  const carte=document.getElementById('count-card');
-  if(carte)carte.style.display='none';   /* avant l'ouverture : un seul chrono */
 
   const j=Math.floor(reste/864e5);
   if(j>=1){
     pastille.textContent='J–'+j;
-    sous.textContent=(j===1?'🌋 Plus qu\'un jour — prends ta place':'🌋 Sois là dès le premier jour');
+    sous.textContent=(j===1?'🌋 Plus qu\'un jour — réserve ta place':'🌋 Inscris-toi maintenant : tu seras membre fondateur');
   }else{                              /* dernier jour : on passe aux heures */
     pastille.textContent='H–'+Math.floor(reste/36e5);
-    sous.textContent='🌋 C\'est pour aujourd\'hui — prends ta place';
+    sous.textContent='🌋 C\'est pour aujourd\'hui — réserve ta place';
   }
 }
 majBandeauOuverture();
@@ -1036,7 +1115,7 @@ function enregistrerPrefs(){
 async function partagerCupidon(){
   const donnees={
     title:'Cupidon Rencontres — La Réunion',
-    text:'Rejoins-moi sur Cupidon, l\'appli de rencontres 100 % péi 🌋 Gratuite pour fêter l\'ouverture !',
+    text:'Rejoins-moi sur Cupidon, l\'appli de rencontres 100 % péi 🌋 Ouverture le 15 octobre — inscris-toi avant pour être membre fondateur : 1ʳᵉ année offerte !',
     url:'https://cupidon.re/app/'
   };
   if(navigator.share){
@@ -1291,7 +1370,7 @@ function sendMsg(){
   const txt=input.value.trim();
   if(!txt)return;
   if(!demoUnlocked){
-    document.getElementById('premiumtext').textContent='Bonne nouvelle : pour fêter l\'ouverture, tout est offert jusqu\'au 31 octobre — la messagerie est illimitée ! Et dès qu\'on te répond, la pastille s\'allume sur l\'onglet Matchs.';
+    document.getElementById('premiumtext').textContent='Bonne nouvelle : en tant que membre fondateur, ta 1ʳᵉ année est offerte — la messagerie est illimitée ! Et dès qu\'on te répond, la pastille s\'allume sur l\'onglet Matchs.';
     document.getElementById('premiumoverlay').classList.add('show');
     return;
   }
@@ -1522,6 +1601,13 @@ function blockFromChat(){
     } catch (e) { /* jamais bloquant */ }
 
     const prenom = profil.prenom || 'Moi';
+
+    /* Salle d'attente : on l'appelle par son prénom, ça rassure sur le fait
+       que l'inscription est bien passée. */
+    if (!estOuvert()) {
+      const nom = document.getElementById('at-nom');
+      if (nom && profil.prenom) nom.textContent = profil.prenom + ', tu es membre fondateur';
+    }
 
     /* Petit mot d'accueil personnalisé selon le temps d'absence */
     try {

@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Cupidon.re — Le site de rencontres à La Réunion | Amoureuses, amicales & agence matrimoniale</title>
-<meta name="description" content="Cupidon.re — rencontres amoureuses, amicales et activités à La Réunion. Une appli avec chat en direct et salons de groupe (3 mois gratuits), et une agence matrimoniale humaine et confidentielle depuis 2017 : plus de 500 couples formés. Une vraie équipe, au Tampon." />
+<meta name="description" content="Cupidon.re — rencontres amoureuses, amicales et sorties à La Réunion. L'appli ouvre le 15 octobre 2026 : inscrivez-vous avant pour être membre fondateur (1re année offerte). Et une agence matrimoniale humaine et confidentielle depuis 2017 : plus de 500 couples formés. Une vraie équipe, au Tampon." />
 <meta name="theme-color" content="#0E2A6B" />
 <meta property="og:title" content="Cupidon.re — L'application de rencontre de La Réunion" />
-<meta property="og:description" content="C'est ouvert : vous glissez, vous matchez, vous discutez — 3 mois offerts. Et toujours l'agence matrimoniale humaine et confidentielle : plus de 500 couples formés." />
+<meta property="og:description" content="L'appli ouvre le 15 octobre 2026 : inscrivez-vous avant pour être membre fondateur (1re année offerte, puis 10 €/mois à vie). Et toujours l'agence matrimoniale humaine et confidentielle : plus de 500 couples formés." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://cupidon.re/" />
 <meta property="og:image" content="https://cupidon.re/img/partage-ouvert-1200x630.jpg" />
@@ -435,6 +435,26 @@
 #portail .pa-pts i{width:6px;height:6px;border-radius:50%;background:rgba(14,42,107,.18);transition:background .3s ease}
 #portail .pa-pts i.on{background:#F60100}
 #portail .p-ou{font-size:14px;font-weight:600;color:#6B7A9E;margin-top:6px}
+/* Bloc « membres fondateurs » : la raison de s'inscrire avant le 15 octobre */
+#portail .fondateurs{width:min(760px,100%);background:linear-gradient(150deg,#FFFBEB,#fff 62%);border:3px solid #F2C200;
+  border-radius:26px;padding:30px 28px 26px;box-shadow:0 16px 46px rgba(242,194,0,.26);text-align:left}
+#portail .fo-titre{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(21px,3.4vw,29px);line-height:1.2;color:#0E2A6B;text-align:center}
+#portail .fo-titre em{font-style:normal;color:#C90D00}
+#portail .fo-sous{font-size:15px;color:#3A4E86;line-height:1.55;margin:10px auto 20px;text-align:center;max-width:48ch}
+#portail .fo-liste{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+#portail .fo-liste li{display:grid;grid-template-columns:38px 1fr;gap:4px 12px;align-items:start;
+  background:rgba(255,255,255,.75);border:1px solid rgba(242,194,0,.45);border-radius:16px;padding:14px 16px;
+  font-size:14.2px;line-height:1.55;color:#3A4E86}
+#portail .fo-liste li span{grid-row:1/3;font-size:26px;line-height:1}
+#portail .fo-liste li b{font-family:'Fraunces',serif;font-size:16.5px;color:#0E2A6B;display:block;margin-bottom:3px}
+#portail .fo-btn{display:block;margin:22px auto 0;width:fit-content;max-width:100%;text-align:center;
+  background:linear-gradient(135deg,#F60100,#C90D00);color:#fff;font-weight:700;font-size:16px;text-decoration:none;
+  padding:16px 30px;border-radius:999px;box-shadow:0 10px 28px rgba(246,1,0,.32);transition:transform .18s ease,box-shadow .18s ease}
+#portail .fo-btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(246,1,0,.42)}
+#portail .fo-note{font-size:13px;color:#6B7A9E;text-align:center;margin:10px 0 0}
+@media(max-width:640px){#portail .fondateurs{padding:24px 18px 22px}
+  #portail .fo-liste li{grid-template-columns:30px 1fr;padding:13px 14px;font-size:13.6px}
+  #portail .fo-liste li span{font-size:21px}}
 @media(max-width:900px){
   /* Sur téléphone : le titre, puis un aperçu de l'appli, puis le gros bouton */
   #portail .p-appli{grid-template-columns:1fr;grid-template-areas:"txt" "phone" "cta";gap:16px;padding:24px 18px 22px;text-align:center;justify-items:center}
@@ -475,7 +495,7 @@
   <!-- ★ L'APPLICATION : le grand bloc vedette du portail -->
   <a class="p-appli" href="app/" aria-label="Ouvrir l'application de rencontre Cupidon">
     <div class="pa-txt">
-      <span class="pa-badge">✨ Nouveau · c'est une application ✨</span>
+      <span class="pa-badge">🌱 Ouverture le 15 octobre · réservez votre place 🌱</span>
       <div class="pa-titre">L'application de rencontre<br><em>de La Réunion</em></div>
       <p class="pa-sous">Vous glissez, vous matchez, vous discutez <b>en direct</b> — rencontres amoureuses <b>ou amicales</b>.<span class="pa-plus"> Salons de discussion de groupe, et passage en privé seulement si vous êtes d'accord tous les deux.</span></p>
     </div>
@@ -490,12 +510,27 @@
       <span class="pa-legende"><span id="pa-leg-txt">👀 Tu découvres les profils</span><span class="pa-pts"><i class="on"></i><i></i><i></i><i></i></span></span>
     </div>
     <div class="pa-cta">
-      <div class="pa-gratuit">🎁 <span><b>100 % gratuit</b> jusqu'au 31 octobre</span></div>
-      <div class="pa-ici"><span class="main">👇</span> C'est ici que ça se passe <span class="main droite">👇</span></div>
-      <span class="pa-btn">🌋 Ouvrir l'application →</span>
-      <p class="pa-note">Rien à installer : elle s'ouvre directement sur votre téléphone ou votre ordinateur.<br>🕗 <b>Le rendez-vous : chaque soir à 20 h au Salon général 974.</b></p>
+      <div class="pa-gratuit">🎁 <span><b>1ʳᵉ année offerte</b> aux membres fondateurs</span></div>
+      <div class="pa-ici"><span class="main">👇</span> Inscrivez-vous avant l'ouverture <span class="main droite">👇</span></div>
+      <span class="pa-btn">🌋 Je réserve ma place →</span>
+      <p class="pa-note">Rien à installer, aucune carte bancaire. On vous envoie un message dès l'ouverture, le 15 octobre.<br>🍹 <b>Et un apéritif offert à votre premier événement Cupidon.</b></p>
     </div>
   </a>
+
+  <!-- Pourquoi s'inscrire AVANT le 15 octobre : les avantages des fondateurs -->
+  <div class="fondateurs">
+    <div class="fo-titre">🌱 Inscrivez-vous <em>avant l'ouverture</em></div>
+    <p class="fo-sous">Toutes les personnes inscrites avant le 15 octobre deviennent <b>membres fondateurs</b> de Cupidon — et le restent pour toujours.</p>
+    <ul class="fo-liste">
+      <li><span>🎁</span><b>Votre 1ʳᵉ année offerte</b>Un an d'application entièrement gratuit, puis 10 €/mois à vie — un tarif qui ne bougera jamais pour vous. Les inscriptions après l'ouverture seront plus chères.</li>
+      <li><span>🍹</span><b>Un apéritif offert</b>À votre premier événement Cupidon : soirée, sortie ou rencontre organisée par notre équipe.</li>
+      <li><span>📩</span><b>Prévenu(e) en premier</b>On vous envoie un message dès l'ouverture, le 15 octobre. Rien d'autre à faire qu'attendre.</li>
+      <li><span>💛</span><b>Pas seulement l'amour</b>Cupidon, c'est aussi faire des connaissances, agrandir son cercle et sortir. Même si vous rencontrez quelqu'un d'ici là, votre place restera utile.</li>
+      <li><span>🤝</span><b>De vraies personnes derrière</b>Cupidon est porté par une agence événementielle réunionnaise, au Tampon. Pas un robot : une équipe qui vérifie chaque profil à la main.</li>
+    </ul>
+    <a class="fo-btn" href="app/inscription.html">🌋 Je réserve ma place de membre fondateur →</a>
+    <p class="fo-note">Gratuit, sans carte bancaire et sans engagement.</p>
+  </div>
 
   <p class="p-ou">Vous préférez être accompagné(e) par une vraie personne ?</p>
   <div class="p-choices">
@@ -537,7 +572,7 @@
 <!-- Bouton flottant : rappel de l'appli sur tout le reste de la page -->
 <a href="app/" id="fabAppli" aria-label="Ouvrir l'application de rencontre Cupidon">
   <span class="fa-ico">📱</span>
-  <span class="fa-txt"><b>Ouvrir l'appli</b><small>Gratuit jusqu'au 31 octobre</small></span>
+  <span class="fa-txt"><b>Réserver ma place</b><small>Ouverture le 15 octobre</small></span>
 </a>
 <style>
 #fabAppli{position:fixed;right:18px;bottom:18px;z-index:1200;display:flex;align-items:center;gap:11px;
@@ -651,12 +686,12 @@
 <section class="section" style="padding-top:26px;padding-bottom:6px">
   <div class="container">
     <a href="app/" class="appli-bandeau reveal">
-      <span class="ab-badge">✨ Nouveau ✨</span>
+      <span class="ab-badge">🌱 15 octobre 🌱</span>
       <div class="ab-txt">
-        <b>C'est une application : Cupidon Rencontres 📱</b>
-        <p>Vous glissez, vous matchez, vous discutez en direct. <b>100 % gratuit jusqu'au 31 octobre</b> — rien à installer.</p>
+        <b>L'application Cupidon Rencontres ouvre le 15 octobre 📱</b>
+        <p>Inscrivez-vous dès maintenant : les <b>membres fondateurs</b> ont leur <b>1ʳᵉ année offerte</b>, puis 10 €/mois à vie — et on les prévient par message le jour de l'ouverture.</p>
       </div>
-      <span class="ab-btn">Ouvrir l'application →</span>
+      <span class="ab-btn">Je réserve ma place →</span>
     </a>
   </div>
 </section>
