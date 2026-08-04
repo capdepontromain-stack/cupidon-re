@@ -1281,9 +1281,10 @@
       donnees["Reçu depuis"] = "cupidon.re";
 
       /* Canaux essayés dans l'ordre jusqu'à ce que l'un aboutisse :
-         1. Web3Forms (dès que la clé CLE_WEB3FORMS est renseignée) ;
-         2. FormSubmit — clé anonyme, puis adresse en clair ;
-         3. si tout échoue : la messagerie du visiteur (plus bas),
+         1. le relais de pullup.re, qui remet la demande à contact@pullup.re ;
+         2. Web3Forms (secours) ;
+         3. FormSubmit (secours) ;
+         4. si tout échoue : la messagerie du visiteur (plus bas),
             pour qu'aucune demande ne soit jamais perdue. */
       function envoyerWeb3(){
         if (!CLE_WEB3FORMS) return Promise.reject(new Error('clé Web3Forms non renseignée'));
@@ -1329,7 +1330,23 @@
         });
       }
 
-      envoyerWeb3()
+      /* Canal principal : le relais installé sur pullup.re, qui dépose la demande
+         dans contact@pullup.re — la boîte partagée de l'équipe. */
+      function envoyerRelais(){
+        return fetch('https://pullup.re/relais-formulaires.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(donnees)
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(rep){
+          if (rep && rep.success) return rep;
+          throw new Error(rep && rep.message ? rep.message : 'envoi refusé');
+        });
+      }
+
+      envoyerRelais()
+      .catch(function(){ return envoyerWeb3(); })
       .catch(function(){ return envoyerFormsubmit(0); })
       .then(function(){
         f.style.display = 'none';
