@@ -6,3 +6,7 @@ index-drapeau.html
 index-bordeaux.html
 .claude/
 .DS_Store
+
+# Schemas de base de donnees — gardes hors ligne (copie dans ~/pullup-sql/cupidon/)
+sql/
+*.sql
