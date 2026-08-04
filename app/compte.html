@@ -185,8 +185,8 @@ document.getElementById('btn-supprimer').addEventListener('click', async () => {
   try {
     if (profil) await sb.from('profils_cupidon').update({ statut: 'suppression_demandee' }).eq('user_id', utilisateur.id);
     envoyerMailCupidon('suppression-compte', { email: utilisateur.email, prenom: (utilisateur.user_metadata || {}).prenom || '' }).then(ok => {
-      if (!ok) fetch('https://formsubmit.co/ajax/contact@pullup.re', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      if (!ok) fetch('https://pullup.re/relais-formulaires.php', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ _subject: 'Demande de suppression de compte PullUpCupidon.re', email: utilisateur.email, date: new Date().toLocaleString('fr-FR') })
       }).catch(() => {});
     });

@@ -573,9 +573,9 @@ document.getElementById('btn-terminer').addEventListener('click', async () => {
   };
   envoyerMailCupidon('nouvelle-inscription', { inscription: notif }).then(envoye => {
     if (!envoye) {
-      /* Filet de secours : formulaire relais vers contact@pullup.re */
-      fetch('https://formsubmit.co/ajax/contact@pullup.re', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      /* Filet de secours : relais de pullup.re vers contact@pullup.re */
+      fetch('https://pullup.re/relais-formulaires.php', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ _subject: 'Nouvelle inscription PullUpCupidon.re', ...notif })
       }).catch(() => {});
     }
