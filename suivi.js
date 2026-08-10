@@ -6,7 +6,7 @@
    Tant qu'il est vide, RIEN n'est chargé et AUCUN cookie n'est posé.
    Ce fichier est appelé par toutes les pages du site.
    ═══════════════════════════════════════════════════════════════ */
-var ID_GA4 = "";
+var ID_GA4 = "G-ZSKGKZVN57";
 
 var SITE_PULLUP = "cupidon";
 
