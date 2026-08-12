@@ -173,6 +173,7 @@
         <p class="sous" id="msg-fin">Ton profil est prêt. Belles rencontres !</p>
         <div class="rappel-gratuit mention-gratuit" style="text-align:left">🌋 <span>Tu es <b>membre fondateur</b> : ta 1ʳᵉ année est offerte à partir de l'ouverture du 15 octobre, puis 10 €/mois à vie, sans engagement — et tu restes libre d'arrêter.</span></div>
         <button class="btn btn-gold" onclick="location.href='index.html'">Voir ma place de fondateur 🌋</button>
+        <button class="btn" style="background:linear-gradient(135deg,#2EDC76,#1DA851);color:#fff" onclick="window.open('https://wa.me/?text='+encodeURIComponent('Hey ! 🌋 Je viens de réserver ma place sur Cupidon, la nouvelle appli de rencontres 100 % La Réunion. Ça ouvre le 15 octobre et les premiers inscrits ont leur 1ʳᵉ année offerte 🎁 Rejoins-moi : https://cupidon.re/app/'),'_blank','noopener')">💬 Prévenir un ami sur WhatsApp</button>
       </div>
     </div>
 
@@ -563,7 +564,9 @@ document.getElementById('btn-terminer').addEventListener('click', async () => {
   const prenom = (utilisateur.user_metadata && utilisateur.user_metadata.prenom) || '';
   const t = PROFILS_TYPES[rep.profil_type];
   const notif = {
-    prenom, age: calculerAge(rep.date_naissance) + ' ans',
+    prenom,
+    email: utilisateur.email || '—',      // pour pouvoir recontacter le membre
+    age: calculerAge(rep.date_naissance) + ' ans',
     genre: LIB.genre[rep.genre],
     ville: rep.ville || '—',
     statut: { resident:'Habitant de La Réunion', vacances:'En vacances à La Réunion', bientot:'Arrive bientôt à La Réunion' }[rep.situation],
@@ -584,7 +587,44 @@ document.getElementById('btn-terminer').addEventListener('click', async () => {
   localStorage.removeItem('cupidon_brouillon_' + utilisateur.id);
   document.getElementById('msg-fin').textContent = 'Bravo ' + (prenom || '') + ' ! Ton profil ' + t.emoji + ' ' + t.label + ' est prêt. On te prévient par message dès l\'ouverture du 15 octobre 💛';
   montrer(ORDRE.indexOf('q-fin'));
+  pluieDeCoeurs();
 });
+
+/* Petite pluie de cœurs pour fêter la fin de l'inscription. Respecte le
+   mode « animations réduites » et disparaît toute seule. */
+function pluieDeCoeurs() {
+  try {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const cv = document.createElement('canvas');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3000';
+    cv.width = innerWidth; cv.height = innerHeight;
+    document.body.appendChild(cv);
+    const ctx = cv.getContext('2d');
+    const teintes = ['#F60100', '#F2C200', '#e88a9a', '#fff'];
+    const parts = [];
+    for (let k = 0; k < 40; k++) {
+      const a = Math.random() * Math.PI * 2, v = 3 + Math.random() * 6;
+      parts.push({ x: innerWidth / 2, y: innerHeight * .4, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 4,
+        t: 13 + Math.random() * 13, rot: (Math.random() - .5) * .8, c: teintes[k % 4] });
+    }
+    let t0 = null;
+    function anime(ts) {
+      if (!t0) t0 = ts;
+      const fini = (ts - t0) > 2300;
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      parts.forEach(p => {
+        p.vy += .12; p.x += p.vx; p.y += p.vy;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.globalAlpha = Math.max(0, 1 - (ts - t0) / 2300);
+        ctx.fillStyle = p.c; ctx.font = p.t + 'px serif';
+        ctx.fillText('♥', 0, 0);
+        ctx.restore();
+      });
+      if (fini) cv.remove(); else requestAnimationFrame(anime);
+    }
+    requestAnimationFrame(anime);
+  } catch (e) { /* jamais bloquant */ }
+}
 
 /* ───── Pré-remplissage de l'interface d'après les réponses connues ───── */
 function refleterReponses() {

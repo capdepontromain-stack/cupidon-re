@@ -1,4 +1,5 @@
 {
+  "id": "https://cupidon.re/app/",
   "name": "Cupidon Rencontres — La Réunion",
   "short_name": "Cupidon",
   "description": "L'appli de rencontres 100 % La Réunion : amour, amitié et activités péi.",
@@ -6,6 +7,7 @@
   "start_url": "https://cupidon.re/app/",
   "scope": "https://cupidon.re/app/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0E2A6B",
   "theme_color": "#0E2A6B",
   "icons": [

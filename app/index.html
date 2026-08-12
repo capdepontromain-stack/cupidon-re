@@ -431,6 +431,36 @@ body{
 .match-avatars .circ:last-child{margin-left:-16px}
 .toast{position:absolute;bottom:110px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;padding:11px 20px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:70;white-space:nowrap;box-shadow:var(--shadow-md)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== Jauge « pouvoir de séduction » (salle d'attente) ===== */
+.jauge-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px 18px;backdrop-filter:blur(10px);text-align:left;width:100%}
+.jauge-card .j-titre{font-size:14px;font-weight:600;color:#DCE6FF}
+.jauge-card .j-titre b{font-family:'Fraunces',serif;font-size:19px;color:var(--gold)}
+.jauge-piste{height:12px;border-radius:99px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);margin:10px 0 9px;overflow:hidden}
+.jauge-piste i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--gold-lt),var(--gold) 55%,var(--wine));transition:width 1.1s cubic-bezier(.25,.9,.3,1)}
+.jauge-card .j-note{font-size:13px;color:#C9D6F5;line-height:1.5}
+.jauge-card .j-note b{color:#fff}
+.jauge-card .j-btn{margin-top:11px;width:100%;border:0;cursor:pointer;font-family:'Jost';font-weight:600;font-size:14.5px;border-radius:12px;padding:12px 14px;background:linear-gradient(135deg,var(--gold-lt),var(--gold));color:#5A2E00}
+/* Bouton WhatsApp (partage) */
+.btn-wa{background:linear-gradient(135deg,#2EDC76,#1DA851);color:#fff;box-shadow:0 10px 26px rgba(29,168,81,.35)}
+/* Petit lien « ajouter à mon agenda » */
+.lien-agenda{background:none;border:0;cursor:pointer;font-family:'Jost';font-size:13px;font-weight:600;color:var(--gold-lt);text-decoration:underline;text-underline-offset:3px;padding:4px 0}
+
+/* ===== FAQ de l'accueil ===== */
+.faq{display:flex;flex-direction:column;gap:9px}
+.faq .faq-titre{font-family:'Fraunces',serif;font-size:19px;color:#fff;margin:6px 0 2px;text-align:left}
+.faq details{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;backdrop-filter:blur(10px);overflow:hidden}
+.faq summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;font-weight:600;font-size:14.5px;color:#fff}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';margin-left:auto;font-family:'Fraunces',serif;font-size:21px;color:var(--gold);transition:transform .25s;flex:none}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 16px 14px;font-size:13.5px;line-height:1.6;color:#DCE6FF}
+.faq details p b{color:#fff}
+/* Les 3 étapes « comment ça marche » */
+.etapes3{list-style:none;display:flex;flex-direction:column;gap:9px;counter-reset:etape}
+.etapes3 li{display:flex;align-items:flex-start;gap:12px;font-size:13.5px;line-height:1.5;color:#DCE6FF}
+.etapes3 li::before{counter-increment:etape;content:counter(etape);flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-lt),var(--gold));color:#5A2E00;font-family:'Fraunces',serif;font-weight:900;font-size:15px}
+.etapes3 li b{color:#fff}
 </style>
 </head>
 <body>
@@ -470,6 +500,7 @@ body{
             <div><b id="cd-s">–</b><small>sec</small></div>
           </div>
           <div class="count-line" id="cd-line">Inscris-toi dès aujourd'hui : <b>on te prévient par message le jour de l'ouverture</b>, et ta place de membre fondateur est gardée au chaud.</div>
+          <button class="lien-agenda" onclick="ajouterAgenda()">📅 Ajouter l'ouverture à mon agenda</button>
         </div>
         <ul class="avantages">
           <li><span>🎁</span><b>Ta 1ʳᵉ année offerte</b>Puis 10 €/mois à vie. Les inscrits après l'ouverture paieront plus cher.</li>
@@ -487,6 +518,14 @@ body{
         <div class="scrollhint">▼ Fais défiler pour en savoir plus</div>
       </div>
       <div class="landing">
+        <div class="lcard">
+          <h3>🧭 Comment ça marche ?</h3>
+          <ol class="etapes3" style="margin-top:10px">
+            <li><span><b>Aujourd'hui : tu réserves ta place.</b><br>2 minutes, 0 €, aucune carte bancaire — juste ton prénom, ton e-mail et un mot de passe.</span></li>
+            <li><span><b>Tu crées ton profil tranquillement.</b><br>Photos ou avatar, tes passions, ta ville. Notre équipe le vérifie à la main.</span></li>
+            <li><span><b>Le 15 octobre : on t'ouvre les portes.</b><br>Tu reçois un message, tu entres, et à 20 h tout le monde se retrouve au Salon général 974 🌋</span></li>
+          </ol>
+        </div>
         <div class="lcard">
           <h3>💬 Chat en direct, en groupe — privé si tu veux</h3>
           <p>Participe aux <b>salons de discussion en direct</b> : le salon général 974 et les salons par tranche d'âge, avec un sujet de conversation chaque semaine. Pour faire de belles rencontres… <b>amoureuses ou simplement amicales</b>, et partager des activités péi. Et on ne passe en privé <b>que si les deux le veulent</b>.</p>
@@ -520,6 +559,33 @@ body{
           <p>Cupidon, c'est aussi une <b>agence matrimoniale</b> : un <b>premier rendez-vous téléphonique offert</b> pour faire connaissance, puis un accompagnement personnalisé pour trouver la bonne personne (forfaits de <b>490 € à 1 290 €</b>, contrat clair, sans surprise).</p>
           <a href="mailto:contact@pullup.re" onclick="contacterEquipe();return false" class="btn btn-gold" style="display:block;text-align:center;margin-top:14px;text-decoration:none;font-size:15px;color:#3A2C00">✉️ Écrire à l'équipe — contact@pullup.re</a>
           <p style="font-size:12.5px;color:#C9D6F5;margin-top:8px;text-align:center">Indique-nous tes <b>jours et créneaux de disponibilité</b> : un membre de l'équipe te rappelle.</p>
+        </div>
+        <div class="faq">
+          <h3 class="faq-titre">🙋 Les questions qu'on nous pose (souvent avec le sourire)</h3>
+          <details>
+            <summary>💶 C'est vraiment gratuit, ou il y a un piège ?</summary>
+            <p>Vraiment gratuit : <b>aucune carte bancaire demandée</b>, et ta 1ʳᵉ année entière est offerte si tu t'inscris avant le 15 octobre. Le seul piège, c'est d'attendre : après l'ouverture, ce sera 12,90 €/mois sans année offerte 😉</p>
+          </details>
+          <details>
+            <summary>🗓️ Pourquoi l'appli n'ouvre que le 15 octobre ?</summary>
+            <p>Parce qu'arriver dans une appli vide, c'est comme arriver premier à une soirée : gênant 😅 <b>On remplit d'abord la salle, ensuite on lance la musique.</b> D'ici là, chaque inscrit devient membre fondateur — et le jour J, tout le monde entre en même temps.</p>
+          </details>
+          <details>
+            <summary>💛 Et si je rencontre quelqu'un d'ici l'ouverture ?</summary>
+            <p>On croisera les doigts pour vous deux ! Et ta place reste utile : Cupidon sert aussi à <b>se faire des amis, sortir et participer à de vraies soirées</b> à La Réunion. L'amour, l'amitié, les deux — c'est toi qui choisis.</p>
+          </details>
+          <details>
+            <summary>📸 Qui peut voir mes photos ?</summary>
+            <p><b>Uniquement les membres connectés</b> — jamais Google, jamais les curieux de passage. Et si tu préfères rester discret·e au début, tu peux créer un <b>avatar personnalisé</b> à la place. Tes données restent en Europe (RGPD).</p>
+          </details>
+          <details>
+            <summary>🤝 Il y a de vrais humains derrière ?</summary>
+            <p>Oui, et même des Réunionnais : l'équipe de <b>Pull Up Événements</b>, au Tampon. Chaque profil est <b>vérifié à la main</b>, et on organise de vraies soirées — pas seulement des écrans.</p>
+          </details>
+          <details>
+            <summary>🚪 Je peux partir quand je veux ?</summary>
+            <p>Bien sûr : <b>sans engagement</b>, résiliable à tout moment, et tu peux demander la suppression de ton compte en deux clics. Mais entre nous… on espère que tu resteras pour de bonnes raisons 💘</p>
+          </details>
         </div>
         <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je réserve ma place de membre fondateur 🎁</button>
       </div>
@@ -707,6 +773,15 @@ body{
         <div><b id="at-m">–</b><small>min</small></div>
         <div><b id="at-s">–</b><small>sec</small></div>
       </div>
+      <button class="lien-agenda" onclick="ajouterAgenda()">📅 Ajouter l'ouverture à mon agenda (rendez-vous à 20 h)</button>
+      <!-- Jauge « pouvoir de séduction » : calculée d'après le profil réel,
+           remplie uniquement quand le membre est connecté (sinon cachée). -->
+      <div class="jauge-card" id="at-jauge" style="display:none">
+        <div class="j-titre">💘 Pouvoir de séduction de ton profil : <b id="at-jauge-pct">—</b></div>
+        <div class="jauge-piste"><i id="at-jauge-barre"></i></div>
+        <div class="j-note" id="at-jauge-note"></div>
+        <button class="j-btn" id="at-jauge-btn" onclick="location.href='profil.html'">✨ Améliorer mon profil</button>
+      </div>
       <ul class="avantages" style="text-align:left">
         <li><span>🎁</span><b>Ta 1ʳᵉ année est offerte</b>Puis 10 €/mois à vie, un tarif qui ne bougera jamais pour toi.</li>
         <li><span>🍹</span><b>Un apéritif offert</b>À ton premier événement Cupidon, c'est nous qui offrons.</li>
@@ -714,7 +789,8 @@ body{
         <li><span>🤝</span><b>De vraies personnes</b>Une équipe réunionnaise s'occupe de Cupidon, et vérifie chaque profil à la main.</li>
       </ul>
       <button class="btn btn-gold" style="width:100%" onclick="location.href='profil.html'">✏️ Compléter / modifier mon profil</button>
-      <button class="btn" style="width:100%;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="partagerCupidon()">📣 Prévenir un ami — qu'il soit fondateur aussi</button>
+      <button class="btn btn-wa" style="width:100%" onclick="partagerWhatsApp()">💬 Prévenir un ami sur WhatsApp</button>
+      <button class="btn" style="width:100%;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="partagerCupidon()">📣 Partager autrement — qu'il soit fondateur aussi</button>
       <p style="font-size:12.5px;color:#93A3CF;line-height:1.6">Une question ? Écris-nous à <a href="mailto:contact@pullup.re" style="color:var(--gold-lt)">contact@pullup.re</a> — c'est une vraie personne qui répond.</p>
     </div>
   </section>
@@ -1126,6 +1202,67 @@ async function partagerCupidon(){
   catch(e){toast('L\'adresse à partager : cupidon.re/app');}
 }
 
+/* Partage direct WhatsApp — le canal n°1 à La Réunion. */
+function partagerWhatsApp(){
+  const txt='Hey ! 🌋 Je me suis inscrit(e) sur Cupidon, la nouvelle appli de rencontres 100 % La Réunion. '+
+    'Ça ouvre le 15 octobre, et les premiers inscrits ont leur 1ʳᵉ année offerte 🎁 Regarde : https://cupidon.re/app/';
+  window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank','noopener');
+}
+
+/* « Ajouter à mon agenda » : petit fichier calendrier universel (.ics) avec
+   l'ouverture du 15 octobre et le rendez-vous de 20 h au Salon général. */
+function ajouterAgenda(){
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//cupidon.re//Ouverture//FR','BEGIN:VEVENT',
+    'UID:ouverture-15-octobre-2026@cupidon.re','DTSTAMP:20260812T120000Z',
+    'DTSTART:20261015T160000Z','DTEND:20261015T180000Z',
+    'SUMMARY:💘 Ouverture de Cupidon.re — rendez-vous 20 h au Salon général 974',
+    'DESCRIPTION:L\'appli de rencontres 100 % La Réunion ouvre aujourd\'hui ! Rendez-vous à 20 h (heure Réunion) au Salon général 974 : https://cupidon.re/app/',
+    'URL:https://cupidon.re/app/','BEGIN:VALARM','TRIGGER:-PT2H','ACTION:DISPLAY',
+    'DESCRIPTION:Cupidon.re ouvre ce soir — rendez-vous 20 h !','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const url=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  const a=document.createElement('a');a.href=url;a.download='ouverture-cupidon-15-octobre.ics';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  toast('📅 Ouvre le fichier téléchargé : le rappel se met dans ton agenda');
+}
+
+/* ───── Jauge « pouvoir de séduction » (salle d'attente) ─────
+   Calculée uniquement à partir du vrai profil du membre. Elle encourage à
+   compléter photos, description et passions — sans jamais rien inventer. */
+function calculerSeduction(profil){
+  const nbPhotos=(profil.photos||[]).length;
+  const desc=(profil.description||'').trim();
+  const nbPassions=(profil.interets||[]).length;
+  let pts=25;                                        // questionnaire terminé
+  if(nbPhotos>=1)pts+=25;else if(profil.avatar)pts+=18;
+  if(nbPhotos>=2)pts+=10;
+  if(nbPhotos>=3)pts+=10;
+  if(desc.length>=80)pts+=15;else if(desc.length>=20)pts+=8;
+  if(nbPassions>=5)pts+=15;else if(nbPassions>=3)pts+=8;
+  pts=Math.min(100,pts);
+
+  let conseil;
+  if(!nbPhotos&&!profil.avatar)conseil='Ajoute une photo (ou crée ton avatar) : c\'est la 1ʳᵉ chose que les autres regarderont 📸';
+  else if(!nbPhotos)conseil='Ton avatar est chouette — mais une vraie photo, c\'est jusqu\'à 10 fois plus de chances de matcher 📸';
+  else if(nbPhotos<3)conseil='Ajoute une '+(nbPhotos===1?'2ᵉ':'3ᵉ')+' photo : sourire, paysage péi, passion… varie les plaisirs 😄';
+  else if(desc.length<80)conseil='Étoffe un peu ta description : deux phrases bien à toi valent mieux qu\'un long silence 📝';
+  else if(nbPassions<5)conseil='Coche une ou deux passions de plus : c\'est ce qui lance les conversations ✨';
+  else conseil='Rien à redire… garde ton téléphone chargé pour le 15 octobre 🔥';
+
+  const niveau=pts>=100?'Cupidon est jaloux 💘':pts>=90?'Presque irrésistible 🔥':pts>=70?'Sacré potentiel 😏':pts>=50?'Ça commence à charmer 😊':'Encore un peu timide 🙈';
+  return {pts,conseil,niveau};
+}
+function afficherJauge(profil){
+  const carte=document.getElementById('at-jauge');
+  if(!carte)return;
+  const r=calculerSeduction(profil);
+  document.getElementById('at-jauge-pct').textContent=r.pts+' % — '+r.niveau;
+  document.getElementById('at-jauge-note').innerHTML='💡 <b>Le conseil de Cupidon :</b> '+echapper(r.conseil);
+  if(r.pts>=100)document.getElementById('at-jauge-btn').textContent='✏️ Revoir mon profil (il est déjà top)';
+  carte.style.display='';
+  setTimeout(()=>{document.getElementById('at-jauge-barre').style.width=r.pts+'%';},250);
+}
+
 /* Visuel d'un membre pour les petits ronds : photo réelle si elle existe,
    sinon avatar personnalisé, sinon l'initiale du prénom. */
 function circHTML(p){
@@ -1392,24 +1529,28 @@ function unlockDemo(){demoUnlocked=true;localStorage.setItem('cupidon_offre_vue'
 document.getElementById('msginput').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
 
 /* ───────── Salons de discussion ───────── */
-const TOPICS=[
- "Plutôt lever de soleil au Maïdo ou coucher de soleil à l'Ermitage ?",
- "Ton meilleur souvenir de pique-nique la ravine ?",
- "Carri poulet ou rougail saucisse : le grand débat 😄",
- "C'est quoi, le premier rendez-vous idéal à La Réunion ?",
- "Plage, cirque ou volcan : ton île en un mot ?",
- "Quelle chanson péi te met tout de suite de bonne humeur ?"
+/* Sujets vedettes : ils tournent tout seuls, un par semaine, sans rien
+   modifier à la main. Pour en ajouter un, ajouter simplement une ligne. */
+const TOPICS_VEDETTE=[
+ {q:"Quels sont les lieux de La Réunion à connaître absolument ?",
+  intro:"Plage, cascade, randonnée, restaurant, point de vue ou lieu insolite… Quel est l'endroit de La Réunion que tout le monde devrait connaître au moins une fois ?"},
+ {q:"Carri poulet ou rougail saucisse : le grand débat 😄",
+  intro:"Le débat qui divise les familles depuis toujours. Défends ton plat, donne ta recette secrète — et tant pis pour la diplomatie."},
+ {q:"C'est quoi, le premier rendez-vous idéal à La Réunion ?",
+  intro:"Coucher de soleil à l'Ermitage, bonbons piments au marché, balade au volcan ? Raconte ton premier rendez-vous de rêve — ou ton pire souvenir, on ne juge pas 😄"},
+ {q:"Plutôt lever de soleil au Maïdo ou coucher de soleil sur la plage ?",
+  intro:"Team réveil à 4 h du matin ou team apéro face au lagon ? Il faut choisir son camp — et le défendre."},
+ {q:"Quelle chanson péi te met tout de suite de bonne humeur ?",
+  intro:"Séga, maloya, dancehall… Celle qui te fait monter le son dès les premières notes. Partage ta pépite, on se fait une playlist Cupidon."},
+ {q:"Ton pique-nique parfait la ravine, il ressemble à quoi ?",
+  intro:"Le coin exact (ou presque, on garde les secrets), le menu, la playlist, les gens autour… Décris-nous ce dimanche parfait."}
 ];
-function topicOfWeek(){return TOPICS[Math.floor(Date.now()/6048e5)%TOPICS.length];}
-/* Sujet mis en avant cette semaine (carte moderne dans les Salons) */
-const TOPIC_VEDETTE={
- q:"Quels sont les lieux de La Réunion à connaître absolument ?",
- intro:"Plage, cascade, randonnée, restaurant, point de vue ou lieu insolite… Quel est l'endroit de La Réunion que tout le monde devrait connaître au moins une fois ?"
-};
+function vedetteDeLaSemaine(){return TOPICS_VEDETTE[Math.floor(Date.now()/6048e5)%TOPICS_VEDETTE.length];}
 function topicHTML(){
+ const t=vedetteDeLaSemaine();
  return '<div class="t-tete">💡 Sujet de la semaine</div>'+
-        '<div class="t-q">«&nbsp;'+TOPIC_VEDETTE.q+'&nbsp;»</div>'+
-        '<div class="t-intro">'+TOPIC_VEDETTE.intro+'</div>';
+        '<div class="t-q">«&nbsp;'+t.q+'&nbsp;»</div>'+
+        '<div class="t-intro">'+t.intro+'</div>';
 }
 const ROOMS=[
  {id:'general',n:'Salon général 974',e:'🌋',d:"Toute l'île, tous ensemble — rendez-vous chaque soir à 20 h"},
@@ -1605,8 +1746,22 @@ function blockFromChat(){
     /* Salle d'attente : on l'appelle par son prénom, ça rassure sur le fait
        que l'inscription est bien passée. */
     if (!estOuvert()) {
+      const fondateur = profil.genre === 'femme' ? 'membre fondatrice' : 'membre fondateur';
       const nom = document.getElementById('at-nom');
-      if (nom && profil.prenom) nom.textContent = profil.prenom + ', tu es membre fondateur';
+      if (nom && profil.prenom) nom.textContent = profil.prenom + ', tu es ' + fondateur;
+
+      /* Numéro de fondateur : combien de profils créés avant le sien (+1).
+         Un vrai chiffre issu de la base — jamais inventé. */
+      try {
+        const { count } = await sb.from('profils_cupidon')
+          .select('user_id', { count: 'exact', head: true })
+          .lte('cree_le', profil.cree_le);
+        if (count && nom && profil.prenom)
+          nom.textContent = profil.prenom + ', tu es ' + fondateur + ' n°' + count;
+      } catch (e) { /* jamais bloquant */ }
+
+      /* Jauge « pouvoir de séduction » d'après le vrai profil */
+      try { afficherJauge(profil); } catch (e) { /* jamais bloquant */ }
     }
 
     /* Petit mot d'accueil personnalisé selon le temps d'absence */
