@@ -587,7 +587,7 @@ body{
             <p>Bien sûr : <b>sans engagement</b>, résiliable à tout moment, et tu peux demander la suppression de ton compte en deux clics. Mais entre nous… on espère que tu resteras pour de bonnes raisons 💘</p>
           </details>
         </div>
-        <button class="btn btn-gold" onclick="document.getElementById('agecheck').checked?location.href='inscription.html':toast('Coche d\'abord la case 18 ans en haut 😊')">Je réserve ma place de membre fondateur 🎁</button>
+        <button class="btn btn-gold" onclick="if(document.getElementById('agecheck').checked){location.href='inscription.html'}else{document.querySelector('.age-check').scrollIntoView({behavior:'smooth',block:'center'});toast('Coche la case « 18 ans ou plus » juste ici 😊')}">Je réserve ma place de membre fondateur 🎁</button>
       </div>
     </div>
   </section>
