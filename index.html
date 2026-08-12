@@ -495,7 +495,7 @@
   <!-- ★ L'APPLICATION : le grand bloc vedette du portail -->
   <a class="p-appli" href="app/" aria-label="Ouvrir l'application de rencontre Cupidon">
     <div class="pa-txt">
-      <span class="pa-badge">🌱 Ouverture le 15 octobre · réservez votre place 🌱</span>
+      <span class="pa-badge">🌱 Ouverture le 15 octobre · <b id="pa-jmoins">réservez votre place</b> 🌱</span>
       <div class="pa-titre">L'application de rencontre<br><em>de La Réunion</em></div>
       <p class="pa-sous">Vous glissez, vous matchez, vous discutez <b>en direct</b> — rencontres amoureuses <b>ou amicales</b>.<span class="pa-plus"> Salons de discussion de groupe, et passage en privé seulement si vous êtes d'accord tous les deux.</span></p>
     </div>
@@ -1569,5 +1569,17 @@
 })();
 </script>
 <script src="/suivi.js" defer></script>
+<script>
+/* Compte à rebours du portail : J-x avant l'ouverture du 15 octobre 2026.
+   Après l'ouverture, le badge bascule tout seul sur « c'est ouvert ». */
+(function(){
+  var el = document.getElementById('pa-jmoins');
+  if (!el) return;
+  var reste = new Date('2026-10-15T00:00:00+04:00') - new Date();
+  if (reste <= 0) { el.textContent = "c'est ouvert !"; return; }
+  var j = Math.floor(reste / 864e5);
+  el.textContent = (j >= 1 ? 'J\u2013' + j + ' \u00b7 ' : "aujourd'hui \u00b7 ") + 'r\u00e9servez votre place';
+})();
+</script>
 </body>
 </html>
