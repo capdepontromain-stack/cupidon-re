@@ -129,6 +129,24 @@ body{
 .chathead{position:relative}
 #onboard .mascotte{width:150px;margin-bottom:-6px;filter:drop-shadow(0 10px 26px rgba(0,0,0,.45));animation:floaty 4.5s ease-in-out infinite}
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+
+/* ===== Le Cupidon décoche une flèche de temps en temps =====
+   Une flèche dorée part de son arc vers le haut-droite, suivie de deux
+   petits cœurs qui éclosent. Discret, toutes les 6,5 secondes. */
+.cupi-anim{position:relative;display:inline-block}
+.cupi-anim .fl,.cupi-anim .co{position:absolute;opacity:0;pointer-events:none;z-index:2}
+.cupi-anim .fl{left:70%;top:24%;font-size:26px;color:#FFD84D;text-shadow:0 0 12px rgba(255,216,77,.95);animation:volfleche 6.5s ease-in infinite}
+.cupi-anim .co.k1{left:88%;top:10%;font-size:15px;animation:coeurpop 6.5s .4s ease-out infinite}
+.cupi-anim .co.k2{left:108%;top:-2%;font-size:12px;animation:coeurpop 6.5s .6s ease-out infinite}
+@keyframes volfleche{0%{opacity:0;transform:rotate(-32deg) translateX(0)}3%{opacity:1}13%{opacity:0;transform:rotate(-32deg) translateX(150px)}100%{opacity:0;transform:rotate(-32deg) translateX(150px)}}
+@keyframes coeurpop{0%,5%{opacity:0;transform:scale(.3)}9%{opacity:1;transform:scale(1.15)}17%{opacity:0;transform:scale(.7) translateY(-16px)}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cupi-anim .fl,.cupi-anim .co{display:none}}
+
+/* Changement d'écran tout en douceur */
+@media(prefers-reduced-motion:no-preference){
+  .screen.active{animation:screenfade .28s ease}
+  @keyframes screenfade{from{opacity:.5}to{opacity:1}}
+}
 .wordmark{font-family:'Fraunces',serif;font-weight:900;font-size:34px;line-height:1;color:#fff}
 .wordmark .dot{color:var(--gold)}
 .wordsub{font-size:11.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-lt);margin-top:6px}
@@ -472,7 +490,7 @@ body{
     <div class="scrollwrap">
       <div class="inner">
         <a href="../" title="Retour à l'accueil cupidon.re" style="text-decoration:none;color:inherit">
-          <img class="mascotte" src="logo-mascotte.png" alt="Cupidon — retour à l'accueil">
+          <span class="cupi-anim"><img class="mascotte" src="logo-mascotte.png" alt="Cupidon — retour à l'accueil"><span class="fl" aria-hidden="true">➳</span><span class="co k1" aria-hidden="true">❤️</span><span class="co k2" aria-hidden="true">💛</span></span>
           <div>
             <div class="wordmark">cupidon<span class="dot">.</span>re</div>
             <div class="wordsub">Rencontres · La Réunion · 974</div>
@@ -522,7 +540,7 @@ body{
           <h3>🧭 Comment ça marche ?</h3>
           <ol class="etapes3" style="margin-top:10px">
             <li><span><b>Aujourd'hui : tu réserves ta place.</b><br>2 minutes, 0 €, aucune carte bancaire — juste ton prénom, ton e-mail et un mot de passe.</span></li>
-            <li><span><b>Tu crées ton profil tranquillement.</b><br>Photos ou avatar, tes passions, ta ville. Notre équipe le vérifie à la main.</span></li>
+            <li><span><b>Tu crées ton profil tranquillement.</b><br>Photos ou totem, tes passions, ta ville. Notre équipe le vérifie à la main.</span></li>
             <li><span><b>Le 15 octobre : on t'ouvre les portes.</b><br>Tu reçois un message, tu entres, et à 20 h tout le monde se retrouve au Salon général 974 🌋</span></li>
           </ol>
         </div>
@@ -576,7 +594,7 @@ body{
           </details>
           <details>
             <summary>📸 Qui peut voir mes photos ?</summary>
-            <p><b>Uniquement les membres connectés</b> — jamais Google, jamais les curieux de passage. Et si tu préfères rester discret·e au début, tu peux créer un <b>avatar personnalisé</b> à la place. Tes données restent en Europe (RGPD).</p>
+            <p><b>Uniquement les membres connectés</b> — jamais Google, jamais les curieux de passage. Et si tu préfères rester discret·e au début, tu peux choisir un <b>totem</b> à la place : dauphin, volcan, hibiscus… Tes données restent en Europe (RGPD).</p>
           </details>
           <details>
             <summary>🤝 Il y a de vrais humains derrière ?</summary>
@@ -757,7 +775,7 @@ body{
        monde tout seul (voir OUVERTURE dans le script). -->
   <section class="screen" id="attente">
     <div class="scrolly" style="text-align:center">
-      <img src="logo-mascotte.png" alt="" style="width:110px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4))">
+      <span class="cupi-anim" style="align-self:center"><img src="logo-mascotte.png" alt="" style="width:110px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4))"><span class="fl" aria-hidden="true">➳</span><span class="co k1" aria-hidden="true">❤️</span><span class="co k2" aria-hidden="true">💛</span></span>
       <div class="lancement" style="align-self:auto">
         <div class="lc-haut">
           <div class="lc-pastille" id="at-pastille">J–<span>–</span></div>
@@ -1242,8 +1260,8 @@ function calculerSeduction(profil){
   pts=Math.min(100,pts);
 
   let conseil;
-  if(!nbPhotos&&!profil.avatar)conseil='Ajoute une photo (ou crée ton avatar) : c\'est la 1ʳᵉ chose que les autres regarderont 📸';
-  else if(!nbPhotos)conseil='Ton avatar est chouette — mais une vraie photo, c\'est jusqu\'à 10 fois plus de chances de matcher 📸';
+  if(!nbPhotos&&!profil.avatar)conseil='Ajoute une photo (ou choisis ton totem) : c\'est la 1ʳᵉ chose que les autres regarderont 📸';
+  else if(!nbPhotos)conseil='Ton totem est chouette — mais une vraie photo, c\'est jusqu\'à 10 fois plus de chances de matcher 📸';
   else if(nbPhotos<3)conseil='Ajoute une '+(nbPhotos===1?'2ᵉ':'3ᵉ')+' photo : sourire, paysage péi, passion… varie les plaisirs 😄';
   else if(desc.length<80)conseil='Étoffe un peu ta description : deux phrases bien à toi valent mieux qu\'un long silence 📝';
   else if(nbPassions<5)conseil='Coche une ou deux passions de plus : c\'est ce qui lance les conversations ✨';
@@ -1693,7 +1711,7 @@ function blockFromChat(){
 <!-- ═══ Compte membre réel (Supabase) : session + affichage du vrai profil ═══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
-<script src="js/avatar.js"></script>
+<script src="js/avatar.js?v=totem-1"></script>
 <script src="js/rencontres.js"></script>
 <script>
 (async () => {

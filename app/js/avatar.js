@@ -99,8 +99,87 @@ function _assombrir(hex, f) {
   return `rgb(${r},${g},${b})`;
 }
 
+/* ═════════ TOTEMS ═════════
+   À la place d'une photo, le membre peut choisir un « totem » : un animal,
+   un symbole de l'île, une passion… C'est plus simple et plus fun que
+   l'ancien avatar dessiné. La configuration { type:'totem', emoji, nom,
+   fond } se range dans la même colonne « avatar » du profil — les anciens
+   avatars dessinés restent affichés tels quels (compatibilité totale). */
+const FONDS_TOTEM = [
+  { id: 'lagon',  haut: '#6FD3E7', bas: '#1A7E9E' },
+  { id: 'corail', haut: '#FFB199', bas: '#E2604C' },
+  { id: 'or',     haut: '#FFE96B', bas: '#E8A800' },
+  { id: 'nuit',   haut: '#3B5BA8', bas: '#0E2A6B' },
+  { id: 'foret',  haut: '#7ED9A0', bas: '#1F7A4D' },
+  { id: 'rose',   haut: '#F5A3C0', bas: '#C2447E' },
+  { id: 'violet', haut: '#B99BE8', bas: '#5B2E9E' },
+  { id: 'sable',  haut: '#F6E7C8', bas: '#C9A15A' }
+];
+
+const TOTEMS = [
+  { titre: 'Animaux', items: [
+    { id: 'dauphin', emoji: '🐬', nom: 'Dauphin' },   { id: 'tortue',   emoji: '🐢', nom: 'Tortue' },
+    { id: 'baleine', emoji: '🐋', nom: 'Baleine' },   { id: 'perroquet',emoji: '🦜', nom: 'Perroquet' },
+    { id: 'papillon',emoji: '🦋', nom: 'Papillon' },  { id: 'chat',     emoji: '🐱', nom: 'Chat' },
+    { id: 'chien',   emoji: '🐶', nom: 'Chien' },     { id: 'panda',    emoji: '🐼', nom: 'Panda' },
+    { id: 'renard',  emoji: '🦊', nom: 'Renard' },    { id: 'lion',     emoji: '🦁', nom: 'Lion' },
+    { id: 'poulpe',  emoji: '🐙', nom: 'Poulpe' },    { id: 'flamant',  emoji: '🦩', nom: 'Flamant rose' }
+  ]},
+  { titre: "L'île péi", items: [
+    { id: 'volcan',  emoji: '🌋', nom: 'Volcan' },    { id: 'hibiscus', emoji: '🌺', nom: 'Hibiscus' },
+    { id: 'palmier', emoji: '🌴', nom: 'Palmier' },   { id: 'vague',    emoji: '🌊', nom: 'Vague' },
+    { id: 'aurore',  emoji: '🌅', nom: 'Lever de soleil' }, { id: 'ananas', emoji: '🍍', nom: 'Ananas Victoria' },
+    { id: 'coco',    emoji: '🥥', nom: 'Coco' },      { id: 'piment',   emoji: '🌶️', nom: 'Piment' },
+    { id: 'mangue',  emoji: '🥭', nom: 'Mangue' },    { id: 'arcenciel',emoji: '🌈', nom: 'Arc-en-ciel' }
+  ]},
+  { titre: 'Passions', items: [
+    { id: 'musique', emoji: '🎶', nom: 'Musique' },   { id: 'danse',    emoji: '💃', nom: 'Danse' },
+    { id: 'surf',    emoji: '🏄', nom: 'Surf' },      { id: 'rando',    emoji: '🥾', nom: 'Rando' },
+    { id: 'foot',    emoji: '⚽', nom: 'Foot' },      { id: 'gaming',   emoji: '🎮', nom: 'Gaming' },
+    { id: 'cuisine', emoji: '🍳', nom: 'Cuisine' },   { id: 'photo',    emoji: '📷', nom: 'Photo' },
+    { id: 'moto',    emoji: '🏍️', nom: 'Moto' },      { id: 'voyage',   emoji: '✈️', nom: 'Voyage' },
+    { id: 'lecture', emoji: '📚', nom: 'Lecture' },   { id: 'jardin',   emoji: '🌱', nom: 'Jardin' }
+  ]},
+  { titre: 'Symboles', items: [
+    { id: 'etoile',  emoji: '⭐', nom: 'Étoile' },    { id: 'lune',     emoji: '🌙', nom: 'Lune' },
+    { id: 'soleil',  emoji: '☀️', nom: 'Soleil' },    { id: 'feu',      emoji: '🔥', nom: 'Feu' },
+    { id: 'eclair',  emoji: '⚡', nom: 'Éclair' },    { id: 'diamant',  emoji: '💎', nom: 'Diamant' },
+    { id: 'trefle',  emoji: '🍀', nom: 'Trèfle' },    { id: 'couronne', emoji: '👑', nom: 'Couronne' }
+  ]}
+];
+
+const TOTEM_DEFAUT = { type: 'totem', emoji: '🌋', nom: 'Volcan', fond: 'corail' };
+
+/* Rendu SVG d'un totem : fond dégradé, halo doux, emoji en grand.
+   Le style transform:none neutralise le zoom-visage appliqué aux
+   anciens avatars dans les petits ronds. */
+function renderTotem(cfg) {
+  const fond = FONDS_TOTEM.find(f => f.id === cfg.fond) || FONDS_TOTEM[0];
+  const gid = 'gTotem-' + fond.id;
+  return `<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="transform:none" role="img" aria-label="Totem ${cfg.nom || ''}">
+  <defs>
+    <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${fond.haut}"/><stop offset="1" stop-color="${fond.bas}"/>
+    </linearGradient>
+    <clipPath id="cadreTotem"><circle cx="120" cy="120" r="120"/></clipPath>
+  </defs>
+  <g clip-path="url(#cadreTotem)">
+    <rect width="240" height="240" fill="url(#${gid})"/>
+    <circle cx="120" cy="252" r="120" fill="rgba(255,255,255,.2)"/>
+    <circle cx="52" cy="44" r="5" fill="rgba(255,255,255,.5)"/>
+    <circle cx="192" cy="60" r="3.6" fill="rgba(255,255,255,.42)"/>
+    <circle cx="176" cy="196" r="4.4" fill="rgba(255,255,255,.3)"/>
+    <text x="120" y="132" font-size="108" text-anchor="middle" dominant-baseline="central">${cfg.emoji || '🌋'}</text>
+    <circle cx="120" cy="120" r="114" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="5"/>
+  </g>
+</svg>`;
+}
+
 /* ───────── Rendu SVG ───────── */
 function renderAvatar(cfgIn) {
+  /* Nouveau format « totem » : rendu dédié. Les anciens avatars dessinés
+     continuent d'utiliser le buste ci-dessous. */
+  if (cfgIn && cfgIn.type === 'totem') return renderTotem(cfgIn);
   const cfg = Object.assign({}, AVATAR_DEFAUT, cfgIn || {});
   const peau = _hex('peau', cfg.peau);
   const peauOmbre = _assombrir(peau, 0.86);

@@ -11,7 +11,7 @@
 <link rel="icon" href="../assets/favicon-64.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icone-180.png">
-<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/auth.css?v=totem-1">
 </head>
 <body>
 <div id="phone">
@@ -33,7 +33,7 @@
       <div class="reglages">
         <button class="rg" onclick="afficher('p-email')"><span class="em">📧</span><span>Changer mon adresse e-mail<small>Avec confirmation par e-mail, comme à l'inscription</small></span><span class="fleche">›</span></button>
         <button class="rg" onclick="afficher('p-mdp')"><span class="em">🔐</span><span>Changer mon mot de passe<small>Déconnecte automatiquement tes autres appareils</small></span><span class="fleche">›</span></button>
-        <button class="rg" onclick="location.href='profil.html'"><span class="em">📝</span><span>Refaire mon questionnaire<small>Réponses, photos, avatar et profil type</small></span><span class="fleche">›</span></button>
+        <button class="rg" onclick="location.href='profil.html'"><span class="em">📝</span><span>Refaire mon questionnaire<small>Réponses, photos, totem et profil type</small></span><span class="fleche">›</span></button>
         <button class="rg" id="btn-suspendre"><span class="em">⏸️</span><span id="txt-suspendre">Suspendre mon profil<small>Ton profil devient invisible, rien n'est supprimé</small></span><span class="fleche">›</span></button>
         <button class="rg" id="btn-donnees"><span class="em">📦</span><span>Télécharger mes données<small>Un fichier avec tout ce que l'appli sait de toi</small></span><span class="fleche">›</span></button>
         <button class="rg" id="btn-deco-partout"><span class="em">📱</span><span>Me déconnecter de tous les appareils<small>Utile si tu t'es connecté·e ailleurs</small></span><span class="fleche">›</span></button>
@@ -91,7 +91,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
-<script src="js/avatar.js"></script>
+<script src="js/avatar.js?v=totem-1"></script>
 <script>
 let utilisateur = null, profil = null;
 

@@ -11,7 +11,7 @@
 <link rel="icon" href="../assets/favicon-64.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icone-180.png">
-<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/auth.css?v=totem-1">
 </head>
 <body>
 <div id="phone">
@@ -130,6 +130,14 @@
       <div class="carte"><p id="res-description" style="font-style:italic"></p></div>
       <div class="pastille-gratuit mention-gratuit">✅ 0 € à payer — ta 1ʳᵉ année est offerte</div>
       <button class="btn btn-gold" id="btn-resultat">Parfait, on continue 👌</button>
+      <button class="btn btn-ghost" id="btn-choisir-type">🏷️ Ce n'est pas tout à fait moi ? Je choisis mon profil</button>
+    </div>
+
+    <!-- 8 ter. Choisir son profil type à la main -->
+    <div class="etape" id="q-type">
+      <div><h1 class="titre">Choisis ton profil 🏷️</h1><p class="sous">C'est la petite étiquette qui apparaît sur ta fiche (ex. « Profil Aventurier »). Le calcul t'en propose une d'après tes réponses, mais ici, c'est toi qui décides.</p></div>
+      <div class="grille-types" id="grille-types"></div>
+      <button class="btn btn-ghost" id="btn-type-auto">✨ Revenir au profil calculé automatiquement</button>
     </div>
 
     <!-- 8 bis. Ma description (mode édition) -->
@@ -143,10 +151,10 @@
 
     <!-- 9. Photo ou avatar -->
     <div class="etape" id="q-photo">
-      <div><h1 class="titre">Montre-toi ! 📸</h1><p class="sous">Ajoute jusqu'à 3 photos, ou crée ton avatar personnalisé si tu préfères rester discret·e pour l'instant.</p></div>
+      <div><h1 class="titre">Montre-toi ! 📸</h1><p class="sous">Ajoute jusqu'à 3 photos, ou choisis ton totem — dauphin, volcan, hibiscus… — si tu préfères rester discret·e pour l'instant.</p></div>
       <div class="chips" style="justify-content:center">
         <button id="onglet-photos" class="on">📷 Mes photos</button>
-        <button id="onglet-avatar">🧑‍🎨 Mon avatar</button>
+        <button id="onglet-avatar">🐬 Mon totem</button>
       </div>
 
       <div id="panneau-photos">
@@ -184,14 +192,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
-<script src="js/avatar.js"></script>
+<script src="js/avatar.js?v=totem-1"></script>
 <script>
 const COMMUNES = ['Saint-Denis','Saint-Paul','Saint-Pierre','Le Tampon','Saint-André','Saint-Louis','Le Port','Saint-Benoît','Saint-Joseph','Sainte-Marie','Sainte-Suzanne','La Possession','Saint-Leu','Sainte-Rose','Salazie','Cilaos','Entre-Deux','Petite-Île','Les Avirons','L\'Étang-Salé','Trois-Bassins','Bras-Panon','La Plaine-des-Palmistes','Saint-Philippe'];
 
 /* Réponses de l'utilisateur (brouillon sauvegardé en local) */
 let utilisateur = null;
 let rep = { genre:null, date_naissance:null, situation:null, ville:null, recherche:[], personnalite:null, premier_rdv:null, interets:[], profil_type:null, description:null };
-let avatarCfg = Object.assign({}, AVATAR_DEFAUT);
+let avatarCfg = Object.assign({}, TOTEM_DEFAUT);
+let typePerso = false;                    // vrai si le profil type a été choisi à la main
 let photos = [null, null, null];          // { blob, url } (nouvelle) ou { chemin, url } (déjà en ligne)
 let modePhoto = 'photos';
 
@@ -234,12 +243,16 @@ const LIB = {
 };
 
 const RUBRIQUES = [
-  { etape:'q-photo',        em:'📸', titre:'Mes photos et mon avatar',
-    valeur:() => modePhoto === 'avatar' ? 'Avatar personnalisé' : (photos.filter(Boolean).length + ' photo(s)') },
+  { etape:'q-photo',        em:'📸', titre:'Mes photos et mon totem',
+    valeur:() => modePhoto === 'avatar'
+      ? (avatarCfg && avatarCfg.type === 'totem' ? 'Totem ' + avatarCfg.emoji + ' ' + avatarCfg.nom : 'Avatar personnalisé')
+      : (photos.filter(Boolean).length + ' photo(s)') },
   { etape:'q-interets',     em:'✨', titre:'Mes passions',
     valeur:() => rep.interets.length ? rep.interets.length + ' sélectionnées' : 'aucune' },
   { etape:'q-description',  em:'📝', titre:'Ma description',
     valeur:() => rep.description ? rep.description.slice(0, 52) + '…' : 'à écrire' },
+  { etape:'q-type',         em:'🏷️', titre:'Mon profil type',
+    valeur:() => { const t = PROFILS_TYPES[rep.profil_type]; return t ? t.emoji + ' ' + t.label : '—'; } },
   { etape:'q-recherche',    em:'💘', titre:'Ce que je recherche',
     valeur:() => rep.recherche.length ? rep.recherche.map(r => LIB.recherche[r]).join(' + ') : '—' },
   { etape:'q-situation',    em:'🌍', titre:'Ma ville et ma situation',
@@ -286,6 +299,7 @@ function rafraichirMenu() {
 function ouvrirRubrique(id) {
   if (id === 'q-description') preparerDescription();
   if (id === 'q-photo') dessinerGrille();
+  if (id === 'q-type') { retourType = 'menu'; dessinerTypes(); }
   afficherEtape(id);
   document.getElementById('barre-retour').style.display = '';
 }
@@ -293,7 +307,7 @@ function ouvrirRubrique(id) {
 /* Valide la rubrique en cours : enregistre en base puis revient au menu. */
 async function validerRubrique(avecPhotos) {
   if (avecPhotos && modePhoto === 'photos' && !photos.some(Boolean)) {
-    toast('Garde au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
+    toast('Garde au moins une photo, ou bascule sur « Mon totem » 😊'); return;
   }
   const ok = await enregistrerProfil(!!avecPhotos);
   if (ok) toast('Modification enregistrée ✓');
@@ -374,17 +388,58 @@ zoneChips.querySelectorAll('button').forEach(b => b.addEventListener('click', ()
   document.getElementById('btn-interets').disabled = n < 3;
 }));
 document.getElementById('btn-interets').addEventListener('click', () => {
-  rep.profil_type = calculerProfil(rep);
+  /* On ne remplace jamais un profil type choisi à la main */
+  if (!typePerso) rep.profil_type = calculerProfil(rep);
   /* On ne réécrit jamais une description que le membre a écrite lui-même */
   if (!descriptionPerso) rep.description = genererDescription(rep);
-  const t = PROFILS_TYPES[rep.profil_type];
-  document.getElementById('res-emoji').textContent = t.emoji;
-  document.getElementById('res-nom').textContent = t.label;
-  document.getElementById('res-description').textContent = '« ' + rep.description + ' »';
-  if (mode === 'edition') toast('Profil recalculé : ' + t.emoji + ' ' + t.label);
+  majResultat();
+  if (mode === 'edition' && !typePerso) toast('Profil recalculé : ' + PROFILS_TYPES[rep.profil_type].emoji + ' ' + PROFILS_TYPES[rep.profil_type].label);
   suivant();
 });
 document.getElementById('btn-resultat').addEventListener('click', suivant);
+
+/* ───── Profil type : choix manuel parmi les 12 ─────
+   Le calcul propose, le membre dispose : il peut remplacer l'étiquette
+   (ex. « Fêtard ») par celle qui lui ressemble vraiment. */
+let retourType = 'menu';               // d'où l'on vient : 'resultat' (création) ou 'menu' (édition)
+function majResultat() {
+  const t = PROFILS_TYPES[rep.profil_type];
+  if (!t) return;
+  document.getElementById('res-emoji').textContent = t.emoji;
+  document.getElementById('res-nom').textContent = t.label;
+  document.getElementById('res-description').textContent = '« ' + (rep.description || '') + ' »';
+}
+function dessinerTypes() {
+  const calcule = calculerProfil(rep);
+  document.getElementById('grille-types').innerHTML = Object.entries(PROFILS_TYPES).map(([id, t]) =>
+    `<button type="button" data-type="${id}" class="${rep.profil_type === id ? 'on' : ''}">
+       <span class="em">${t.emoji}</span>${t.label}${id === calcule ? ' ✨' : ''}<small>${t.phrase}</small>
+     </button>`).join('');
+  document.querySelectorAll('#grille-types button').forEach(b =>
+    b.addEventListener('click', () => choisirType(b.dataset.type)));
+}
+function choisirType(id) {
+  typePerso = id !== calculerProfil(rep);
+  rep.profil_type = id;
+  if (!descriptionPerso) rep.description = genererDescription(rep);
+  const t = PROFILS_TYPES[id];
+  if (retourType === 'resultat') {           // création : retour à l'écran résultat
+    majResultat(); afficherEtape('q-resultat'); sauverBrouillon();
+    toast('Ton profil : ' + t.emoji + ' ' + t.label + ' ✓');
+  } else {                                    // édition : on enregistre et retour menu
+    toast('Ton profil : ' + t.emoji + ' ' + t.label);
+    validerRubrique(false);
+  }
+}
+document.getElementById('btn-choisir-type').addEventListener('click', () => {
+  retourType = (mode === 'edition') ? 'menu' : 'resultat';
+  dessinerTypes(); afficherEtape('q-type');
+  if (mode === 'edition') document.getElementById('barre-retour').style.display = '';
+});
+document.getElementById('btn-type-auto').addEventListener('click', () => {
+  typePerso = false;
+  choisirType(calculerProfil(rep));
+});
 
 /* ───── Ma description (modifiable à la main, mode édition) ───── */
 const champDesc = document.getElementById('desc-txt');
@@ -397,7 +452,7 @@ function majCompteurDesc() {
 }
 champDesc.addEventListener('input', majCompteurDesc);
 document.getElementById('btn-desc-auto').addEventListener('click', () => {
-  rep.profil_type = calculerProfil(rep);
+  if (!typePerso) rep.profil_type = calculerProfil(rep);
   champDesc.value = genererDescription(rep);
   majCompteurDesc();
   toast('Description regénérée d\'après tes réponses ✨');
@@ -467,34 +522,48 @@ function redimensionner(fichier, maxCote, qualite) {
   });
 }
 
-/* ───── Éditeur d'avatar ───── */
+/* ───── Choix du totem ─────
+   Remplace l'ancien éditeur d'avatar dessiné. Les anciens avatars restent
+   affichés tels quels ; dès qu'on touche une option ici, on passe au totem. */
 function dessinerAvatar() { document.getElementById('avatar-scene').innerHTML = renderAvatar(avatarCfg); }
+function devenirTotem() {
+  if (!avatarCfg || avatarCfg.type !== 'totem') avatarCfg = Object.assign({}, TOTEM_DEFAUT);
+}
+/* Un totem ne garde que ses 4 clés : on écarte les restes de l'ancien
+   avatar dessiné (vieux brouillons, anciens profils). */
+function propreAvatar(cfg) {
+  if (!cfg || cfg.type !== 'totem') return cfg;
+  return {
+    type: 'totem',
+    emoji: cfg.emoji || TOTEM_DEFAUT.emoji,
+    nom: cfg.nom || TOTEM_DEFAUT.nom,
+    fond: FONDS_TOTEM.some(f => f.id === cfg.fond) ? cfg.fond : TOTEM_DEFAUT.fond
+  };
+}
 function construireControles() {
   const zone = document.getElementById('avatar-controles');
-  zone.innerHTML = '';
-  for (const [cle, opt] of Object.entries(AVATAR_OPTIONS)) {
-    const g = document.createElement('div'); g.className = 'opt-groupe';
-    const titre = document.createElement('label'); titre.textContent = opt.label; g.appendChild(titre);
-    const ligne = document.createElement('div'); ligne.className = 'opt-ligne';
-    if (opt.type === 'onoff') {
-      [['Non', false], ['Oui', true]].forEach(([lab, val]) => {
-        const b = document.createElement('button'); b.type = 'button'; b.textContent = lab;
-        b.classList.toggle('on', avatarCfg[cle] === val);
-        b.onclick = () => { avatarCfg[cle] = val; construireControles(); dessinerAvatar(); sauverBrouillon(); };
-        ligne.appendChild(b);
-      });
-    } else {
-      opt.valeurs.forEach(v => {
-        const b = document.createElement('button'); b.type = 'button';
-        if (opt.type === 'couleur') { b.className = 'pastille'; b.style.background = v.hex; b.title = v.id; }
-        else b.textContent = v.label;
-        b.classList.toggle('on', avatarCfg[cle] === v.id);
-        b.onclick = () => { avatarCfg[cle] = v.id; construireControles(); dessinerAvatar(); sauverBrouillon(); };
-        ligne.appendChild(b);
-      });
-    }
-    g.appendChild(ligne); zone.appendChild(g);
-  }
+  const totem = (avatarCfg && avatarCfg.type === 'totem') ? avatarCfg : null;
+  let html = '';
+  if (!totem) html += '<p class="sous" style="margin:0">Tu as encore l\'ancien avatar dessiné : choisis un totem ci-dessous pour le remplacer (ou ne touche à rien pour le garder).</p>';
+  html += '<div class="opt-groupe"><label>Couleur du fond</label><div class="opt-ligne">' +
+    FONDS_TOTEM.map(f =>
+      `<button type="button" class="pastille ${totem && totem.fond === f.id ? 'on' : ''}" data-fond="${f.id}" title="Fond ${f.id}" style="background:linear-gradient(160deg,${f.haut},${f.bas})"></button>`
+    ).join('') + '</div></div>';
+  TOTEMS.forEach(gr => {
+    html += `<div class="opt-groupe"><label>${gr.titre}</label><div class="totem-grille">` +
+      gr.items.map(t =>
+        `<button type="button" class="totem-case ${totem && totem.emoji === t.emoji ? 'on' : ''}" data-emoji="${t.emoji}" data-nom="${t.nom}"><span>${t.emoji}</span><small>${t.nom}</small></button>`
+      ).join('') + '</div></div>';
+  });
+  zone.innerHTML = html;
+  zone.querySelectorAll('[data-fond]').forEach(b => b.addEventListener('click', () => {
+    devenirTotem(); avatarCfg.fond = b.dataset.fond;
+    construireControles(); dessinerAvatar(); sauverBrouillon();
+  }));
+  zone.querySelectorAll('.totem-case').forEach(b => b.addEventListener('click', () => {
+    devenirTotem(); avatarCfg.emoji = b.dataset.emoji; avatarCfg.nom = b.dataset.nom;
+    construireControles(); dessinerAvatar(); sauverBrouillon();
+  }));
 }
 construireControles();
 
@@ -531,7 +600,7 @@ async function enregistrerProfil(avecPhotos) {
       interets: rep.interets,
       profil_type: rep.profil_type,
       description: rep.description,
-      avatar: modePhoto === 'avatar' ? avatarCfg : null,
+      avatar: modePhoto === 'avatar' ? propreAvatar(avatarCfg) : null,
       photos: chemins,
       statut: 'actif'
     };
@@ -548,7 +617,7 @@ async function enregistrerProfil(avecPhotos) {
 /* ───── Bouton final du questionnaire / validation des photos ───── */
 document.getElementById('btn-terminer').addEventListener('click', async () => {
   if (modePhoto === 'photos' && !photos.some(Boolean)) {
-    toast('Ajoute au moins une photo, ou bascule sur « Mon avatar » 😊'); return;
+    toast('Ajoute au moins une photo, ou bascule sur « Mon totem » 😊'); return;
   }
   const btn = document.getElementById('btn-terminer');
   btn.disabled = true; document.getElementById('etat-envoi').style.display = '';
@@ -681,7 +750,17 @@ function refleterReponses() {
       premier_rdv: existant.premier_rdv, interets: existant.interets || [],
       profil_type: existant.profil_type, description: existant.description || ''
     };
-    if (existant.avatar) { avatarCfg = Object.assign({}, AVATAR_DEFAUT, existant.avatar); modePhoto = 'avatar'; }
+    if (existant.avatar) {
+      /* Totem : on reprend tel quel. Ancien avatar dessiné : on complète
+         avec les valeurs par défaut du dessin, comme avant. */
+      avatarCfg = existant.avatar.type === 'totem'
+        ? Object.assign({}, TOTEM_DEFAUT, existant.avatar)
+        : Object.assign({}, AVATAR_DEFAUT, existant.avatar);
+      modePhoto = 'avatar';
+    }
+    /* Si le type enregistré ne correspond pas au calcul, c'est qu'il a été
+       choisi à la main : on ne l'écrasera plus par le calcul automatique. */
+    typePerso = !!existant.profil_type && existant.profil_type !== calculerProfil(rep);
     descriptionPerso = !!existant.description && existant.description !== genererDescription(rep);
 
     /* Photos déjà en ligne : on récupère un lien temporaire pour les afficher */
@@ -703,7 +782,8 @@ function refleterReponses() {
   if (brouillon) {
     try {
       const b = JSON.parse(brouillon);
-      rep = Object.assign(rep, b.rep); avatarCfg = Object.assign(avatarCfg, b.avatarCfg);
+      rep = Object.assign(rep, b.rep);
+      avatarCfg = propreAvatar(Object.assign(avatarCfg, b.avatarCfg)) || avatarCfg;
       construireControles();
     } catch (e) {}
   }
