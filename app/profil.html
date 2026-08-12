@@ -22,6 +22,7 @@
   <div class="scrolly">
     <button class="barre-retour" id="barre-retour" style="display:none">‹ Retour à mon profil</button>
     <div class="steps" id="progress"></div>
+    <button class="backlink" id="btn-prec" style="display:none">‹ Revenir à l'étape précédente</button>
 
     <!-- 0. MENU DE MODIFICATION (mode édition uniquement) -->
     <div class="etape" id="q-menu">
@@ -221,8 +222,15 @@ function montrer(i) {
   etapeCourante = i;
   afficherEtape(ORDRE[i]);
   document.getElementById('progress').innerHTML = ORDRE.slice(0, -1).map((_, k) => `<span class="${k <= i ? 'on' : ''}"></span>`).join('');
+  /* On peut revenir en arrière pour corriger une réponse — sauf au tout
+     début, et plus une fois le profil enregistré (écran final). */
+  document.getElementById('btn-prec').style.display =
+    (mode === 'creation' && i > 0 && ORDRE[i] !== 'q-fin') ? '' : 'none';
   sauverBrouillon();
 }
+document.getElementById('btn-prec').addEventListener('click', () => {
+  if (mode === 'creation' && etapeCourante > 0) montrer(etapeCourante - 1);
+});
 function suivant() {
   if (mode === 'edition') { validerRubrique(); return; }
   montrer(Math.min(etapeCourante + 1, ORDRE.length - 1));
@@ -424,7 +432,7 @@ function choisirType(id) {
   if (!descriptionPerso) rep.description = genererDescription(rep);
   const t = PROFILS_TYPES[id];
   if (retourType === 'resultat') {           // création : retour à l'écran résultat
-    majResultat(); afficherEtape('q-resultat'); sauverBrouillon();
+    majResultat(); montrer(ORDRE.indexOf('q-resultat'));
     toast('Ton profil : ' + t.emoji + ' ' + t.label + ' ✓');
   } else {                                    // édition : on enregistre et retour menu
     toast('Ton profil : ' + t.emoji + ' ' + t.label);
@@ -434,6 +442,7 @@ function choisirType(id) {
 document.getElementById('btn-choisir-type').addEventListener('click', () => {
   retourType = (mode === 'edition') ? 'menu' : 'resultat';
   dessinerTypes(); afficherEtape('q-type');
+  document.getElementById('btn-prec').style.display = 'none';   // détour : pas d'étape précédente ici
   if (mode === 'edition') document.getElementById('barre-retour').style.display = '';
 });
 document.getElementById('btn-type-auto').addEventListener('click', () => {

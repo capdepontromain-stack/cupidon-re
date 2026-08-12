@@ -450,6 +450,35 @@ body{
 .toast{position:absolute;bottom:110px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;padding:11px 20px;border-radius:999px;opacity:0;transition:.3s;pointer-events:none;z-index:70;white-space:nowrap;box-shadow:var(--shadow-md)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ===== Aperçu de sa propre carte (salle d'attente) =====
+   Le fondateur voit sa carte telle que les autres la découvriront
+   le 15 octobre — le meilleur argument pour la soigner. */
+.apercu-carte{width:100%;text-align:left}
+.apercu-carte .ac-titre{font-size:13.5px;font-weight:600;color:#DCE6FF;margin-bottom:9px}
+.ac-carte{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:4/5;max-width:250px;margin:0 auto;
+  box-shadow:0 18px 44px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.25)}
+.ac-carte .ac-visuel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.ac-carte .ac-visuel img{width:100%;height:100%;object-fit:cover}
+.ac-carte .ac-visuel svg{width:100%;height:100%;object-fit:cover;border-radius:0}
+.ac-carte .ac-ini{font-family:'Fraunces',serif;font-size:76px;color:rgba(255,255,255,.55)}
+.ac-carte .ac-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,18,50,.88) 0%,rgba(8,18,50,.3) 42%,transparent 65%)}
+.ac-carte .ac-info{position:absolute;left:0;right:0;bottom:0;padding:14px 15px;color:#fff}
+.ac-carte .ac-info b{font-family:'Fraunces',serif;font-size:20px;display:block}
+.ac-carte .ac-info .ac-lieu{font-size:12.5px;color:#FFE96B;font-weight:500}
+.ac-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.ac-tags span{font-size:10.5px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:3px 9px;border-radius:999px}
+
+/* Astuce « installe l'appli » + compteur de fondateurs */
+.compteur-fondateurs{width:100%;text-align:center;font-size:13.5px;color:#C9D6F5;font-weight:600}
+.compteur-fondateurs b{color:var(--gold-lt);font-family:'Fraunces',serif;font-size:17px}
+.astuce-installe{width:100%;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);border-radius:16px;text-align:left}
+.astuce-installe summary{list-style:none;display:flex;align-items:center;gap:9px;padding:13px 15px;cursor:pointer;font-weight:600;font-size:14px;color:#fff}
+.astuce-installe summary::-webkit-details-marker{display:none}
+.astuce-installe summary::after{content:'+';margin-left:auto;font-family:'Fraunces',serif;font-size:20px;color:var(--gold);transition:transform .25s}
+.astuce-installe[open] summary::after{transform:rotate(45deg)}
+.astuce-installe p{padding:0 15px 13px;font-size:13px;line-height:1.65;color:#DCE6FF}
+.astuce-installe p b{color:#fff}
+
 /* ===== Jauge « pouvoir de séduction » (salle d'attente) ===== */
 .jauge-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:16px 18px;backdrop-filter:blur(10px);text-align:left;width:100%}
 .jauge-card .j-titre{font-size:14px;font-weight:600;color:#DCE6FF}
@@ -606,6 +635,7 @@ body{
           </details>
         </div>
         <button class="btn btn-gold" onclick="if(document.getElementById('agecheck').checked){location.href='inscription.html'}else{document.querySelector('.age-check').scrollIntoView({behavior:'smooth',block:'center'});toast('Coche la case « 18 ans ou plus » juste ici 😊')}">Je réserve ma place de membre fondateur 🎁</button>
+        <button class="btn" style="background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="location.href='connexion.html'">J'ai déjà un compte — Se connecter</button>
       </div>
     </div>
   </section>
@@ -697,7 +727,7 @@ body{
     </div>
     <div id="msgs"></div>
     <div class="chatbox">
-      <input id="msginput" type="text" placeholder="Écris ton message…" autocomplete="off">
+      <input id="msginput" type="text" placeholder="Écris ton message…" autocomplete="off" maxlength="500">
       <button onclick="sendMsg()" title="Envoyer">➤</button>
     </div>
   </section>
@@ -730,7 +760,7 @@ body{
     <div class="topicpin ingroup" id="gctopic"></div>
     <div id="gmsgs" style="flex:1;overflow-y:auto;min-height:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px"></div>
     <div class="chatbox">
-      <input id="gminput" type="text" placeholder="Écris dans le salon…" autocomplete="off">
+      <input id="gminput" type="text" placeholder="Écris dans le salon…" autocomplete="off" maxlength="500">
       <button onclick="sendGroupMsg()" title="Envoyer">➤</button>
     </div>
   </section>
@@ -792,6 +822,15 @@ body{
         <div><b id="at-s">–</b><small>sec</small></div>
       </div>
       <button class="lien-agenda" onclick="ajouterAgenda()">📅 Ajouter l'ouverture à mon agenda (rendez-vous à 20 h)</button>
+      <!-- Aperçu de sa propre carte : rempli quand le membre est connecté -->
+      <div class="apercu-carte" id="at-carte" style="display:none">
+        <div class="ac-titre">👀 Ta carte, telle que les autres la découvriront le 15 octobre :</div>
+        <div class="ac-carte">
+          <div class="ac-visuel" id="at-carte-visuel"></div>
+          <div class="ac-veil"></div>
+          <div class="ac-info"><b id="at-carte-nom"></b><span class="ac-lieu" id="at-carte-lieu"></span><div class="ac-tags" id="at-carte-tags"></div></div>
+        </div>
+      </div>
       <!-- Jauge « pouvoir de séduction » : calculée d'après le profil réel,
            remplie uniquement quand le membre est connecté (sinon cachée). -->
       <div class="jauge-card" id="at-jauge" style="display:none">
@@ -806,6 +845,14 @@ body{
         <li><span>💛</span><b>Même si tu rencontres quelqu'un d'ici là</b>Cupidon, c'est aussi des connaissances, des sorties et des soirées. Garde ta place, elle servira.</li>
         <li><span>🤝</span><b>De vraies personnes</b>Une équipe réunionnaise s'occupe de Cupidon, et vérifie chaque profil à la main.</li>
       </ul>
+      <p class="compteur-fondateurs" id="at-compteur" style="display:none"></p>
+      <details class="astuce-installe">
+        <summary>📲 Garde Cupidon sous la main sur ton téléphone</summary>
+        <p>Ajoute l'appli à ton écran d'accueil, comme une vraie application :<br>
+        <b>iPhone (Safari)</b> : bouton Partager <b>⬆️</b> → « Sur l'écran d'accueil »<br>
+        <b>Android (Chrome)</b> : menu <b>⋮</b> → « Ajouter à l'écran d'accueil »<br>
+        Le 15 octobre, Cupidon sera à un doigt de toi 😉</p>
+      </details>
       <button class="btn btn-gold" style="width:100%" onclick="location.href='profil.html'">✏️ Compléter / modifier mon profil</button>
       <button class="btn btn-wa" style="width:100%" onclick="partagerWhatsApp()">💬 Prévenir un ami sur WhatsApp</button>
       <button class="btn" style="width:100%;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="partagerCupidon()">📣 Partager autrement — qu'il soit fondateur aussi</button>
@@ -1279,6 +1326,35 @@ function afficherJauge(profil){
   if(r.pts>=100)document.getElementById('at-jauge-btn').textContent='✏️ Revoir mon profil (il est déjà top)';
   carte.style.display='';
   setTimeout(()=>{document.getElementById('at-jauge-barre').style.width=r.pts+'%';},250);
+}
+
+/* Aperçu de sa propre carte dans la salle d'attente : photo (lien signé),
+   sinon totem/avatar, sinon initiale — exactement comme les autres la verront. */
+async function afficherApercuCarte(profil){
+  const zone=document.getElementById('at-carte');
+  if(!zone)return;
+  const visuel=document.getElementById('at-carte-visuel');
+  visuel.style.background=degradePour(profil.user_id||'cupidon');
+  if(profil.photos&&profil.photos.length){
+    const {data}=await sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0],3600);
+    if(data)visuel.innerHTML='<img src="'+echapper(data.signedUrl)+'" alt="">';
+    else if(profil.avatar)visuel.innerHTML=renderAvatar(profil.avatar);
+    else visuel.innerHTML='<b class="ac-ini">'+echapper((profil.prenom||'?')[0])+'</b>';
+  }else if(profil.avatar){
+    visuel.innerHTML=renderAvatar(profil.avatar);
+  }else{
+    visuel.innerHTML='<b class="ac-ini">'+echapper((profil.prenom||'?')[0])+'</b>';
+  }
+  const age=profil.date_naissance?calculerAge(profil.date_naissance):'';
+  document.getElementById('at-carte-nom').textContent=(profil.prenom||'Toi')+(age?', '+age:'');
+  document.getElementById('at-carte-lieu').textContent='📍 '+(profil.ville?profil.ville+' · La Réunion':'La Réunion');
+  const type=PROFILS_TYPES[profil.profil_type];
+  const libelles=(profil.interets||[]).slice(0,3).map(id=>{
+    const i=INTERETS.find(x=>x.id===id);return i?i.emoji+' '+i.label:null;
+  }).filter(Boolean);
+  if(type)libelles.unshift(type.emoji+' '+type.label);
+  document.getElementById('at-carte-tags').innerHTML=libelles.map(t=>'<span>'+echapper(t)+'</span>').join('');
+  zone.style.display='';
 }
 
 /* Visuel d'un membre pour les petits ronds : photo réelle si elle existe,
@@ -1780,6 +1856,19 @@ function blockFromChat(){
 
       /* Jauge « pouvoir de séduction » d'après le vrai profil */
       try { afficherJauge(profil); } catch (e) { /* jamais bloquant */ }
+
+      /* Aperçu de sa propre carte, telle que les autres la verront */
+      try { await afficherApercuCarte(profil); } catch (e) { /* jamais bloquant */ }
+
+      /* Compteur de fondateurs — vrai chiffre, affiché à partir de 5 inscrits */
+      try {
+        const total = await compterMembres();
+        if (total >= 5) {
+          const c = document.getElementById('at-compteur');
+          c.innerHTML = '🌱 Vous êtes déjà <b>' + total + '</b> membres fondateurs — et ça monte chaque jour';
+          c.style.display = '';
+        }
+      } catch (e) { /* jamais bloquant */ }
     }
 
     /* Petit mot d'accueil personnalisé selon le temps d'absence */
