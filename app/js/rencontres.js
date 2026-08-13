@@ -101,7 +101,9 @@ async function chargerProfilsADecouvrir() {
     .order('cree_le', { ascending: false })
     .limit(100);
 
-  if (error) { console.warn('profils:', error.message); return []; }
+  /* null = échec de chargement (réseau…) : l'appli l'affiche autrement
+     que « personne d'inscrit », pour ne pas induire en erreur. */
+  if (error) { console.warn('profils:', error.message); return null; }
   return ajouterPhotos((data || []).filter(p => !exclus.has(p.user_id)).map(versCarte));
 }
 
@@ -223,7 +225,8 @@ async function chargerMessagesSalon(salon) {
       a: (m.auteur_id === (MOI && MOI.id)) ? 'Moi' : (p ? p.prenom : 'Membre'),
       age: p && p.date_naissance ? calculerAge(p.date_naissance) : '',
       av: p ? p.avatar : null,
-      t: m.texte
+      t: m.texte,
+      le: m.cree_le
     };
   });
 }

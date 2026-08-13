@@ -857,6 +857,7 @@ body{
       <div class="jauge-card" id="at-salon">
         <div class="j-titre">🎤 Avant-première fondateurs</div>
         <div class="j-note" style="margin-top:7px">Pourquoi attendre seul·e ? <b>Le Salon général 974 est déjà ouvert pour les membres fondateurs.</b> Entre, dis bonjour, fais connaissance — le 15 octobre, tu ne débarqueras pas en terre inconnue 😉</div>
+        <div class="j-note" id="at-salon-nouveaux" style="display:none;margin-top:7px;color:var(--gold-lt);font-weight:700"></div>
         <button class="j-btn" onclick="ouvrirSalonFondateurs()">💬 Entrer dans le salon des fondateurs</button>
       </div>
       <ul class="avantages" style="text-align:left">
@@ -1072,7 +1073,8 @@ async function enterApp(){
 
   /* Vrais profils et vrais matchs, chargés depuis la base. */
   const [profils,mesMatchs]=await Promise.all([chargerProfilsADecouvrir(),chargerMatchs()]);
-  PROFILES_TOUS=profils; PROFILES=appliquerPreferences(profils); deckIndex=0; matches=mesMatchs;
+  deckErreur=(profils===null);                     // null = problème de chargement (réseau)
+  PROFILES_TOUS=profils||[]; PROFILES=appliquerPreferences(PROFILES_TOUS); deckIndex=0; matches=mesMatchs;
   renderDeck(); renderMatches();
 
   /* Pastille sur l'onglet Matchs s'il y a des messages non lus. */
@@ -1089,10 +1091,12 @@ async function enterApp(){
 async function actualiserDeck(bouton){
   if(bouton){bouton.disabled=true;bouton.textContent='Je regarde…';}
   const nouveaux=await chargerProfilsADecouvrir();
-  PROFILES_TOUS=nouveaux;PROFILES=appliquerPreferences(nouveaux);deckIndex=0;
+  deckErreur=(nouveaux===null);
+  PROFILES_TOUS=nouveaux||[];PROFILES=appliquerPreferences(PROFILES_TOUS);deckIndex=0;
   renderDeck();
-  if(PROFILES.length)toast('✨ '+PROFILES.length+(PROFILES.length>1?' profils à découvrir !':' profil à découvrir !'));
-  else if(nouveaux.length)toast('Du monde est inscrit, mais hors de tes préférences 🎯');
+  if(deckErreur)toast('Toujours pas de connexion — réessaie dans un instant 🙏');
+  else if(PROFILES.length)toast('✨ '+PROFILES.length+(PROFILES.length>1?' profils à découvrir !':' profil à découvrir !'));
+  else if(PROFILES_TOUS.length)toast('Du monde est inscrit, mais hors de tes préférences 🎯');
   else toast('Encore personne de nouveau — reviens faire un tour un peu plus tard 😉');
 }
 function fermerGuide(clic){
@@ -1506,12 +1510,30 @@ function circHTML(p){
 }
 
 /* ───────── Pile de cartes ───────── */
+let deckErreur=false;      /* vrai quand le chargement des profils a échoué (réseau) */
 function renderDeck(){
   const deck=document.getElementById('deck');deck.innerHTML='';
+  /* Problème de chargement : on le dit franchement, sans faire croire
+     que personne n'est inscrit. */
+  if(deckErreur){
+    deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px;opacity:.7"><b>Oups, pas de connexion 📡</b>'+
+      '<p>Impossible de charger les profils pour le moment. Vérifie ton réseau (wifi ou données mobiles), puis réessaie — tout est encore là, promis.</p>'+
+      '<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Réessayer</button></div>';
+    return;
+  }
   const remaining=PROFILES.slice(deckIndex).filter(p=>typeof blocked==='undefined'||!blocked.has(p.id));
   if(!remaining.length){
     const boutonActualiser='<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="actualiserDeck(this)">🔄 Voir s\'il y a du nouveau</button>'+
       '<button class="btn btn-ghost" style="font-size:14px;padding:10px 20px" onclick="partagerCupidon()">💌 Inviter des amis sur Cupidon</button>';
+    /* Des membres existent, mais les préférences les masquent tous :
+       on le dit et on propose d'élargir plutôt que « personne ». */
+    if(!PROFILES.length&&PROFILES_TOUS.length){
+      deck.innerHTML='<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Ta recherche est très précise 🎯</b>'+
+        '<p>Il y a bien '+PROFILES_TOUS.length+(PROFILES_TOUS.length>1?' profils inscrits':' profil inscrit')+', mais aucun ne rentre dans tes préférences (genre ou tranche d\'âge). Élargis un peu — on ne sait jamais où Cupidon vise 😉</p>'+
+        '<button class="btn btn-gold" style="font-size:15px;padding:13px 24px" onclick="ouvrirPrefs()">🎯 Élargir mes préférences</button>'+
+        '<button class="btn btn-ghost" style="font-size:14px;padding:10px 20px" onclick="partagerCupidon()">💌 Inviter des amis sur Cupidon</button></div>';
+      return;
+    }
     deck.innerHTML = PROFILES.length
       ? '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Tu as vu tout le monde !</b><p>Tu as parcouru tous les profils disponibles pour le moment. Dès qu\'une nouvelle personne s\'inscrit, elle apparaît ici — reviens faire un tour. Et le rendez-vous, c\'est chaque soir à 20 h au Salon général 💬</p>'+boutonActualiser+'</div>'
       : '<div class="empty"><img src="logo-mascotte.png" alt="" style="width:150px"><b>Personne pour l\'instant</b><p>Cupidon vient d\'ouvrir : tu es parmi les tout premiers. Aucun profil à afficher pour le moment — et nous préférons te le dire franchement plutôt que d\'inventer des personnes qui n\'existent pas. Reviens faire un tour — l\'appli se remplit chaque jour, et le bouton ci-dessous vérifie en direct. Surtout : chaque soir à 20 h, tout le monde se retrouve au Salon général 💬</p>'+boutonActualiser+'</div>';
@@ -1835,6 +1857,7 @@ function renderSalons(){
 let canalSalon=null;
 async function openRoom(id){
   currentRoom=ROOMS.find(r=>r.id===id);
+  try{localStorage.setItem('cupidon_salon_vu_'+id,Date.now());}catch(e){}   // pour le « X nouveaux messages »
   GROUPMSGS[id]=GROUPMSGS[id]||[];
   document.getElementById('gcname').textContent=currentRoom.n;
   document.getElementById('gcicon').textContent=currentRoom.e;
@@ -1873,13 +1896,18 @@ function renderGroupMsgs(){
       'Ce salon est encore vide.<br>Lance la discussion — les autres membres verront ton message.</div>';
     return;
   }
-  box.innerHTML=msgs.map(m=>{
-    if(m.a==='Moi')return '<div class="gmsg me"><div class="bub"><p>'+echapper(m.t)+'</p></div></div>';
+  let html='',jourCourant='';
+  msgs.forEach(m=>{
+    const j=libelleJour(m.le);
+    if(j&&j!==jourCourant){jourCourant=j;html+='<div class="jour-sep" style="align-self:center">'+j+'</div>';}
+    const heure=m.le?'<span style="display:block;font-size:10.5px;margin-top:2px;text-align:right;opacity:.62">'+heureDe(m.le)+'</span>':'';
+    if(m.a==='Moi'){html+='<div class="gmsg me"><div class="bub"><p>'+echapper(m.t)+'</p>'+(heure?'<span style="display:block;font-size:10.5px;margin-top:2px;text-align:right;color:rgba(255,255,255,.7)">'+heureDe(m.le)+'</span>':'')+'</div></div>';return;}
     const couleur=m.id?degradePour(m.id):'#6B7A9E';
     const rond=m.av?renderAvatar(m.av):echapper(m.a[0]);
-    return '<div class="gmsg"><div class="circ" style="background:'+couleur+'">'+rond+'</div><div class="bub">'+
-      '<span class="name" onclick="askDM(\''+(m.id||'')+'\')">'+echapper(m.a)+(m.age?', '+m.age:'')+' ›</span><p>'+echapper(m.t)+'</p></div></div>';
-  }).join('');
+    html+='<div class="gmsg"><div class="circ" style="background:'+couleur+'">'+rond+'</div><div class="bub">'+
+      '<span class="name" onclick="askDM(\''+(m.id||'')+'\')">'+echapper(m.a)+(m.age?', '+m.age:'')+' ›</span><p>'+echapper(m.t)+'</p>'+heure+'</div></div>';
+  });
+  box.innerHTML=html;
   box.scrollTop=box.scrollHeight;
 }
 function sendGroupMsg(){
@@ -1889,7 +1917,7 @@ function sendGroupMsg(){
   const roomId=currentRoom.id;
   input.value='';
   GROUPMSGS[roomId]=GROUPMSGS[roomId]||[];
-  GROUPMSGS[roomId].push({a:'Moi',t:txt,id:MOI&&MOI.id});
+  GROUPMSGS[roomId].push({a:'Moi',t:txt,id:MOI&&MOI.id,le:new Date().toISOString()});
   renderGroupMsgs();
   envoyerMessageSalon(roomId,txt).then(async ok=>{
     if(!ok){
@@ -1961,7 +1989,7 @@ function blockFromChat(){
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/avatar.js?v=totem-1"></script>
-<script src="js/rencontres.js"></script>
+<script src="js/rencontres.js?v=etats-1"></script>
 <script>
 (async () => {
   try {
@@ -2044,6 +2072,23 @@ function blockFromChat(){
           const c = document.getElementById('at-compteur');
           c.innerHTML = '🌱 Vous êtes déjà <b>' + total + '</b> membres fondateurs — et ça monte chaque jour';
           c.style.display = '';
+        }
+      } catch (e) { /* jamais bloquant */ }
+
+      /* Des messages ont été postés au salon depuis son dernier passage ?
+         On lui dit — c'est la meilleure raison de revenir. */
+      try {
+        const depuis = +localStorage.getItem('cupidon_salon_vu_general') || 0;
+        let req = sb.from('messages_salon_cupidon')
+          .select('id', { count: 'exact', head: true }).eq('salon', 'general');
+        if (depuis) req = req.gt('cree_le', new Date(depuis).toISOString());
+        const { count, error } = await req;
+        if (!error && count) {
+          const z = document.getElementById('at-salon-nouveaux');
+          z.textContent = '💬 ' + (depuis
+            ? count + (count > 1 ? ' nouveaux messages t\'attendent' : ' nouveau message t\'attend') + ' depuis ton dernier passage !'
+            : count + (count > 1 ? ' messages t\'attendent déjà' : ' message t\'attend déjà') + ' dans le salon !');
+          z.style.display = '';
         }
       } catch (e) { /* jamais bloquant */ }
     }
