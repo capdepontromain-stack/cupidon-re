@@ -767,7 +767,7 @@ body{
   <!-- ══════════ CHAT DE GROUPE ══════════ -->
   <section class="screen" id="groupchat">
     <div class="chathead">
-      <button class="back" onclick="showScreen('salons')">‹</button>
+      <button class="back" onclick="showScreen(estOuvert()?'salons':'attente')">‹</button>
       <div style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--blush)" id="gcicon">🌋</div>
       <div><b id="gcname">Salon</b><small id="gccount">— en ligne</small></div>
     </div>
@@ -853,6 +853,12 @@ body{
         <div class="j-note" id="at-jauge-note"></div>
         <button class="j-btn" id="at-jauge-btn" onclick="location.href='profil.html'">✨ Améliorer mon profil</button>
       </div>
+      <!-- Avant-première : le Salon général est déjà ouvert pour les fondateurs -->
+      <div class="jauge-card" id="at-salon">
+        <div class="j-titre">🎤 Avant-première fondateurs</div>
+        <div class="j-note" style="margin-top:7px">Pourquoi attendre seul·e ? <b>Le Salon général 974 est déjà ouvert pour les membres fondateurs.</b> Entre, dis bonjour, fais connaissance — le 15 octobre, tu ne débarqueras pas en terre inconnue 😉</div>
+        <button class="j-btn" onclick="ouvrirSalonFondateurs()">💬 Entrer dans le salon des fondateurs</button>
+      </div>
       <ul class="avantages" style="text-align:left">
         <li><span>🎁</span><b>Ta 1ʳᵉ année est offerte</b>Puis 10 €/mois à vie, un tarif qui ne bougera jamais pour toi.</li>
         <li><span>🍹</span><b>Un apéritif offert</b>À ton premier événement Cupidon, c'est nous qui offrons.</li>
@@ -869,6 +875,7 @@ body{
       </details>
       <button class="btn btn-gold" style="width:100%" onclick="location.href='profil.html'">✏️ Compléter / modifier mon profil</button>
       <button class="btn btn-wa" style="width:100%" onclick="partagerWhatsApp()">💬 Prévenir un ami sur WhatsApp</button>
+      <button class="btn" style="width:100%;background:linear-gradient(135deg,#B99BE8,#5B2E9E);color:#fff" onclick="creerImageFondateur(this)">🖼️ Mon image de fondateur à partager</button>
       <button class="btn" style="width:100%;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)" onclick="partagerCupidon()">📣 Partager autrement — qu'il soit fondateur aussi</button>
       <p style="font-size:12.5px;color:#93A3CF;line-height:1.6">Une question ? Écris-nous à <a href="mailto:contact@pullup.re" style="color:var(--gold-lt)">contact@pullup.re</a> — c'est une vraie personne qui répond.</p>
     </div>
@@ -1014,6 +1021,10 @@ let superEnCours=false;
 
 /* ───────── Navigation ───────── */
 function showScreen(id){
+  /* Avant l'ouverture du 15 octobre, la découverte des profils et la liste
+     des salons restent fermées : on ramène vers la salle d'attente. Le Salon
+     général, lui, est accessible en avant-première (bouton dédié). */
+  if(typeof estOuvert==='function'&&!estOuvert()&&(id==='discover'||id==='salons'))id='attente';
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if(['discover','salons','matches','me'].includes(id)) lastTab=id;
@@ -1285,6 +1296,115 @@ async function partagerCupidon(){
   }
   try{await navigator.clipboard.writeText(donnees.url);toast('Lien copié ! Colle-le à tes amis 💌');}
   catch(e){toast('L\'adresse à partager : cupidon.re/app');}
+}
+
+/* ───── Image de fondateur à partager (stories, WhatsApp) ─────
+   Dessinée sur l'appareil à partir du vrai profil : totem ou photo,
+   prénom, numéro de fondateur. Partage natif si possible, sinon
+   téléchargement. */
+function chargerImage(src,anonyme){
+  return new Promise((res)=>{
+    const im=new Image();
+    if(anonyme)im.crossOrigin='anonymous';
+    im.onload=()=>res(im);im.onerror=()=>res(null);
+    im.src=src;
+  });
+}
+async function dessinerImageFondateur(){
+  const profil=(MOI&&MOI.profil)||{};
+  const prenom=profil.prenom||'Moi';
+  const cv=document.createElement('canvas');cv.width=1080;cv.height=1350;
+  const ctx=cv.getContext('2d');
+
+  /* Fond bleu nuit dégradé + cœurs discrets */
+  const g=ctx.createLinearGradient(0,0,0,1350);
+  g.addColorStop(0,'#0B2159');g.addColorStop(.55,'#0E2A6B');g.addColorStop(1,'#27407F');
+  ctx.fillStyle=g;ctx.fillRect(0,0,1080,1350);
+  ctx.save();ctx.globalAlpha=.07;ctx.fillStyle='#FFE96B';ctx.font='90px serif';
+  [[90,220],[930,180],[150,1130],[880,1210],[60,690],[980,660]].forEach(([x,y])=>ctx.fillText('♥',x,y));
+  ctx.restore();
+
+  /* Mascotte + nom du site */
+  const mascotte=await chargerImage('logo-mascotte.png');
+  if(mascotte)ctx.drawImage(mascotte,415,58,250,250);
+  ctx.textAlign='center';
+  ctx.fillStyle='#fff';ctx.font='900 66px Fraunces, Georgia, serif';
+  ctx.fillText('cupidon.re',540,388);
+  ctx.fillStyle='#FFE96B';ctx.font='600 30px Jost, sans-serif';
+  ctx.fillText('R E N C O N T R E S  ·  L A  R É U N I O N',540,432);
+
+  /* Rond central : photo réelle (si possible), sinon totem, sinon initiale */
+  const cx=540,cy=690,r=205;
+  let image=null;
+  if(profil.photos&&profil.photos.length){
+    try{
+      const {data}=await sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0],600);
+      if(data)image=await chargerImage(data.signedUrl,true);
+    }catch(e){}
+  }
+  ctx.save();
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();
+  if(image){
+    const cote=Math.min(image.width,image.height);
+    ctx.drawImage(image,(image.width-cote)/2,(image.height-cote)/2,cote,cote,cx-r,cy-r,r*2,r*2);
+  }else{
+    const totem=(profil.avatar&&profil.avatar.type==='totem')?profil.avatar:null;
+    const fond=(typeof FONDS_TOTEM!=='undefined'&&totem)?(FONDS_TOTEM.find(f=>f.id===totem.fond)||FONDS_TOTEM[0]):null;
+    const gg=ctx.createLinearGradient(0,cy-r,0,cy+r);
+    gg.addColorStop(0,fond?fond.haut:'#FFE96B');gg.addColorStop(1,fond?fond.bas:'#E8A800');
+    ctx.fillStyle=gg;ctx.fillRect(cx-r,cy-r,r*2,r*2);
+    if(totem){ctx.font='230px serif';ctx.fillText(totem.emoji,cx,cy+80);}
+    else{ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='900 220px Fraunces, Georgia, serif';ctx.fillText(prenom[0]||'💛',cx,cy+75);}
+  }
+  ctx.restore();
+  ctx.beginPath();ctx.arc(cx,cy,r+7,0,Math.PI*2);
+  ctx.lineWidth=13;ctx.strokeStyle='#F2C200';ctx.stroke();
+
+  /* Textes */
+  ctx.fillStyle='#fff';ctx.font='900 74px Fraunces, Georgia, serif';
+  ctx.fillText(prenom,540,1010);
+  const fondatrice=profil.genre==='femme'?'MEMBRE FONDATRICE':'MEMBRE FONDATEUR';
+  ctx.fillStyle='#F2C200';ctx.font='700 46px Jost, sans-serif';
+  ctx.fillText('🌱 '+fondatrice+(MOI&&MOI.rang?' N°'+MOI.rang:''),540,1082);
+  ctx.fillStyle='#C9D6F5';ctx.font='500 36px Jost, sans-serif';
+  ctx.fillText("L'appli de rencontres 100 % La Réunion",540,1160);
+  ctx.fillStyle='#FFE96B';ctx.font='700 40px Jost, sans-serif';
+  ctx.fillText('Ouverture le 15 octobre 2026',540,1222);
+  ctx.fillStyle='#C9D6F5';ctx.font='500 33px Jost, sans-serif';
+  ctx.fillText('1ʳᵉ année offerte aux premiers inscrits · cupidon.re/app',540,1284);
+  return cv;
+}
+async function creerImageFondateur(bouton){
+  if(!MOI){toast('Connecte-toi d\'abord 😊');return;}
+  const texteBouton=bouton?bouton.textContent:'';
+  if(bouton){bouton.disabled=true;bouton.textContent='🎨 Je dessine ton image…';}
+  try{
+    const cv=await dessinerImageFondateur();
+    const blob=await new Promise(res=>cv.toBlob(res,'image/png'));
+    if(!blob)throw new Error('canvas');
+    const fichier=new File([blob],'membre-fondateur-cupidon.png',{type:'image/png'});
+    const texte='Je suis membre fondateur de Cupidon.re 🌋 L\'appli de rencontres 100 % La Réunion ouvre le 15 octobre — rejoins-moi avant : cupidon.re/app';
+    if(navigator.canShare&&navigator.canShare({files:[fichier]})){
+      try{await navigator.share({files:[fichier],text:texte});return;}
+      catch(e){if(e&&e.name==='AbortError')return;}
+    }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='membre-fondateur-cupidon.png';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),4000);
+    toast('🖼️ Image enregistrée — envoie-la sur WhatsApp ou en story !');
+  }catch(e){
+    toast('Impossible de créer l\'image — réessaie dans un instant 🙏');
+  }finally{
+    if(bouton){bouton.disabled=false;bouton.textContent=texteBouton;}
+  }
+}
+
+/* Avant-première fondateurs : accès direct au Salon général depuis la
+   salle d'attente, avant l'ouverture officielle. */
+function ouvrirSalonFondateurs(){
+  if(!MOI){toast('Connecte-toi d\'abord 😊');return;}
+  openRoom('general');
 }
 
 /* Partage direct WhatsApp — le canal n°1 à La Réunion. */
@@ -1724,7 +1844,10 @@ async function openRoom(id){
     if(n&&currentRoom&&currentRoom.id===id)
       document.getElementById('gccount').textContent=n+' inscrit·e'+(n>1?'s':'')+' sur Cupidon';
   });
-  document.getElementById('gctopic').innerHTML=topicHTML();
+  document.getElementById('gctopic').innerHTML=
+    (estOuvert()?'':'<div class="t-tete">🌱 Avant-première réservée aux fondateurs</div>'+
+      '<div class="t-intro" style="margin-bottom:8px">L\'appli ouvre le 15 octobre — mais ce salon est déjà ouvert pour toi. '+
+      'Les autres fondateurs voient tes messages : fais connaissance en avance 😉</div>')+topicHTML();
   renderGroupMsgs();showScreen('groupchat');
 
   GROUPMSGS[id]=await chargerMessagesSalon(id);
@@ -1901,8 +2024,11 @@ function blockFromChat(){
         const { count } = await sb.from('profils_cupidon')
           .select('user_id', { count: 'exact', head: true })
           .lte('cree_le', profil.cree_le);
-        if (count && nom && profil.prenom)
-          nom.textContent = profil.prenom + ', tu es ' + fondateur + ' n°' + count;
+        if (count) {
+          MOI.rang = count;                       // réutilisé par l'image de partage
+          if (nom && profil.prenom)
+            nom.textContent = profil.prenom + ', tu es ' + fondateur + ' n°' + count;
+        }
       } catch (e) { /* jamais bloquant */ }
 
       /* Jauge « pouvoir de séduction » d'après le vrai profil */
