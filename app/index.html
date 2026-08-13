@@ -300,6 +300,15 @@ body{
   #swipehint .sh-col .fl{animation:none}
 }
 
+/* Pastille « du nouveau monde est arrivé » (jour J) : descend du haut
+   de la pile quand le nombre d'inscrits augmente. */
+.nouveau-profil{position:absolute;top:8px;left:50%;transform:translateX(-50%) translateY(-70px);z-index:41;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold));color:#5A2E00;border:0;border-radius:999px;
+  font-family:'Jost';font-weight:700;font-size:13.5px;padding:11px 18px;cursor:pointer;
+  box-shadow:0 10px 26px rgba(242,194,0,.45);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:transform .45s cubic-bezier(.3,1.3,.4,1),opacity .3s}
+.nouveau-profil.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+
 /* Pilule « annuler mon je passe » : apparaît 4,5 s après un passage,
    le temps de rattraper un glissement trop rapide. */
 .undo-pass{position:absolute;bottom:120px;left:50%;transform:translateX(-50%) translateY(16px);
@@ -689,6 +698,7 @@ body{
     </div>
     <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. Le rendez-vous : <b>chaque soir à 20 h au Salon général 974</b> 💬 — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
     <div id="deckwrap">
+      <button class="nouveau-profil" id="nouveauprofil" onclick="this.classList.remove('show');actualiserDeck()">🌱 Du nouveau monde est arrivé — voir</button>
       <div id="deck"></div>
       <div id="swipehint">
         <img class="sh-cupi" src="logo-mascotte.png" alt="">
@@ -1085,7 +1095,30 @@ async function enterApp(){
 
   /* Premier passage : petit guide « glisse à droite / à gauche » */
   if(!localStorage.getItem('cupidon_guide_vu'))document.getElementById('swipehint').classList.add('show');
+
+  /* Veille discrète sur les nouvelles inscriptions (pastille dorée) */
+  surveillerNouveauxProfils();
 }
+/* Jour J : toutes les 60 s, on vérifie discrètement si le nombre
+   d'inscrits a augmenté. Si oui, la pastille dorée « du nouveau monde
+   est arrivé » descend en haut de la pile. Aucune donnée inventée :
+   c'est le vrai compteur de la base. */
+let dernierTotalMembres=null,minuteurNouveaux=null;
+function surveillerNouveauxProfils(){
+  clearInterval(minuteurNouveaux);
+  minuteurNouveaux=setInterval(async()=>{
+    if(document.hidden||!MOI||!estOuvert())return;
+    if(!document.getElementById('discover').classList.contains('active'))return;
+    try{
+      const n=await compterMembres();
+      if(n===null||n===undefined)return;
+      if(dernierTotalMembres!==null&&n>dernierTotalMembres)
+        document.getElementById('nouveauprofil').classList.add('show');
+      dernierTotalMembres=n;
+    }catch(e){/* jamais bloquant */}
+  },60000);
+}
+
 /* Recharge la pile de profils à la demande (jour d'ouverture : du monde
    arrive en continu, autant pouvoir vérifier sans recharger la page). */
 async function actualiserDeck(bouton){
