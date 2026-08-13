@@ -43,6 +43,19 @@
 
   var TEST = location.search.indexOf('testnotif') !== -1;
 
+  /* Essais en local (http://localhost, 127.0.0.1, fichier ouvert
+     directement) : on ne prévient personne. Sans ce garde-fou, chaque
+     vérification du site pendant le travail envoyait une fausse alerte
+     « une visite sur cupidon.re » dans la boîte de Romain — c'est arrivé
+     plusieurs fois les 7 et 12 août 2026. */
+  var EN_LOCAL = /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)
+              || location.protocol === 'file:'
+              || /\.local$/.test(location.hostname);
+  if (EN_LOCAL && !TEST) {
+    console.info('[notif-visites] Test en local : aucune alerte envoyée.');
+    return;
+  }
+
   /* ───────── Petits utilitaires ───────── */
 
   function memoire(cle, valeur) {

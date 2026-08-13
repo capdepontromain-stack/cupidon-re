@@ -696,7 +696,7 @@ body{
         <button class="premium-chip" id="offerchip" onclick="showScreen('premium')">🎁 Offre</button>
       </div>
     </div>
-    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. Le rendez-vous : <b>chaque soir à 20 h au Salon général 974</b> 💬 — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer">✕</button></div>
+    <div class="launchbanner" id="launchbanner"><span>🌱</span><span><b>C'est le lancement !</b> Tu fais partie des tout premiers. Le rendez-vous : <b>chaque soir à 20 h au Salon général 974</b> 💬 — et dès qu'on t'écrit, la pastille 💞 s'allume sur l'onglet Matchs.</span><button class="x" onclick="this.parentElement.remove()" title="Fermer" aria-label="Fermer ce bandeau">✕</button></div>
     <div id="deckwrap">
       <button class="nouveau-profil" id="nouveauprofil" onclick="this.classList.remove('show');actualiserDeck()">🌱 Du nouveau monde est arrivé — voir</button>
       <div id="deck"></div>
@@ -744,15 +744,15 @@ body{
   <!-- ══════════ CHAT ══════════ -->
   <section class="screen" id="chat">
     <div class="chathead">
-      <button class="back" onclick="showScreen('matches')">‹</button>
+      <button class="back" onclick="showScreen('matches')" aria-label="Revenir à mes matchs">‹</button>
       <div class="circ" id="chatavatar">M</div>
       <div><b id="chatname"></b><small>Discussion privée</small></div>
-      <button class="icon-btn" style="margin-left:auto" onclick="blockFromChat()" title="Bloquer cette personne">🚫</button>
+      <button class="icon-btn" style="margin-left:auto" onclick="blockFromChat()" title="Bloquer cette personne" aria-label="Bloquer cette personne">🚫</button>
     </div>
     <div id="msgs"></div>
     <div class="chatbox">
       <input id="msginput" type="text" placeholder="Écris ton message…" autocomplete="off" maxlength="500">
-      <button onclick="sendMsg()" title="Envoyer">➤</button>
+      <button onclick="sendMsg()" title="Envoyer" aria-label="Envoyer le message">➤</button>
     </div>
   </section>
 
@@ -777,7 +777,7 @@ body{
   <!-- ══════════ CHAT DE GROUPE ══════════ -->
   <section class="screen" id="groupchat">
     <div class="chathead">
-      <button class="back" onclick="showScreen(estOuvert()?'salons':'attente')">‹</button>
+      <button class="back" onclick="showScreen(estOuvert()?'salons':'attente')" aria-label="Revenir aux salons">‹</button>
       <div style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--blush)" id="gcicon">🌋</div>
       <div><b id="gcname">Salon</b><small id="gccount">— en ligne</small></div>
     </div>
@@ -785,7 +785,7 @@ body{
     <div id="gmsgs" style="flex:1;overflow-y:auto;min-height:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px"></div>
     <div class="chatbox">
       <input id="gminput" type="text" placeholder="Écris dans le salon…" autocomplete="off" maxlength="500">
-      <button onclick="sendGroupMsg()" title="Envoyer">➤</button>
+      <button onclick="sendGroupMsg()" title="Envoyer" aria-label="Envoyer le message dans le salon">➤</button>
     </div>
   </section>
 
@@ -800,6 +800,13 @@ body{
         <p id="me-description" style="display:none;font-size:14px;color:var(--ink-soft);font-style:italic;line-height:1.5;margin-top:10px;text-align:center"></p>
         <div id="me-interets" style="display:none;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:10px"></div>
       </div>
+      <!-- Où en est ma fiche : rempli seulement pour un membre connecté -->
+      <div class="completion" id="me-completion" style="display:none">
+        <div class="cp-tete">📋 Ta fiche est complète à <b id="cp-pct">—</b></div>
+        <div class="cp-piste"><i id="cp-barre"></i></div>
+        <ul class="cp-liste" id="cp-liste"></ul>
+        <button class="j-btn" id="cp-btn" onclick="location.href='profil.html'">✏️ Compléter ma fiche</button>
+      </div>
       <div class="setlist">
         <button class="setrow" id="row-connexion" onclick="location.href='connexion.html'"><span class="ico">🔑</span><span><b>Se connecter / Créer mon compte</b><small>Retrouve tes matchs et ton profil</small></span></button>
         <button class="setrow" onclick="showScreen('premium')"><span class="ico">🎉</span><span><b>Mon offre — Membre fondateur</b><small>1ʳᵉ année offerte, puis 10 €/mois à vie</small></span></button>
@@ -810,7 +817,7 @@ body{
         <button class="setrow" onclick="ouvrirPrefs()"><span class="ico">🎯</span><span>Préférences de recherche<small>Qui tu veux voir : genre et tranche d'âge</small></span></button>
         <button class="setrow" onclick="window.open('cgu.html','_blank')"><span class="ico">📄</span><span>Conditions d'utilisation<small>Règles du service, tarifs, rétractation</small></span></button>
         <button class="setrow" onclick="window.open('confidentialite.html','_blank')"><span class="ico">🔒</span><span>Politique de confidentialité<small>Tes données, tes droits (RGPD)</small></span></button>
-        <button class="setrow" onclick="toast('Prototype : formulaire de signalement à venir')"><span class="ico">🚩</span><span>Signaler un problème<small>Profil suspect, contenu inapproprié</small></span></button>
+        <button class="setrow" onclick="ouvrirSignalement()"><span class="ico">🚩</span><span>Signaler un problème<small>Profil suspect, contenu inapproprié — réponse sous 24 h</small></span></button>
         <button class="setrow danger" onclick="location.href='compte.html'"><span class="ico">🗑️</span><span>Supprimer mon compte<small>Demande depuis « Mon compte & sécurité »</small></span></button>
       </div>
       <p class="legalnote">Cupidon Rencontres — un service Cupidon.re · Pull Up Événements, Le Tampon, La Réunion.<br>Réservé aux personnes majeures. Vos données restent en Europe (RGPD).</p>
@@ -894,7 +901,7 @@ body{
 
   <!-- ══════════ PREMIUM ══════════ -->
   <section class="screen" id="premium">
-    <button class="close" onclick="showScreen(lastTab)">✕</button>
+    <button class="close" onclick="showScreen(lastTab)" aria-label="Fermer">✕</button>
     <div class="scrolly">
       <div class="top">
         <img src="logo-mascotte.png" alt="" style="width:120px;filter:drop-shadow(0 8px 22px rgba(0,0,0,.4));margin-bottom:10px">
@@ -963,13 +970,23 @@ body{
     </div>
   </div>
 
+  <!-- Signalement : le message part vraiment à l'équipe (voir envoyerSignalement) -->
   <div class="overlay" id="reportoverlay">
-    <div class="modal">
-      <div style="font-size:44px">🚩</div>
-      <h3>Signaler ce profil</h3>
-      <p>Faux profil, photos inappropriées, arnaque… Notre équipe de modération examine chaque signalement sous 24 h.</p>
-      <button class="btn btn-wine" onclick="hideOverlay('reportoverlay');toast('Merci, signalement transmis à la modération ✔')">Envoyer le signalement</button>
-      <button class="btn btn-ghost" style="color:var(--wine-dk)" onclick="blockProfile(PROFILES[deckIndex])">🚫 Bloquer ce profil</button>
+    <div class="modal" style="text-align:left">
+      <div style="font-size:44px;text-align:center">🚩</div>
+      <h3 style="text-align:center" id="rp-titre">Signaler ce profil</h3>
+      <p style="text-align:center">Dis-nous ce qui ne va pas : notre équipe regarde chaque signalement <b>sous 24 h</b>, et personne ne saura que ça vient de toi.</p>
+      <div class="rp-motifs" id="rp-motifs">
+        <button class="chip" data-motif="Faux profil / usurpation">🎭 Faux profil</button>
+        <button class="chip" data-motif="Photos inappropriées">📸 Photos déplacées</button>
+        <button class="chip" data-motif="Propos déplacés ou irrespectueux">💬 Propos déplacés</button>
+        <button class="chip" data-motif="Demande d'argent / arnaque">💸 Demande d'argent</button>
+        <button class="chip" data-motif="Semble mineur">🔞 Semble mineur</button>
+        <button class="chip" data-motif="Autre">❓ Autre</button>
+      </div>
+      <textarea id="rp-detail" rows="3" maxlength="600" placeholder="Ajoute un détail si tu veux (facultatif)"></textarea>
+      <button class="btn btn-wine" id="rp-envoi" onclick="envoyerSignalement()">Envoyer le signalement</button>
+      <button class="btn btn-ghost" style="color:var(--wine-dk)" id="rp-bloquer" onclick="blockProfile(PROFILES[deckIndex])">🚫 Bloquer aussi cette personne</button>
       <button class="btn btn-ghost" onclick="hideOverlay('reportoverlay')">Annuler</button>
     </div>
   </div>
@@ -1013,7 +1030,10 @@ body{
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- role/aria-live : les messages sont aussi lus à voix haute par les
+       lecteurs d'écran (VoiceOver, TalkBack) — sans ça, une personne
+       malvoyante ne savait pas qu'un message avait échoué. -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div id="retour"><img src="logo-mascotte.png" alt=""><span id="retour-txt"></span></div>
 </div>
 
@@ -1047,6 +1067,7 @@ async function goTab(id){
     renderMatches();
     if(MOI){
       matches=await chargerMatchs();
+      matchsCharges=true;
       try{ nonLusParPersonne=await compterNonLus(); }catch(e){}
       renderMatches();
     }
@@ -1085,6 +1106,7 @@ async function enterApp(){
   const [profils,mesMatchs]=await Promise.all([chargerProfilsADecouvrir(),chargerMatchs()]);
   deckErreur=(profils===null);                     // null = problème de chargement (réseau)
   PROFILES_TOUS=profils||[]; PROFILES=appliquerPreferences(PROFILES_TOUS); deckIndex=0; matches=mesMatchs;
+  matchsCharges=true;
   renderDeck(); renderMatches();
 
   /* Pastille sur l'onglet Matchs s'il y a des messages non lus. */
@@ -1494,6 +1516,37 @@ function calculerSeduction(profil){
   const niveau=pts>=100?'Cupidon est jaloux 💘':pts>=90?'Presque irrésistible 🔥':pts>=70?'Sacré potentiel 😏':pts>=50?'Ça commence à charmer 😊':'Encore un peu timide 🙈';
   return {pts,conseil,niveau};
 }
+/* ───── « Où en est ma fiche » (écran Profil) ─────
+   Même esprit que la jauge de séduction, mais tourné vers l'action : on
+   dit exactement ce qui manque, point par point, sans culpabiliser. Rien
+   n'est inventé : tout est lu dans le profil réel. */
+function afficherCompletionProfil(profil){
+  const carte=document.getElementById('me-completion');
+  if(!carte||!profil)return;
+  const nbPhotos=(profil.photos||[]).length;
+  const desc=(profil.description||'').trim();
+  const nbPassions=(profil.interets||[]).length;
+
+  const points=[
+    {ok:true,                 txt:'Questionnaire terminé'},
+    {ok:nbPhotos>=1||!!profil.avatar, txt:nbPhotos>=1?'Une photo de toi':'Une photo ou un totem'},
+    {ok:nbPhotos>=3,          txt:'Trois photos (le trio gagnant)'},
+    {ok:desc.length>=80,      txt:'Une description qui te ressemble'+(desc.length&&desc.length<80?' — il te manque '+(80-desc.length)+' caractères':'')},
+    {ok:nbPassions>=5,        txt:'Cinq passions cochées'+(nbPassions&&nbPassions<5?' ('+nbPassions+' pour l\'instant)':'')},
+    {ok:!!profil.ville,       txt:'Ta ville'},
+    {ok:!!profil.profil_type, txt:'Ton profil type'}
+  ];
+  const faits=points.filter(p=>p.ok).length;
+  const pct=Math.round(faits/points.length*100);
+
+  document.getElementById('cp-pct').textContent=pct+' %';
+  document.getElementById('cp-liste').innerHTML=points.map(p=>
+    '<li class="'+(p.ok?'fait':'reste')+'"><span>'+(p.ok?'✅':'⬜')+'</span>'+echapper(p.txt)+'</li>').join('');
+  const bouton=document.getElementById('cp-btn');
+  bouton.textContent=pct===100?'✏️ Modifier ma fiche (elle est complète 🎉)':'✏️ Compléter ma fiche';
+  carte.style.display='';
+  setTimeout(()=>{document.getElementById('cp-barre').style.width=pct+'%';},250);
+}
 function afficherJauge(profil){
   const carte=document.getElementById('at-jauge');
   if(!carte)return;
@@ -1586,7 +1639,7 @@ function renderDeck(){
       '<div class="tir tir-g">➳<i></i></div><div class="tir tir-d">➳<i></i></div>'+
       '<span class="etin e1">✨</span><span class="etin e2">✨</span></div>'+
       '<div class="veil"></div>'+
-      '<button class="report" onclick="event.stopPropagation();document.getElementById(\'reportoverlay\').classList.add(\'show\')">🚩 Signaler</button>'+
+      '<button class="report" onclick="event.stopPropagation();ouvrirSignalement(\''+p.id+'\',\''+echapper(p.n).replace(/'/g,"\\'")+'\')">🚩 Signaler</button>'+
       '<div class="stamp like">JE MATCHE 💘</div><div class="stamp nope">JE PASSE</div>'+
       '<div class="info"><h2>'+echapper(p.n)+(p.a?', <span>'+p.a+'</span>':'')+'</h2>'+
       '<div class="loc">📍 '+echapper(p.v)+' · La Réunion</div>'+
@@ -1723,8 +1776,18 @@ function annoncerMatch(p){
 function openChatFromMatch(){hideOverlay('matchoverlay');openChat(currentChat.id);}
 
 /* ───────── Matchs & conversations ───────── */
+/* Vrai dès que la liste des matchs a été réellement lue en base. Sans ce
+   témoin, l'écran annonçait « Aucun match pour l'instant » pendant le
+   chargement — un message faux, et décourageant, affiché à chaque visite. */
+let matchsCharges=false;
 function renderMatches(){
   const strip=document.getElementById('matchstrip'),list=document.getElementById('convolist');
+  if(!matches.length&&!matchsCharges&&typeof MOI!=='undefined'&&MOI){
+    strip.innerHTML='<div class="mvide"><div class="mbulles">'+
+      '<span class="chargement">💞 On regarde qui t\'a aimé·e…</span></div></div>';
+    list.innerHTML='';
+    return;
+  }
   if(!matches.length){
     strip.innerHTML=
       '<div class="mvide">'+
@@ -1806,20 +1869,32 @@ function heureDe(iso){
 function renderMsgs(){
   const box=document.getElementById('msgs');
   const msgs=convos[currentChat.id]||[];
+  /* Est-on en train de lire d'anciens messages ? Si oui, on ne fait pas
+     sauter l'écran en bas quand un message arrive : on propose un bouton. */
+  const enBas=(box.scrollHeight-box.scrollTop-box.clientHeight)<70;
   if(!msgs.length){
     box.innerHTML='<div class="vide-chat" style="text-align:center;color:var(--muted);font-size:13.5px;padding:30px 20px;line-height:1.6">'+
       'Vous venez de matcher — la conversation est toute neuve.<br>À toi de dire le premier mot 👋</div>';
     return;
   }
   let html='',jourCourant='';
-  msgs.forEach(m=>{
+  msgs.forEach((m,i)=>{
     const j=libelleJour(m.le);
     if(j&&j!==jourCourant){jourCourant=j;html+='<div class="jour-sep">'+j+'</div>';}
-    html+='<div class="bubble '+(m.me?'me':'them')+'">'+echapper(m.t)+
-      (m.le?'<span class="quand">'+heureDe(m.le)+'</span>':'')+'</div>';
+    /* État d'envoi : tant que le serveur n'a pas confirmé, on l'écrit
+       honnêtement plutôt que d'afficher une heure qui n'existe pas encore. */
+    let etat;
+    if(m.echec)      etat='<span class="quand echec">⚠️ non envoyé — toucher pour réessayer</span>';
+    else if(m.envoi) etat='<span class="quand">Envoi…</span>';
+    else if(m.le)    etat='<span class="quand">'+heureDe(m.le)+'</span>';
+    else             etat='';
+    html+='<div class="bubble '+(m.me?'me':'them')+(m.envoi?' en-envoi':'')+(m.echec?' echoue':'')+
+      '" data-i="'+i+'">'+echapper(m.t)+etat+'</div>';
   });
   box.innerHTML=html;
-  box.scrollTop=box.scrollHeight;
+  const dernier=msgs[msgs.length-1];
+  if(enBas||(dernier&&dernier.me)) box.scrollTop=box.scrollHeight;   // mes propres messages : toujours suivis
+  else if(typeof signalerNouveauxMsgs==='function') signalerNouveauxMsgs();
 }
 function sendMsg(){
   const input=document.getElementById('msginput');
@@ -1832,16 +1907,24 @@ function sendMsg(){
   }
   const who=currentChat;
   input.value='';
-  /* Affichage immédiat, puis envoi réel. En cas d'échec on le dit. */
+  if(typeof oublierBrouillon==='function')oublierBrouillon(who.id);
+  if(typeof majCompteurSaisie==='function')majCompteurSaisie();
+  /* Affichage immédiat, puis envoi réel. Tant que le serveur n'a pas
+     confirmé, la bulle affiche « Envoi… » ; en cas d'échec elle le dit et
+     reste touchable pour réessayer. */
   convos[who.id]=convos[who.id]||[];
-  convos[who.id].push({me:true,t:txt,le:new Date().toISOString()});
+  const bulle={me:true,t:txt,le:new Date().toISOString(),envoi:true};
+  convos[who.id].push(bulle);
   renderMsgs();
   envoyerMessage(who.id,txt).then(async ok=>{
-    if(!ok){
-      toast('Message non envoyé — vérifie ta connexion');
-      convos[who.id]=await chargerMessages(who.id);
+    if(ok){
+      delete bulle.envoi;
       if(currentChat&&currentChat.id===who.id)renderMsgs();
+      return;
     }
+    delete bulle.envoi; bulle.echec=true;
+    toast('Message non envoyé — vérifie ta connexion');
+    if(currentChat&&currentChat.id===who.id)renderMsgs();
   });
 }
 function unlockDemo(){demoUnlocked=true;localStorage.setItem('cupidon_offre_vue','oui');hideOverlay('premiumoverlay');toast('🎁 Offre de lancement activée — messages illimités !');}
@@ -1949,6 +2032,8 @@ function sendGroupMsg(){
   if(!txt||!currentRoom)return;
   const roomId=currentRoom.id;
   input.value='';
+  if(typeof oublierBrouillon==='function')oublierBrouillon('salon_'+roomId);
+  if(typeof majCompteurSaisie==='function')majCompteurSaisie();
   GROUPMSGS[roomId]=GROUPMSGS[roomId]||[];
   GROUPMSGS[roomId].push({a:'Moi',t:txt,id:MOI&&MOI.id,le:new Date().toISOString()});
   renderGroupMsgs();
@@ -2000,6 +2085,9 @@ renderSalons();
 const blocked=new Set();
 function blockProfile(p){
   if(!p)return;
+  /* Bloquer est immédiat et enregistré en base : on demande confirmation,
+     un doigt qui glisse ne doit pas faire disparaître quelqu'un. */
+  if(!confirm('Bloquer '+p.n+' ?\n\nCette personne ne pourra plus te voir ni t\'écrire, et elle disparaîtra de tes matchs.'))return;
   blocked.add(p.id);
   matches=matches.filter(m=>m.id!==p.id);delete convos[p.id];
   hideOverlay('reportoverlay');
@@ -2154,6 +2242,9 @@ function blockFromChat(){
     const type = PROFILS_TYPES[profil.profil_type];
     if (type) document.getElementById('me-badge').textContent = type.emoji + ' Profil ' + type.label + ' · 🌱 Membre fondateur';
 
+    /* Où en est sa fiche : la liste de ce qui manque, point par point */
+    try { afficherCompletionProfil(profil); } catch (e) { /* jamais bloquant */ }
+
     if (profil.description) {
       const d = document.getElementById('me-description');
       d.textContent = '« ' + profil.description + ' »'; d.style.display = 'block';
@@ -2183,7 +2274,7 @@ function blockFromChat(){
 })();
 </script>
 <!-- Alerte visites (voir js/notif-visites.js) -->
-<script src="../js/notif-visites.js" defer></script>
+<script src="../js/notif-visites.js?v=pas-en-local" defer></script>
 <script id="21st-cupidon-app">
 (function(){
   /* Pluie de cœurs au match (inspiration 21st.dev, recodée maison) */
@@ -2252,6 +2343,560 @@ function blockFromChat(){
         }
       }
       return origSwipe(aime);
+    };
+  }
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════════
+     NAVIGATION NATURELLE (session UX du 13/08/2026)
+     Trois manques rendaient l'appli pénible sur téléphone :
+       1. le bouton « retour » d'Android quittait l'appli au lieu de
+          fermer la fenêtre ouverte ou de revenir à l'écran précédent ;
+       2. la touche Échap et le clic à côté ne fermaient pas les fenêtres ;
+       3. l'onglet du navigateur affichait toujours le même titre, donc on
+          ne savait pas où on en était avec plusieurs onglets ouverts.
+     Tout est branché « par-dessus » le code existant : aucune fonction
+     d'origine n'est réécrite, il suffirait de retirer ce bloc pour revenir
+     en arrière.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="nav-naturelle-css">
+/* Bouton « revenir en haut » des pages longues */
+.haut-page{
+  position:absolute;right:14px;bottom:calc(78px + env(safe-area-inset-bottom));
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);
+  background:rgba(14,42,107,.82);color:#fff;font-size:19px;cursor:pointer;
+  display:grid;place-items:center;z-index:40;backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;transform:translateY(10px);transition:.25s;
+  box-shadow:0 8px 24px rgba(8,18,50,.35)
+}
+.haut-page.show{opacity:1;visibility:visible;transform:none}
+/* Sur les écrans sans barre d'onglets, le bouton descend plus bas */
+#onboard .haut-page,#attente .haut-page,#premium .haut-page{bottom:calc(20px + env(safe-area-inset-bottom))}
+/* Les fenêtres se ferment aussi au clic à côté : on le fait sentir */
+.overlay{cursor:pointer}
+.modal{cursor:auto}
+/* Repère de clavier visible (accessibilité) */
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+</style>
+<script id="nav-naturelle">
+(function(){
+  'use strict';
+  if(!window.history||!history.pushState)return;          // très vieux navigateur : on ne touche à rien
+
+  var auto=false;                                          /* vrai quand c'est NOUS qui manipulons l'historique */
+  var ID_OVERLAYS=['matchoverlay','premiumoverlay','welcomeoverlay','dmoverlay',
+                   'reportoverlay','prefsoverlay','profiloverlay'];
+
+  function ecranActif(){var e=document.querySelector('.screen.active');return e?e.id:'onboard';}
+  function overlaysOuverts(){
+    return ID_OVERLAYS.map(function(id){return document.getElementById(id);})
+      .filter(function(o){return o&&o.classList.contains('show');});
+  }
+  function fermer(o){auto=true;o.classList.remove('show');auto=false;}
+
+  /* ───── 1. Le bouton « retour » du téléphone ─────
+     Une entrée d'historique est posée à chaque changement d'écran et à
+     chaque ouverture de fenêtre. Le bouton retour défait la dernière
+     action au lieu de sortir de l'appli. */
+  history.replaceState({cup:'ecran',id:ecranActif()},'');
+
+  var _show=window.showScreen;
+  window.showScreen=function(id){
+    var avant=ecranActif();
+    _show(id);
+    var apres=ecranActif();                                // showScreen peut rediriger (salle d'attente)
+    if(!auto&&apres!==avant)history.pushState({cup:'ecran',id:apres},'');
+    majTitre();
+  };
+
+  /* Les fenêtres s'ouvrent depuis une dizaine d'endroits différents dans le
+     code. Plutôt que de modifier chacun, on surveille l'apparition de la
+     classe « show » : c'est le seul point de passage commun. */
+  ID_OVERLAYS.forEach(function(id){
+    var o=document.getElementById(id);if(!o)return;
+    new MutationObserver(function(){
+      var ouvert=o.classList.contains('show');
+      if(auto)return;
+      if(ouvert){history.pushState({cup:'fenetre',id:id},'');}
+      else if(history.state&&history.state.cup==='fenetre'&&history.state.id===id){
+        auto=true;history.back();                          // fermée à la main : on retire son entrée
+      }
+    }).observe(o,{attributes:true,attributeFilter:['class']});
+  });
+
+  window.addEventListener('popstate',function(e){
+    if(auto){auto=false;return;}                           // c'est notre propre history.back()
+    var ouverts=overlaysOuverts();
+    if(ouverts.length){fermer(ouverts[ouverts.length-1]);return;}   // priorité : fermer la fenêtre
+    var st=e.state;
+    if(st&&st.cup==='ecran'&&st.id&&document.getElementById(st.id)){
+      auto=true;_show(st.id);majTitre();auto=false;
+    }
+  });
+
+  /* ───── 2. Échap et clic à côté ferment la fenêtre ───── */
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape')return;
+    var ouverts=overlaysOuverts();
+    if(ouverts.length){ouverts[ouverts.length-1].classList.remove('show');}
+  });
+  ID_OVERLAYS.forEach(function(id){
+    var o=document.getElementById(id);if(!o)return;
+    o.addEventListener('click',function(ev){if(ev.target===o)o.classList.remove('show');});
+  });
+
+  /* ───── 3. Le titre de l'onglet suit l'écran ─────
+     Le titre d'origine (référencement Google) reste celui du chargement :
+     on ne le change qu'une fois que la personne navigue dans l'appli. */
+  var TITRES={discover:'🌋 Découvrir',salons:'💬 Salons',matches:'💞 Mes matchs',
+              chat:'💬 Discussion',groupchat:'💬 Salon',me:'🙂 Mon profil',
+              attente:'🌱 Ma place de fondateur',premium:'🎁 Mon offre',
+              signup:'🌱 Mon inscription'};
+  var TITRE_ORIGINE=document.title;                        // titre de référencement, gardé pour l'accueil
+  function majTitre(){
+    var t=TITRES[ecranActif()];
+    document.title=t?t+' — Cupidon.re':TITRE_ORIGINE;
+  }
+
+  /* ───── 4. Revenir en haut des pages longues ─────
+     L'accueil et la salle d'attente font plusieurs écrans de haut : arrivé
+     en bas, il fallait remonter au doigt pendant dix secondes. */
+  ['#onboard .scrollwrap','#attente .scrolly','#me .scrolly','#premium .scrolly',
+   '#matches .scrolly','#salons .scrolly','#signup .scrolly'].forEach(function(sel){
+    var zone=document.querySelector(sel);if(!zone)return;
+    var ecran=zone.closest('.screen');if(!ecran)return;
+    var b=document.createElement('button');
+    b.className='haut-page';b.innerHTML='↑';
+    b.setAttribute('aria-label','Revenir en haut de la page');
+    b.title='Revenir en haut';
+    b.onclick=function(){zone.scrollTo({top:0,behavior:'smooth'});};
+    ecran.appendChild(b);
+    var enCours=false;
+    zone.addEventListener('scroll',function(){
+      if(enCours)return;enCours=true;
+      requestAnimationFrame(function(){
+        b.classList.toggle('show',zone.scrollTop>420);enCours=false;
+      });
+    },{passive:true});
+  });
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════════
+     UN CHAT PLUS AGRÉABLE (session UX du 13/08/2026)
+     Ce qui manquait quand on discutait vraiment :
+       • un message commencé était perdu si on sortait de la conversation ;
+       • aucun émoji sous la main (il fallait ouvrir le clavier système) ;
+       • la limite de 500 caractères était invisible jusqu'au blocage ;
+       • un message qui arrivait pendant qu'on relisait faisait sauter
+         l'écran tout en bas ;
+       • un message non parti restait affiché comme s'il était envoyé.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="chat-agreable-css">
+.chatbox{position:relative}
+/* Rangée d'émojis rapides */
+.emo-btn{background:none;border:none;font-size:21px;cursor:pointer;padding:0 4px;line-height:1;opacity:.75}
+.emo-btn:hover,.emo-btn.on{opacity:1}
+.emo-barre{
+  display:none;gap:2px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid var(--line);
+  background:var(--blush);justify-content:space-between
+}
+.emo-barre.show{display:flex}
+.emo-barre button{background:none;border:none;font-size:23px;cursor:pointer;padding:4px;border-radius:10px}
+.emo-barre button:active{background:rgba(14,42,107,.12)}
+/* Compteur de caractères : n'apparaît qu'à l'approche de la limite */
+.compteur-saisie{
+  position:absolute;top:-19px;right:14px;font-size:11.5px;font-weight:600;z-index:5;
+  color:var(--muted);background:var(--cream);padding:1px 7px;border-radius:999px;
+  opacity:0;transition:.2s;pointer-events:none;box-shadow:0 2px 8px rgba(14,42,107,.14)
+}
+.compteur-saisie.show{opacity:1}
+.compteur-saisie.limite{color:var(--wine-dk)}
+/* Message en cours d'envoi / échoué */
+.bubble.en-envoi{opacity:.62}
+/* Message non parti : bordure blanche + texte doré, lisible sur la bulle rouge */
+.bubble.echoue{border:1.5px dashed rgba(255,255,255,.9);cursor:pointer}
+.bubble.me .quand.echec{color:var(--gold-lt)!important;font-weight:700;opacity:1}
+.bubble.them .quand.echec{color:var(--wine-dk)!important;font-weight:700;opacity:1}
+/* Bouton « nouveaux messages » quand on lit plus haut */
+.nouveaux-msgs{
+  position:absolute;left:50%;transform:translateX(-50%) translateY(8px);
+  bottom:76px;z-index:30;background:var(--wine);color:#fff;border:none;
+  padding:9px 16px;border-radius:999px;font-family:'Jost';font-weight:600;
+  font-size:13px;cursor:pointer;box-shadow:0 8px 22px rgba(198,13,0,.4);
+  opacity:0;visibility:hidden;transition:.22s
+}
+.nouveaux-msgs.show{opacity:1;visibility:visible;transform:translateX(-50%)}
+</style>
+<script id="chat-agreable">
+(function(){
+  'use strict';
+  var EMOJIS=['😊','😂','😍','🥰','😉','😅','🙈','👋','❤️','💛','🔥','✨',
+              '🌋','🏝️','🍹','💃','🙏','👍','🤔','😎'];
+  var LIMITE=500, SEUIL=80;                    // on prévient dans les 80 derniers caractères
+
+  /* ───── Champ de message sur plusieurs lignes ─────
+     Le champ tenait sur une seule ligne : au-delà de deux phrases, on
+     écrivait à l'aveugle. On remplace l'<input> par un <textarea> qui
+     grandit tout seul, en gardant le même identifiant — ainsi sendMsg(),
+     les brouillons et le compteur continuent de marcher sans modification.
+     ⚠️ Ce remplacement doit avoir lieu AVANT equiper() : sinon les émojis
+     et le compteur seraient accrochés à un champ qui n'existe plus. */
+  function enTextarea(id,envoyer){
+    var vieux=document.getElementById(id);
+    if(!vieux||vieux.tagName==='TEXTAREA')return;
+    var t=document.createElement('textarea');
+    t.id=id;t.rows=1;t.placeholder=vieux.placeholder;
+    t.setAttribute('maxlength',vieux.getAttribute('maxlength')||String(LIMITE));
+    t.setAttribute('autocomplete','off');
+    t.setAttribute('aria-label',vieux.placeholder||'Votre message');
+    vieux.parentElement.replaceChild(t,vieux);
+
+    function ajuster(){t.style.height='auto';t.style.height=Math.min(t.scrollHeight,118)+'px';}
+    t.addEventListener('input',ajuster);
+    t.addEventListener('keydown',function(e){
+      /* Sur ordinateur : Entrée envoie, Maj+Entrée passe à la ligne.
+         Sur téléphone : la touche passe à la ligne et c'est le bouton ➤
+         qui envoie — comme dans WhatsApp. */
+      var surMobile=matchMedia('(pointer:coarse)').matches;
+      if(e.key==='Enter'&&!e.shiftKey&&!surMobile){
+        e.preventDefault();envoyer();setTimeout(ajuster,0);
+      }
+    });
+    var bouton=t.parentElement.querySelector('button[onclick*="send"]');
+    if(bouton)bouton.addEventListener('click',function(){setTimeout(ajuster,0);});
+    t._ajuster=ajuster;
+  }
+  enTextarea('msginput',function(){sendMsg();});
+  enTextarea('gminput',function(){sendGroupMsg();});
+
+  /* ───── Brouillons : un message commencé se retrouve au retour ─────
+     Rangés sur l'appareil uniquement, effacés dès que le message part. */
+  function cleBrouillon(id){return 'cupidon_brouillon_'+id;}
+  window.oublierBrouillon=function(id){try{localStorage.removeItem(cleBrouillon(id));}catch(e){}};
+  function lireBrouillon(id){try{return localStorage.getItem(cleBrouillon(id))||'';}catch(e){return '';}}
+  function ecrireBrouillon(id,v){
+    try{v?localStorage.setItem(cleBrouillon(id),v):localStorage.removeItem(cleBrouillon(id));}catch(e){}
+  }
+
+  /* ───── Équipement d'un champ de saisie (privé ou salon) ───── */
+  function equiper(idChamp,cleConv){
+    var champ=document.getElementById(idChamp);if(!champ)return;
+    var boite=champ.parentElement;
+
+    /* Compteur de caractères */
+    var cpt=document.createElement('span');
+    cpt.className='compteur-saisie';boite.appendChild(cpt);
+
+    /* Bouton et rangée d'émojis */
+    var bouton=document.createElement('button');
+    bouton.className='emo-btn';bouton.type='button';bouton.textContent='😊';
+    bouton.title='Ajouter un émoji';bouton.setAttribute('aria-label','Ajouter un émoji');
+    boite.insertBefore(bouton,champ);
+
+    var barre=document.createElement('div');
+    barre.className='emo-barre';
+    EMOJIS.forEach(function(e){
+      var b=document.createElement('button');
+      b.type='button';b.textContent=e;b.setAttribute('aria-label','Émoji '+e);
+      b.onclick=function(){
+        if(champ.value.length+e.length>LIMITE)return;
+        champ.value+=e;champ.focus();majCompteur();sauver();
+      };
+      barre.appendChild(b);
+    });
+    boite.parentElement.insertBefore(barre,boite);
+    bouton.onclick=function(){
+      barre.classList.toggle('show');
+      bouton.classList.toggle('on',barre.classList.contains('show'));
+    };
+
+    function majCompteur(){
+      var reste=LIMITE-champ.value.length;
+      cpt.textContent=reste>1?'reste '+reste+' caractères':reste+' caractère restant';
+      cpt.classList.toggle('show',reste<=SEUIL);
+      cpt.classList.toggle('limite',reste<=10);
+    }
+    function conv(){return typeof cleConv==='function'?cleConv():cleConv;}
+    function sauver(){var c=conv();if(c)ecrireBrouillon(c,champ.value);}
+
+    champ.addEventListener('input',function(){majCompteur();sauver();});
+    champ.addEventListener('focus',function(){barre.classList.remove('show');bouton.classList.remove('on');});
+    champ._majCompteur=majCompteur;
+    champ._restaurer=function(){
+      var c=conv();
+      champ.value=c?lireBrouillon(c):'';
+      majCompteur();
+    };
+  }
+
+  /* Note : currentChat et currentRoom sont déclarés avec « let » dans le
+     script principal — ils existent bien, mais PAS sur window. On les lit
+     donc directement (piège rencontré et corrigé le 13/08/2026). */
+  equiper('msginput',function(){return currentChat?currentChat.id:'';});
+  equiper('gminput',function(){return 'salon_'+(currentRoom?currentRoom.id:'general');});
+
+  /* Utilisées par sendMsg() : vider le compteur après l'envoi */
+  window.majCompteurSaisie=function(){
+    ['msginput','gminput'].forEach(function(id){
+      var c=document.getElementById(id);
+      if(c&&c._majCompteur)c._majCompteur();
+    });
+  };
+
+  /* ───── Retrouver son brouillon en rouvrant une conversation ───── */
+  ['openChat','openRoom'].forEach(function(nom){
+    if(typeof window[nom]!=='function')return;
+    var origine=window[nom];
+    window[nom]=function(){
+      var r=origine.apply(this,arguments);
+      setTimeout(function(){
+        var champ=document.getElementById(nom==='openChat'?'msginput':'gminput');
+        if(champ&&champ._restaurer)champ._restaurer();
+      },60);
+      return r;
+    };
+  });
+
+  /* ───── Réessayer un message non parti, d'un simple toucher ───── */
+  var zone=document.getElementById('msgs');
+  if(zone)zone.addEventListener('click',function(ev){
+    var b=ev.target.closest?ev.target.closest('.bubble.echoue'):null;
+    if(!b||!currentChat)return;
+    var liste=convos[currentChat.id]||[],m=liste[+b.dataset.i];
+    if(!m||!m.echec)return;
+    delete m.echec;m.envoi=true;renderMsgs();
+    envoyerMessage(currentChat.id,m.t).then(function(ok){
+      delete m.envoi;
+      if(!ok){m.echec=true;toast('Toujours pas parti — vérifie ta connexion 🙏');}
+      else toast('Message envoyé ✔');
+      renderMsgs();
+    });
+  });
+
+  /* ───── « ↓ Nouveaux messages » quand on lit plus haut ───── */
+  if(zone){
+    var btn=document.createElement('button');
+    btn.className='nouveaux-msgs';btn.textContent='↓ Nouveaux messages';
+    btn.onclick=function(){zone.scrollTop=zone.scrollHeight;btn.classList.remove('show');};
+    zone.parentElement.appendChild(btn);
+    window.signalerNouveauxMsgs=function(){btn.classList.add('show');};
+    zone.addEventListener('scroll',function(){
+      if((zone.scrollHeight-zone.scrollTop-zone.clientHeight)<70)btn.classList.remove('show');
+    },{passive:true});
+  }
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════════
+     RÉSEAU & CONFIANCE (session UX du 13/08/2026)
+       • La 4G tombe souvent sur l'île : l'appli le dit maintenant clairement
+         au lieu de laisser croire que « rien ne marche ».
+       • Le signalement partait dans le vide (« signalement transmis » était
+         un simple message d'écran). Il arrive désormais vraiment par e-mail
+         à contact@pullup.re, avec le motif choisi.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="reseau-confiance-css">
+/* Bandeau de connexion, en haut de l'écran */
+.bandeau-reseau{
+  position:absolute;top:0;left:0;right:0;z-index:120;text-align:center;
+  padding:calc(8px + env(safe-area-inset-top)) 14px 8px;font-size:13px;font-weight:600;
+  font-family:'Jost';color:#fff;background:#8A1A10;transform:translateY(-100%);
+  transition:transform .3s cubic-bezier(.2,1,.3,1)
+}
+.bandeau-reseau.show{transform:none}
+.bandeau-reseau.ok{background:#1C7C3F}
+/* Motifs de signalement */
+.rp-motifs{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 10px;justify-content:center}
+/* La classe .chip d'origine est prévue pour les fonds sombres (texte blanc) :
+   dans cette fenêtre blanche, il faut repasser en texte foncé. */
+.rp-motifs .chip{
+  flex:none;font-size:12.5px;padding:7px 11px;color:var(--ink);
+  border-color:var(--line);background:var(--blush)
+}
+.rp-motifs .chip.on{background:linear-gradient(135deg,var(--gold-lt),var(--gold));color:#5A2E00;border-color:transparent}
+#rp-detail{
+  width:100%;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;
+  font-family:'Jost';font-size:14px;resize:vertical;color:var(--ink)
+}
+#rp-detail:focus{outline:none;border-color:var(--wine)}
+</style>
+<script id="reseau-confiance">
+(function(){
+  'use strict';
+
+  /* ───── 1. Le bandeau « connexion perdue » ───── */
+  var cadre=document.getElementById('phone')||document.body;
+  var bandeau=document.createElement('div');
+  bandeau.className='bandeau-reseau';
+  bandeau.setAttribute('role','status');
+  cadre.appendChild(bandeau);
+  var minuteur=null;
+
+  function horsLigne(){
+    clearTimeout(minuteur);
+    bandeau.classList.remove('ok');
+    bandeau.textContent='📡 Connexion perdue — tes messages partiront dès le retour du réseau';
+    bandeau.classList.add('show');
+  }
+  function deRetour(){
+    clearTimeout(minuteur);
+    bandeau.classList.add('ok');
+    bandeau.textContent='✅ Te revoilà connecté·e !';
+    bandeau.classList.add('show');
+    minuteur=setTimeout(function(){bandeau.classList.remove('show');},2800);
+    /* On profite du retour du réseau pour rafraîchir ce qui est à l'écran. */
+    try{
+      if(typeof estOuvert==='function'&&estOuvert()&&typeof MOI!=='undefined'&&MOI){
+        var actif=document.querySelector('.screen.active');
+        if(actif&&actif.id==='discover'&&typeof actualiserDeck==='function')actualiserDeck();
+        if(actif&&actif.id==='chat'&&currentChat&&typeof chargerMessages==='function'){
+          chargerMessages(currentChat.id).then(function(m){
+            convos[currentChat.id]=m;renderMsgs();
+          });
+        }
+      }
+    }catch(e){/* jamais bloquant */}
+  }
+  window.addEventListener('offline',horsLigne);
+  window.addEventListener('online',deRetour);
+  if(!navigator.onLine)horsLigne();
+
+  /* ───── 2. Le signalement part vraiment ─────
+     Même canal que les alertes de visite : FormSubmit, avec la clé anonyme
+     (l'adresse contact@pullup.re n'apparaît pas en clair dans la page). */
+  var CANAL='https://formsubmit.co/ajax/a25833b0726786def63fa51e651d059a';
+  var cible=null;                                   // { id, nom } du profil signalé
+
+  window.ouvrirSignalement=function(id,nom){
+    cible=id?{id:id,nom:nom||''}:null;
+    document.getElementById('rp-titre').textContent=cible
+      ? 'Signaler '+(cible.nom||'ce profil')
+      : 'Signaler un problème';
+    document.getElementById('rp-bloquer').style.display=cible?'':'none';
+    document.getElementById('rp-detail').value='';
+    [].forEach.call(document.querySelectorAll('#rp-motifs .chip'),function(c){c.classList.remove('on');});
+    document.getElementById('reportoverlay').classList.add('show');
+  };
+
+  document.getElementById('rp-motifs').addEventListener('click',function(e){
+    var c=e.target.closest('.chip');if(!c)return;
+    [].forEach.call(this.querySelectorAll('.chip'),function(x){x.classList.remove('on');});
+    c.classList.add('on');
+  });
+
+  window.envoyerSignalement=function(){
+    var choisi=document.querySelector('#rp-motifs .chip.on');
+    if(!choisi){toast('Choisis d\'abord ce qui ne va pas 🙏');return;}
+    var bouton=document.getElementById('rp-envoi');
+    bouton.disabled=true;bouton.textContent='Envoi…';
+
+    var moi=(typeof MOI!=='undefined'&&MOI&&MOI.profil)?MOI.profil:null;
+    var donnees={
+      _subject:'🚩 Signalement dans l\'appli Cupidon',
+      _template:'table',
+      '1_Motif':choisi.dataset.motif,
+      '2_Profil_signale':cible?(cible.nom+' (identifiant '+cible.id+')'):'Signalement général (pas de profil visé)',
+      '3_Detail':document.getElementById('rp-detail').value.trim()||'(aucun détail ajouté)',
+      '4_Signale_par':moi?((moi.prenom||'?')+' (identifiant '+MOI.id+')'):'Personne non connectée',
+      '5_Quand':new Date().toLocaleString('fr-FR',{timeZone:'Indian/Reunion'})+' (heure de La Réunion)',
+      '6_A_faire':'Vérifier le profil dans Supabase → profils_cupidon, puis répondre à la personne si besoin.'
+    };
+    fetch(CANAL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+                 body:JSON.stringify(donnees)})
+      .then(function(r){return r.ok;})
+      .catch(function(){return false;})
+      .then(function(ok){
+        bouton.disabled=false;bouton.textContent='Envoyer le signalement';
+        hideOverlay('reportoverlay');
+        toast(ok?'Merci — l\'équipe regarde ça sous 24 h ✔'
+                :'Signalement noté, mais le réseau a coupé. Écris-nous à contact@pullup.re 🙏');
+      });
+  };
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════════
+     « OÙ EN EST MA FICHE » (session UX du 13/08/2026)
+     L'écran Profil affichait la fiche telle quelle, sans jamais dire ce
+     qu'il restait à faire. La salle d'attente avait sa jauge, mais elle
+     disparaît le 15 octobre : après l'ouverture, plus personne n'aurait su
+     que sa fiche était à moitié vide. Cette carte, elle, reste toute
+     l'année — sur fond clair, donc son style est écrit à part.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="completion-profil-css">
+.completion{
+  margin:14px 16px 0;background:#fff;border:1px solid var(--line);
+  border-radius:20px;padding:16px 18px;box-shadow:var(--shadow-sm)
+}
+.completion .cp-tete{font-size:14px;font-weight:600;color:var(--ink-soft)}
+.completion .cp-tete b{font-family:'Fraunces',serif;font-size:20px;color:var(--wine)}
+.completion .cp-piste{
+  height:12px;border-radius:99px;background:var(--blush);
+  border:1px solid var(--line);margin:11px 0;overflow:hidden
+}
+.completion .cp-piste i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,var(--gold),var(--wine));
+  transition:width 1.1s cubic-bezier(.25,.9,.3,1)
+}
+.cp-liste{list-style:none;display:flex;flex-direction:column;gap:6px;margin:2px 0 4px}
+.cp-liste li{font-size:13.5px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+.cp-liste li.fait{color:var(--muted)}
+.cp-liste li.fait span{filter:saturate(.55)}
+.cp-liste li.reste{color:var(--ink);font-weight:600}
+.completion .j-btn{
+  margin-top:11px;width:100%;border:0;cursor:pointer;font-family:'Jost';
+  font-weight:600;font-size:14.5px;border-radius:12px;padding:12px 14px;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold));color:#5A2E00
+}
+</style>
+<!-- ═══════════════════════════════════════════════════════════════════
+     DERNIÈRES FINITIONS (session UX du 13/08/2026)
+       • Le champ de message tenait sur une seule ligne : au-delà de deux
+         phrases on écrivait à l'aveugle. Il grandit maintenant tout seul
+         (jusqu'à 5 lignes), sans changer la façon d'envoyer.
+       • La pile de profils ne disait pas combien il en restait.
+     ═══════════════════════════════════════════════════════════════════ -->
+<style id="finitions-css">
+/* Champ de message qui grandit avec le texte */
+.chatbox textarea{
+  flex:1;border:1.5px solid var(--line);border-radius:20px;padding:11px 15px;
+  font-family:'Jost';font-size:15px;color:var(--ink);background:var(--cream);
+  resize:none;max-height:118px;line-height:1.4;overflow-y:auto
+}
+.chatbox textarea:focus{outline:none;border-color:var(--wine)}
+/* Combien de profils restent dans la pile */
+/* En haut À GAUCHE : la droite est occupée par le bouton « Signaler ».
+   Texte court et insécable pour ne jamais passer sur deux lignes. */
+.reste-profils{
+  position:absolute;top:14px;left:14px;z-index:12;
+  background:rgba(14,42,107,.72);white-space:nowrap;
+  color:#fff;font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;
+  backdrop-filter:blur(4px);pointer-events:none;transition:opacity .3s
+}
+</style>
+<script id="finitions">
+(function(){
+  'use strict';
+
+  /* ───── « Il te reste X profils » ─────
+     Affiché discrètement en haut de la pile, uniquement quand il y a
+     vraiment des profils à découvrir. */
+  var pastille=document.createElement('div');
+  pastille.className='reste-profils';pastille.style.display='none';
+  var enveloppe=document.getElementById('deckwrap');
+  if(enveloppe)enveloppe.appendChild(pastille);
+
+  if(typeof renderDeck==='function'){
+    var _renderDeck=window.renderDeck;
+    window.renderDeck=function(){
+      var r=_renderDeck.apply(this,arguments);
+      try{
+        var reste=(PROFILES||[]).length-(deckIndex||0);
+        if(reste>0){
+          pastille.textContent=reste>1?'✨ '+reste+' profils':'✨ Dernier profil';
+          pastille.style.display='';
+        }else pastille.style.display='none';
+      }catch(e){pastille.style.display='none';}
+      return r;
     };
   }
 })();
