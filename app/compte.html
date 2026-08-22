@@ -211,7 +211,7 @@ function majAffichage() {
   if (profil && profil.avatar) mini.innerHTML = renderAvatar(profil.avatar);
   else if (profil && profil.photos && profil.photos.length) {
     sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0], 3600).then(({ data }) => {
-      if (data) mini.innerHTML = '<img src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover">';
+      if (data) mini.innerHTML = '<img alt="Photo de profil" src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover">';
     });
   }
 }

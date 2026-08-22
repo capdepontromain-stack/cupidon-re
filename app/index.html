@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Cupidon.re — Rencontres à La Réunion | Amour, amitié, activités</title>
+<meta name="robots" content="noindex,follow">
 <meta name="description" content="Cupidon.re, le site de rencontres 100 % La Réunion : rencontres amoureuses, amicales et sorties péi. Ouverture le 15 octobre 2026 — inscrivez-vous dès maintenant pour être membre fondateur : 1re année offerte, puis 10 €/mois à vie, apéritif offert à votre premier événement, et un message dès l'ouverture.">
 <meta name="theme-color" content="#0E2A6B">
 <link rel="canonical" href="https://cupidon.re/app/">
@@ -2263,7 +2264,7 @@ function blockFromChat(){
     if (profil.avatar) { circ.innerHTML = renderAvatar(profil.avatar); circ.style.overflow = 'hidden'; }
     else if (profil.photos && profil.photos.length) {
       const { data } = await sb.storage.from('photos-cupidon').createSignedUrl(profil.photos[0], 3600);
-      if (data) { circ.innerHTML = '<img src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; circ.style.overflow = 'hidden'; }
+      if (data) { circ.innerHTML = '<img alt="Photo de profil" src="' + data.signedUrl + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; circ.style.overflow = 'hidden'; }
     } else circ.textContent = prenom[0] || '🙂';
 
     /* Lignes de réglages adaptées au membre connecté */
