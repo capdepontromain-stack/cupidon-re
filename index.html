@@ -1568,6 +1568,26 @@
   };
 })();
 </script>
+<style id="rb-css">
+/* ===== INSPIRATION REACTBITS.DEV — reflet brillant sur le grand titre (Shiny Text) =====
+   Copie du titre en un seul bloc posée par-dessus : le reflet n'existe que dans les lettres,
+   jamais de rectangle sur le fond, jamais de decoupe mot a mot. */
+.hero h1{position:relative}
+.hero h1 .rb-shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 44%,rgba(242,194,0,.92) 50%,transparent 56%) no-repeat;background-size:240% 100%;background-position:200% 0;-webkit-background-clip:text;background-clip:text;animation:rbShine 6.5s ease-in-out 2.4s infinite}
+.hero h1 .rb-shine,.hero h1 .rb-shine *{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important;-webkit-text-stroke:0!important}
+.hero h1 .rb-shine *{background:none!important;animation:none!important}
+@keyframes rbShine{0%{background-position:200% 0}45%,100%{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.hero h1 .rb-shine{display:none}}
+/* fin reactbits */
+</style>
+<script id="rb-js">
+(function(){ if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var h1 = document.querySelector('.hero h1'); if (!h1 || h1.querySelector('.rb-shine')) return;
+  var copie = document.createElement('span'); copie.className = 'rb-shine'; copie.setAttribute('aria-hidden','true');
+  copie.innerHTML = "Rencontrez la <span>bonne personne.</span><br>Pour de vrai.";
+  h1.appendChild(copie);
+})();
+</script>
 <script src="/suivi.js" defer></script>
 <script>
 /* Compte à rebours du portail : J-x avant l'ouverture du 15 octobre 2026.
